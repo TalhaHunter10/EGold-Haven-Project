@@ -1,0 +1,51 @@
+@font-face {
+    font-family: Mlight;
+    src: url('/public/fonts/Montserrat-Light.ttf')
+}
+
+@font-face {
+    font-family: Lregular;
+    src: url('/public/fonts/Lato-Regular.ttf')
+}
+
+.footer{
+    padding: 10px 20px;
+}
+
+.footerlogo{
+    height: 45px;
+    width:190px;
+    text-align: left;
+    margin-bottom: 10px;
+    
+}
+
+.ftext{
+ font-family: Lregular;
+ font-size: 16px;
+}
+
+.fheading{
+    font-family: Mlight;
+ font-size: 18px;
+ 
+}
+
+.active{
+    transition: color 0.3s ease;
+}
+
+.active:hover{
+    
+    border-bottom: 1px solid #926f34;
+    color:#d2ac47;
+}
+
+.iconactive{
+    transition: color 0.3s ease;
+}
+
+.iconactive:hover{
+    color:#d2ac47;
+}
+

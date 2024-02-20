@@ -1,0 +1,54 @@
+
+@font-face {
+    font-family: Mlight;
+    src: url('/public/fonts/Montserrat-Light.ttf')
+}
+
+.header{
+  padding: 10px 20px; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #926f34;
+}
+
+
+
+@media (max-width: 769px) {
+    
+    .weblogo{
+        
+        width: 140px;
+        height:40px;
+    }
+}
+
+
+
+.nav-container{
+    display: flex;
+}
+
+.nav-button {
+    padding: 5px 0px;
+    font-size: 16px;
+    font-family: Mlight;
+    background-color: transparent;
+    color:white;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease,border 0.3s ease;
+    margin-top: 10px;
+   
+}
+
+.nav-button:hover{
+    border-bottom: none;
+    color:#edc967;
+}
+
+.user-icons {
+    display: flex;
+    align-items: center;
+}
+  

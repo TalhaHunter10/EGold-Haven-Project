@@ -1,0 +1,45 @@
+.upperbody {
+  background-color: #060606;
+}
+
+.lowerbody {
+  background-color: #4b4e49 !important;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+
+}
+
+.containermainbody {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+  padding-top: 20px;
+}
+
+.footer-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+  padding-top: 20px;
+
+}
+
+@media (max-width: 639px) {
+  .containermainbody {
+    width: 100%;
+    margin: auto;
+    padding: auto;
+  }
+
+  .footer-container {
+    width: 100%;
+  }
+
+  body {
+    margin: auto;
+
+  }
+}

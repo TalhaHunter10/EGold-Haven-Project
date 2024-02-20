@@ -1,0 +1,35 @@
+@font-face {
+    font-family: Llight;
+    src: url('/public/fonts/Lato-Light.ttf')
+}
+
+@font-face {
+    font-family: Mlight;
+    src: url('/public/fonts/Montserrat-Light.ttf')
+}
+
+.bodytext{
+    font-family: Llight;
+    font-size: 14px;
+}
+
+.bodytext1{
+    font-family: Llight;
+    font-size: 16px;
+}
+
+.headingtextsignup{
+    font-family: Mlight;
+    font-size: 48px;
+}
+
+.headingtext2signup{
+    font-family: Llight;
+    font-size: 20px;
+}
+
+.headingtext4signupjeweler{
+    font-family: Llight;
+    font-size: 32px;
+    color: #4a4e49;
+}
