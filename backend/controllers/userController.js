@@ -62,8 +62,6 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     let user;
-    let identifier; // This will hold either email or phone number
-
     if (/^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/.test(name)) {
         user = await User.findOne({ email: name });
 
@@ -167,11 +165,60 @@ const loginStatus = asyncHandler(async (req, res) => {
     return res.json(false);
 });
 
+const updateUser = asyncHandler(async(req,res) => {
+    const user = await User.findById(req.user._id);
+    if(user){
+        const { name, email, phoneno } = user;
+        user.email = email,
+        user.name = req.body.name || name,
+        user.phoneno = req.body.phoneno || phoneno
+
+        const updatedUser = await user.save();
+        res.status(200).json({
+                _id : updatedUser._id,
+                 name : updatedUser.name,
+                  email : updatedUser.email,
+                   phoneno : updatedUser.phoneno,
+                   status : updatedUser.status
+        })
+    }else{
+        res.status(404)
+        throw new Error("User not Found")
+    }
+});
+
+
+const changePassword = asyncHandler(async(req, res) => {
+    const user = await User.findById(req.user._id);
+    if(user){
+        const {oldpassword , password} = req.body
+        if(!oldpassword || !password){
+            res.status(400)
+            throw new Error("Please add old and new password")
+        }
+
+        const passwordIsCorrect = await bcrypt.compare(oldpassword, user.password);
+        if(passwordIsCorrect){
+            user.password = password;
+            await user.save();
+            res.status(200).send("Password change Successful");
+        }else{
+            res.status(400)
+            throw new Error("Old password is incorrect")
+        }
+    }else{
+        res.status(404)
+        throw new Error("User not Found")
+    }
+});
+
 module.exports = {
     registerUser,
     loginUser,
     logOut,
     getUser,
     getUserStatus,
-    loginStatus
+    loginStatus,
+    updateUser,
+    changePassword
 }
