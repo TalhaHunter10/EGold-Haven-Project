@@ -19,6 +19,11 @@ const userSchema = mongoose.Schema({
     password: {
         type: String,
         required: [true,"Password is required !"]
+    },
+    status: {
+        type: String,
+        required: [true, "Status could not be set"],
+        default: 'user'
     }
 
 },{

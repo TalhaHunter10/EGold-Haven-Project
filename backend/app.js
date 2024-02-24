@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const bodyparser = require("body-parser");
 const errorHandler = require("./middlewares/errormiddleware")
+const cookieParser = require("cookie-parser")
 require('dotenv').config();
 
 //app
@@ -18,7 +19,7 @@ mongoose.connect(process.env.MONGO_URI,{
     useUnifiedTopology : true
 }).then(() =>console.log("DB cONNECTED")).catch((err) => console.log("Db Connection Error !" , err));
 
-
+app.use(cookieParser())
 //routes
 const Routes = require("./routes/userRoute");
 app.use('/api/users' , Routes);
@@ -31,7 +32,9 @@ const port = process.env.PORT || 8080;
 app.use(morgan('dev'));
 app.use(cors({origins:true , credentials:true}));
 app.use(express.json())
+
 app.use(errorHandler)
+
 
 //listener
 const server = app.listen(port, () => console.log(`Server is running on port ${port}`));
