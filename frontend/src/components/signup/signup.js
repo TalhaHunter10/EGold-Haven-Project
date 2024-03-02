@@ -3,23 +3,24 @@ import './signup.css'
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import { TEInput, TERipple } from "tw-elements-react";
 import { Link } from 'react-router-dom';
-import {toast} from 'react-toastify'
 import { registerUser } from '../../services/authservice';
+import Loader from '../loader/loader';
+
 
 const Signup = () => {
 
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState({})
-  
+
 
   const [FormData, setFormData] = useState({
     name: '',
     email: '',
-    phoneno:'',
+    phoneno: '',
     password: '',
-    confirmpassword:'',
+    confirmpassword: '',
   })
-  
+
   const { name, email, phoneno, password } = FormData;
 
   const handleSignUp = async (e) => {
@@ -28,7 +29,7 @@ const Signup = () => {
 
     if (!FormData.name.trim()) {
       validationErrors.name = 'Name is required !';
-    }else if (!/^[a-zA-Z0-9]+([a-zA-Z0-9](_|-| )[a-zA-Z0-9])*[a-zA-Z0-9]+$/.test(FormData.name)) {
+    } else if (!/^[a-zA-Z0-9]+([a-zA-Z0-9](_|-| )[a-zA-Z0-9])*[a-zA-Z0-9]+$/.test(FormData.name)) {
       validationErrors.email = 'Enter a Valid Name !';
     }
 
@@ -60,7 +61,7 @@ const Signup = () => {
 
     if (Object.keys(validationErrors).length === 0) {
       const userData = {
-        name, email, phoneno, password, status:"user"
+        name, email, phoneno, password, status: "user"
       }
       setIsLoading(true)
       try {
@@ -85,16 +86,17 @@ const Signup = () => {
 
   return (
     <div className='p-10'>
+      {isLoading && <Loader />}
       <section className="">
         <h1 className='text-stone-200 text-left md:mt-10 headingtextsignup text-center'>Are you a <span className='text-yellow-600'>Jeweler</span>?</h1>
         <h2 className='text-stone-200 text-left headingtext2signup text-center mb-5'>Join <span className='text-yellow-600'>EGold Haven</span> as a certified jeweler to showcase your craft to a broader audience. Enjoy the perks of earning commissions for certifying gold items, managing your own store page, and becoming a trusted name in the world of gold elegance.</h2>
         <div className='text-center mt-5  mb-10'>
           <Link to='/signupjeweler'>
-          <button
-            type="button"
-            className=" inline-block rounded bg-warning-600 px-16 pb-2.5 pt-3 text-sm text-semibold font-medium uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600">
-            Sign Up as Jeweler
-          </button>
+            <button
+              type="button"
+              className=" inline-block rounded bg-warning-600 px-16 pb-2.5 pt-3 text-sm text-semibold font-medium uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600">
+              Sign Up as Jeweler
+            </button>
           </Link>
         </div>
         <div className="h-full md:mb-32 ">
