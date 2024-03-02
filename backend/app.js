@@ -19,7 +19,12 @@ mongoose.connect(process.env.MONGO_URI,{
     useUnifiedTopology : true
 }).then(() =>console.log("DB cONNECTED")).catch((err) => console.log("Db Connection Error !" , err));
 
+//middleware
 app.use(cookieParser())
+app.use(morgan('dev'));
+app.use(cors({origin: "http://localhost:3000" , credentials:true}));
+app.use(express.json())
+
 //routes
 const Routes = require("./routes/userRoute");
 app.use('/api/users' , Routes);
@@ -28,10 +33,7 @@ app.use('/api/users' , Routes);
 //ports
 const port = process.env.PORT || 8080;
 
-//middleware
-app.use(morgan('dev'));
-app.use(cors({origins:true , credentials:true}));
-app.use(express.json())
+
 
 app.use(errorHandler)
 

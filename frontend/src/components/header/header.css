@@ -1,7 +1,7 @@
 
 @font-face {
     font-family: Mlight;
-    src: url('/public/fonts/Montserrat-Light.ttf')
+    src: url('/public/fonts/Montserrat-Light.ttf') format('truetype');
 }
 
 .header{
@@ -50,5 +50,21 @@
 .user-icons {
     display: flex;
     align-items: center;
+}
+
+.user-icon {
+    transition: 0.3s ease;
+}
+
+.user-icon:hover {
+    scale: 1.2;
+}
+
+.headerbodytext{
+    font-family: Mlight;
+}
+
+.headerbodytext:hover{
+    color:#d2ac47
 }
   

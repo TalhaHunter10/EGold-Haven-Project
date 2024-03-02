@@ -1,5 +1,6 @@
 import './header.css';
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import {
@@ -11,10 +12,21 @@ import {
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Badge } from "@material-tailwind/react";
 
+import Avatar from '@mui/material/Avatar';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Divider from '@mui/material/Divider';
+import ListIcon from '@mui/icons-material/List';
+import Logout from '@mui/icons-material/Logout';
+import ChatIcon from '@mui/icons-material/Chat';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+
+
 export function BadgeDefault() {
     return (
-        <Badge content="5" color='yellow' className='ml-10 p-1 bg-yellow-700 rounded-full' >
-            <img src="/images/notificationicon.png" alt="Notification" className="notification-icon ml-5 w-8 cursor-pointer" />
+        <Badge content="5" color='yellow' className='ml-9 p-1 bg-yellow-700 rounded-full' >
+            <img src="/images/notificationicon.png" alt="Notification" className="user-icon notification-icon ml-5 w-7 cursor-pointer" />
         </Badge>
     );
 }
@@ -71,6 +83,16 @@ const Header = () => {
         };
     }, []);
 
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+
     return (
         <header className="header">
 
@@ -97,33 +119,126 @@ const Header = () => {
                 </Collapse>
             </Navbar>
             <div className="nav-container">
-            <Link to='/about'>
-                <button className="nav-button ml-5 hidden lg:block">
-                    About Us
-                </button>
+                <Link to='/about'>
+                    <button className="nav-button ml-5 hidden lg:block">
+                        About Us
+                    </button>
                 </Link>
                 <Link to='/forum'>
-                <button className="nav-button ml-5 hidden lg:block">
-                    Forum
-                </button>
+                    <button className="nav-button ml-5 hidden lg:block">
+                        Forum
+                    </button>
                 </Link>
-                {isLoggedIn ? (
+                {!isLoggedIn ? (
 
                     <div className="user-icons">
                         <BadgeDefault />
 
-                        <img src="/images/usericon.png" alt="User" className="user-icon ml-5 w-10 cursor-pointer" />
-                        <img src="/images/arrowdownicon.png" alt="arrowdown" className="arrowdown-icon ml-0 w-3 cursor-pointer" />
-
+                        <span className='user-icon flex items-center'>
+                            <img src="/images/usericon.png" alt="User" className="ml-5 w-10 cursor-pointer" onClick={handleClick} />
+                            <img src="/images/arrowdownicon.png" alt="arrowdown" className="arrowdown-icon w-2 cursor-pointer" onClick={handleClick} />
+                        </span>
                     </div>
                 ) : (
                     <Link to='/login'>
-                    <button className="nav-button ml-5">
-                        Login
-                    </button>
+                        <button className="nav-button ml-5">
+                            Login
+                        </button>
                     </Link>
                 )}
             </div>
+
+
+            <Menu
+                anchorEl={anchorEl}
+                id="account-menu"
+                open={open}
+                onClose={handleClose}
+                onClick={handleClose}
+                PaperProps={{
+                    elevation: 0,
+                    sx: {
+                        backgroundColor: '#4b4e49',
+                        overflow: 'visible',
+                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                        mt: 1.5,
+                        color: 'white',
+                        
+
+                        '& .MuiAvatar-root': {
+                            width: 32,
+                            height: 32,
+                            ml: -0.5,
+                            mr: 1,
+                            color: '#d2ac47',
+                            backgroundColor: '#4b4e49'
+                        },
+
+                        '&::before': {
+                            content: '""',
+                            display: 'block',
+                            position: 'absolute',
+                            top: 0,
+                            right: 14,
+                            width: 10,
+                            height: 10,
+                            bgcolor: 'background.paper',
+                            transform: 'translateY(-50%) rotate(45deg)',
+                            zIndex: 0,
+                        },
+                    },
+                }}
+                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            >
+                <MenuItem onClick={handleClose}>
+                    <Avatar />
+                    <span className='headerbodytext'> My Profile </span>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                    <ListIcon style={{
+                        width: 24,
+                        height: 24,
+                        marginRight: 12,
+                        color: '#d2ac47',
+                        backgroundColor: '#4b4e49'
+                    }} /> <span className='headerbodytext'> My Listings </span>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                    <FavoriteBorderIcon style={{
+                        width: 22,
+                        height: 22,
+                        marginLeft: 2,
+                        marginRight: 12,
+                        color: '#d2ac47',
+                        backgroundColor: '#4b4e49'
+                    }} /> <span className='headerbodytext'> Favorites </span>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                    <ChatIcon style={{
+                        width: 20,
+                        height: 20,
+                        marginLeft: 3,
+                        marginRight: 14,
+                        color: '#d2ac47',
+                        backgroundColor: '#4b4e49'
+                    }} /> <span className='headerbodytext'> Chat </span>
+                </MenuItem>
+                <Divider />
+                <MenuItem onClick={handleClose}>
+                    <ListItemIcon>
+                        <Logout fontSize="small" style={{
+                            width: 20,
+                            height: 20,
+                            marginLeft: 4,
+                            marginRight: 12,
+                            color: '#d2ac47',
+                            backgroundColor: '#4b4e49'
+                        }} />
+                    </ListItemIcon>
+                    <span className='headerbodytext'> Logout </span>
+                </MenuItem>
+            </Menu>
 
         </header>
     );

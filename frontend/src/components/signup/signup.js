@@ -3,21 +3,26 @@ import './signup.css'
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import { TEInput, TERipple } from "tw-elements-react";
 import { Link } from 'react-router-dom';
+import {toast} from 'react-toastify'
+import { registerUser } from '../../services/authservice';
 
 const Signup = () => {
 
+  const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState({})
+  
 
   const [FormData, setFormData] = useState({
     name: '',
     email: '',
-    phone:'',
+    phoneno:'',
     password: '',
-    confirmpassword:''
+    confirmpassword:'',
   })
+  
+  const { name, email, phoneno, password } = FormData;
 
-
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
     const validationErrors = {}
 
@@ -33,10 +38,10 @@ const Signup = () => {
       validationErrors.email = 'Enter a Valid Email !';
     }
 
-    if (!FormData.phone.trim()) {
-      validationErrors.phone = 'Phone No. is required !';
-    } else if (!/^((\+92)?(0092)?(92)?(0)?)(3)([0-9]{9})$/gm.test(FormData.phone)) {
-      validationErrors.phone = 'Enter a Valid Phone No. !';
+    if (!FormData.phoneno.trim()) {
+      validationErrors.phoneno = 'Phone No. is required !';
+    } else if (!/^((\+92)?(0092)?(92)?(0)?)(3)([0-9]{9})$/gm.test(FormData.phoneno)) {
+      validationErrors.phoneno = 'Enter a Valid Phone No. !';
     }
 
     if (!FormData.password.trim()) {
@@ -54,7 +59,18 @@ const Signup = () => {
     setErrors(validationErrors)
 
     if (Object.keys(validationErrors).length === 0) {
-      alert('SignUp Successful !')
+      const userData = {
+        name, email, phoneno, password, status:"user"
+      }
+      setIsLoading(true)
+      try {
+        const data = await registerUser(userData)
+        console.log(data)
+        setIsLoading(false)
+      } catch (error) {
+        setIsLoading(false)
+        console.log(error.message);
+      }
     }
 
   }
@@ -90,7 +106,7 @@ const Signup = () => {
             {/* <!-- Left column container --> */}
 
             <div className="mb-20 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12 h-[500px] ">
-              <h1 className='text-center text-stone-200 headingtext3 mb-7 '><span className='border-b-2 border-yellow-600 pb-2'>User Sign Up</span></h1>
+              <h1 className='text-center text-stone-200 headingtext3 mb-7 '><span className='border-b-2 border-yellow-600 pb-2'>Sign-Up</span></h1>
               <form>
 
                 <div className="flex flex-row items-center justify-center lg:justify-start">
@@ -161,10 +177,10 @@ const Signup = () => {
                   label="Phone no"
                   size="lg"
                   className="mb-6 text-white"
-                  name='phone'
+                  name='phoneno'
                   onChange={handleChange}
                 ></TEInput>
-                {errors.phone && <h1 className='text-danger mt-[-15px] mb-6'>{errors.phone}</h1>}
+                {errors.phoneno && <h1 className='text-danger mt-[-15px] mb-6'>{errors.phoneno}</h1>}
 
                 <TEInput
                   type="password"
@@ -197,7 +213,7 @@ const Signup = () => {
                     <button
                       type="button"
                       onClick={handleSignUp}
-                      className="bodytext inline-block rounded bg-white px-7 pb-2.5 pt-3  font-semibold  uppercase leading-normal text-black  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600"
+                      className="inline-block rounded bg-warning-600 px-7 pb-2.5 pt-3 text-sm text-semibold font-medium uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600"
                     >
                       Sign Up
                     </button>

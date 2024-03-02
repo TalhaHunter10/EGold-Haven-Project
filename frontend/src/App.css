@@ -1,3 +1,8 @@
+@font-face {
+  font-family: Mregular;
+  src: url("../public/fonts/Montserrat-SemiBold.ttf");
+}
+
 .upperbody {
   background-color: #060606;
 }
@@ -42,4 +47,11 @@ body {
     margin: auto;
 
   }
+}
+
+
+
+.customtoastbody{
+  font-family: Mregular;
+  
 }
