@@ -21,7 +21,7 @@ import ChatIcon from '@mui/icons-material/Chat';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { logoutUser } from '../../services/authservice';
 import { useDispatch } from 'react-redux';
-import { SET_LOGIN, SET_NAME, SET_STATUS } from '../../redux/features/auth/authSlice';
+import { SET_LOGIN, SET_NAME, SET_STATUS, selectName } from '../../redux/features/auth/authSlice';
 import { useSelector } from 'react-redux';
 import { selectIsLoggedIn } from '../../redux/features/auth/authSlice';
 
@@ -71,7 +71,8 @@ const Header = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    
+    const userName = useSelector(selectName) 
+    console.log(userName)
     const isLoggedIn = useSelector(selectIsLoggedIn);
     
     const [openNav, setOpenNav] = React.useState(false);
@@ -211,7 +212,7 @@ const Header = () => {
             >
                 <MenuItem onClick={handleClose}>
                     <Avatar />
-                    <span className='headerbodytext'> My Profile </span>
+                    <span className='headerbodytext'> My Profile ({userName}) </span>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                     <ListIcon style={{

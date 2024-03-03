@@ -10,7 +10,7 @@
 
 @font-face {
     font-family: Msemibold;
-    src: url('/public/fonts/Montserrat-Regular.ttf')
+    src: url('/public/fonts/Montserrat-SemiBold.ttf')
 }
 
 .headingtextlanding{
@@ -37,14 +37,11 @@
 .categorycard:hover{
     border-radius: 50%;
     background: linear-gradient(to bottom right, #CA8A04, white 90%);
-    .cardname{
-       
-    }
 }
 
 .cardname{
     font-family: Msemibold;
-    font-size: 14px;
+    font-size: 13px;
     color: black;
     padding: 5px;
 }

@@ -4,6 +4,9 @@ import React from 'react'
 import axios from "axios";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { SET_LOGIN } from './redux/features/auth/authSlice';
 import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
 import Header from './components/header/header';
 import Footer from './components/footer/footer';
@@ -15,11 +18,24 @@ import Signup from './components/signup/signup';
 import ForgotPassword from './components/forgotpassword/forgotpassword';
 import Signupjeweler from './components/signupjeweler/signupjeweler';
 import ResetPassword from './components/resetpassword/resetpassword';
+import { getloginStatus } from './services/authservice';
+
 
 
 axios.defaults.withCredentials = true;
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect (() => {
+    async function loginStatus() {
+      const status = await getloginStatus()
+      dispatch(SET_LOGIN(status))
+    }
+    loginStatus()
+  }, [dispatch]);
+
+
   return (
     <BrowserRouter>
     <ToastContainer limit={3} bodyClassName={"customtoastbody"}/>

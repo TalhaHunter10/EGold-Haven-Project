@@ -85,52 +85,52 @@ const Landing = () => {
         <div className='categories flex flex-wrap  justify-left pt-5 pb-5 pl-8 pr-8 justify-center'>
 
           <item className='categorycard'>
-          <img className='cardicon' src='/images/rings.png' alt="Your Image" />
+          <img className='cardicon' src='/images/rings.png' alt="Rings" />
             <p className='cardname'>Rings</p>
           </item>
 
           <item className='categorycard'>
-          <img className='cardicon' src='/images/earrings.png' alt="Your Image" />
+          <img className='cardicon' src='/images/earrings.png' alt="Earrings" />
             <p className='cardname'>Earrings</p>
           </item>
 
           <item className='categorycard'>
-          <img className='cardicon' src='/images/necklaces.png' alt="Your Image" />
+          <img className='cardicon' src='/images/necklaces.png' alt="Necklaces" />
             <p className='cardname'>Necklaces</p>
           </item>
 
           <item className='categorycard'>
-          <img className='cardicon' src='/images/chains.png' alt="Your Image" />
+          <img className='cardicon' src='/images/chains.png' alt="Chains" />
             <p className='cardname'>Chains</p>
           </item>
 
           <item className='categorycard'>
-          <img className='cardicon' src='/images/bracelets.png' alt="Your Image" />
+          <img className='cardicon' src='/images/bracelets.png' alt="Bracelets" />
             <p className='cardname'>Bracelets</p>
           </item>
          
           <item className='categorycard'>
-          <img className='cardicon' src='/images/bangles.png' alt="Your Image" />
+          <img className='cardicon' src='/images/bangles.png' alt="Bangles" />
             <p className='cardname'>Bangles</p>
           </item>
 
           <item className='categorycard'>
-          <img className='cardicon' src='/images/anklets.png' alt="Your Image" />
+          <img className='cardicon' src='/images/anklets.png' alt="Anklets" />
             <p className='cardname'>Anklets</p>
           </item>
 
           <item className='categorycard'>
-          <img className='cardicon' src='/images/pendants.png' alt="Your Image" />
+          <img className='cardicon' src='/images/pendants.png' alt="Pendants" />
             <p className='cardname'>Pendants</p>
           </item>
 
           <item className='categorycard'>
-          <img className='cardicon' src='/images/bridalsets.png' alt="Your Image" />
+          <img className='cardicon' src='/images/bridalsets.png' alt="Bridal Sets" />
             <p className='cardname'>Bridal Sets</p>
           </item>
 
           <item className='categorycard'>
-          <img className='cardicon' src='/images/coins&bars.png' alt="Your Image" />
+          <img className='cardicon' src='/images/coins&bars.png' alt="Coins and Bars" />
             <p className='cardname'>Coins & Bars</p>
           </item>
         </div>

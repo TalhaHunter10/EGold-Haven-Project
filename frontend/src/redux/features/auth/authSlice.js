@@ -30,7 +30,7 @@ const authSlice = createSlice({
         },
         SET_STATUS(state, action){
             localStorage.setItem("status", JSON.stringify(action.payload))
-            state.name = action.payload
+            state.status = action.payload
         },
         SET_USER(state, action){
             const profile = action.payload;
