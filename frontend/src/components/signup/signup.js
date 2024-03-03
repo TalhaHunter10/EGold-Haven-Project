@@ -4,7 +4,7 @@ import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import { TEInput, TERipple } from "tw-elements-react";
 import { Link } from 'react-router-dom';
 import { registerUser } from '../../services/authservice';
-import Loader from '../loader/loader';
+import { Loader } from '../loader/loader';
 
 
 const Signup = () => {
@@ -66,7 +66,6 @@ const Signup = () => {
       setIsLoading(true)
       try {
         const data = await registerUser(userData)
-        console.log(data)
         setIsLoading(false)
       } catch (error) {
         setIsLoading(false)

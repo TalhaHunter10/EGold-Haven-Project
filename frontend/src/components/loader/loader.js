@@ -1,23 +1,39 @@
-import React from 'react'
-import './loader.css'
-import fileanimation from '../../lottie/filesanimation.json'
-import Lottie from 'react-lottie'
+import React from 'react';
+import './loader.css';
+import fileanimation from '../../lottie/filesanimation.json';
+import loadinganimation from '../../lottie/loadinganimation.json';
+import Lottie from 'react-lottie';
 
-function loader() {
-    const defaultoptions = {
+export function Loader() {
+    const defaultOptions = {
         loop: true,
         autoplay: true,
-        animationData: fileanimation,
+        animationData: loadinganimation,
         rendererSettings: {
-          preserveAspectRatio: 'xMidYMid slice'
+            preserveAspectRatio: 'xMidYMid slice'
         }
-      }
-    
+    };
+
     return (
         <div className='loading-overlay'> 
-        <Lottie options={defaultoptions} height={400} width={800}/> 
+            <Lottie options={defaultOptions} height={300} width={600}/> 
         </div>
     );
 }
 
-export default loader;
+export function FileAnimation() {
+    const defaultOptions = {
+        loop: true,
+        autoplay: true,
+        animationData: fileanimation,
+        rendererSettings: {
+            preserveAspectRatio: 'xMidYMid slice'
+        }
+    };
+
+    return (
+        <div className='file-animation'>
+            <Lottie options={defaultOptions} height={400} width={800}/> 
+        </div>
+    );
+}
