@@ -107,7 +107,7 @@ const SignupJeweler = () => {
                         {!SignUpStep === 'stepone' ? (
 
                             <div className="mb-20 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12 h-[500px] ">
-                                <h1 className='text-center text-stone-200 headingtext3 mb-10 '><span className='border-b-2 border-yellow-600 pb-2'>Sign Up as Jeweler</span></h1>
+                                <h1 className='text-center text-stone-200 headingtext3 mb-10 '><span className='border-b-2 border-yellow-600 pb-2'>Jeweler Registration</span></h1>
                                 <h2 className='flex flex-wrap justify-center text-center mb-10'>
                                     <img
                                         src="/images/stepcurrent.png"

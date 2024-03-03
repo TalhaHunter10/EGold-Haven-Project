@@ -1,7 +1,6 @@
 import React from 'react';
 import './landing.css'
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
-import { TEInput, TERipple } from "tw-elements-react";
 
 const Landing = () => {
   return (
@@ -18,6 +17,7 @@ const Landing = () => {
             </button>
           </div>
         </div>
+
         <div className='mb-12 md:mb-0 md:w-9/12 lg:w-6/12 xl:w-6/12 p-10'>
           <h1 className='headingtextlanding text-stone-200 text-center mb-6'>Professional Jewelers, <span className='text-yellow-600'>Join Us</span></h1>
           <p className='bodytextlanding text-stone-200 text-justify mb-6'>Attention jewelers! Join <span className='text-yellow-600'>EGold Haven</span> to showcase your gold creations. Earn commissions for certifying items, and manage your own store page to feature your unique designs. Let your craft shine, and start shaping gold elegance today!</p>
@@ -32,6 +32,8 @@ const Landing = () => {
       </div>
 
 
+
+
       <div className='text-center mt-5 md:pl-32 md:pr-32'>
         <h1 className='headingtextlanding text-stone-200 mb-10'>Explore all kinds of Jewelry on <span className='text-yellow-600'>EGold Haven</span></h1>
         <div className='Searchbarsarea flex h-full flex-wrap items-center justify-center lg:justify-between '>
@@ -44,11 +46,9 @@ const Landing = () => {
                 placeholder="City"
                 aria-label="Search"
                 aria-describedby="button-addon1" />
-
-
-
             </div>
           </div>
+
           <div className="sb2 w-32 md:w-96 md:shrink-0 basis-2/3">
             <div className="relative flex w-full flex-wrap items-stretch">
               <input
@@ -80,8 +80,60 @@ const Landing = () => {
       </div>
 
 
-      <div className='categoriesarea mt-20'> 
-        <h1>Categories</h1>
+      <div className='categoriesarea mt-10 text-stone-200 pl-8 overflow-auto'>
+        <h1 className='headingtextlanding'>All Categories</h1>
+        <div className='categories flex flex-wrap  justify-left pt-5 pb-5 pl-8 pr-8 justify-center'>
+
+          <item className='categorycard'>
+          <img className='cardicon' src='/images/rings.png' alt="Your Image" />
+            <p className='cardname'>Rings</p>
+          </item>
+
+          <item className='categorycard'>
+          <img className='cardicon' src='/images/earrings.png' alt="Your Image" />
+            <p className='cardname'>Earrings</p>
+          </item>
+
+          <item className='categorycard'>
+          <img className='cardicon' src='/images/necklaces.png' alt="Your Image" />
+            <p className='cardname'>Necklaces</p>
+          </item>
+
+          <item className='categorycard'>
+          <img className='cardicon' src='/images/chains.png' alt="Your Image" />
+            <p className='cardname'>Chains</p>
+          </item>
+
+          <item className='categorycard'>
+          <img className='cardicon' src='/images/bracelets.png' alt="Your Image" />
+            <p className='cardname'>Bracelets</p>
+          </item>
+         
+          <item className='categorycard'>
+          <img className='cardicon' src='/images/bangles.png' alt="Your Image" />
+            <p className='cardname'>Bangles</p>
+          </item>
+
+          <item className='categorycard'>
+          <img className='cardicon' src='/images/anklets.png' alt="Your Image" />
+            <p className='cardname'>Anklets</p>
+          </item>
+
+          <item className='categorycard'>
+          <img className='cardicon' src='/images/pendants.png' alt="Your Image" />
+            <p className='cardname'>Pendants</p>
+          </item>
+
+          <item className='categorycard'>
+          <img className='cardicon' src='/images/bridalsets.png' alt="Your Image" />
+            <p className='cardname'>Bridal Sets</p>
+          </item>
+
+          <item className='categorycard'>
+          <img className='cardicon' src='/images/coins&bars.png' alt="Your Image" />
+            <p className='cardname'>Coins & Bars</p>
+          </item>
+        </div>
       </div>
 
 

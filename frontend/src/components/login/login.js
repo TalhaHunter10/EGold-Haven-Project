@@ -2,19 +2,26 @@ import './login.css'
 import React, { useState } from 'react';
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import { TEInput, TERipple } from "tw-elements-react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../../services/authservice';
+import { SET_LOGIN, SET_NAME, SET_STATUS } from '../../redux/features/auth/authSlice';
+import { Loader } from '../loader/loader';
 
 
 const Login = () => {
 
-  const [errors, setErrors] = useState({})
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
+  const [errors, setErrors] = useState({})
   const [FormData, setFormData] = useState({
     name: '',
     password: ''
   })
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const validationErrors = {}
 
@@ -31,9 +38,26 @@ const Login = () => {
     }
 
     setErrors(validationErrors)
-
+    const { name , password } = FormData
+    const userData = {
+      name, password
+    }
+    
     if (Object.keys(validationErrors).length === 0) {
-      alert('Login Successful !')
+      setIsLoading(true)
+      try {
+        const data = await loginUser(userData);
+        if(data.name)
+        {
+        dispatch(SET_LOGIN(true))
+        dispatch(SET_NAME(data.name))
+        dispatch(SET_STATUS(data.status))
+        navigate('/home')
+        }
+        setIsLoading(false)
+      } catch (error) {
+        setIsLoading(false)
+      }
     }
 
   }
@@ -47,6 +71,7 @@ const Login = () => {
 
   return (
     <div className='p-10'>
+      {isLoading && <Loader />}
       <section className="">
         <div className="h-full md:mb-32 ">
 

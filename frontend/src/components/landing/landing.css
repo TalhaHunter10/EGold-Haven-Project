@@ -8,6 +8,11 @@
     src: url('/public/fonts/Montserrat-Light.ttf')
 }
 
+@font-face {
+    font-family: Msemibold;
+    src: url('/public/fonts/Montserrat-Regular.ttf')
+}
+
 .headingtextlanding{
     font-family: Mlight;
     font-size: 36px;
@@ -16,4 +21,37 @@
 .bodytextlanding{
     font-family: Llight;
     font-size: 17px;
+}
+
+.categorycard{
+    width: 105px;
+    height: 105px;
+    background: linear-gradient(to bottom right, white, #CA8A04 50%);
+    border-radius: 20%;
+    margin: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s ease-in-out, background ease;
+}
+
+.categorycard:hover{
+    border-radius: 50%;
+    background: linear-gradient(to bottom right, #CA8A04, white 90%);
+    .cardname{
+       
+    }
+}
+
+.cardname{
+    font-family: Msemibold;
+    font-size: 14px;
+    color: black;
+    padding: 5px;
+}
+
+.cardicon{
+    margin: auto;
+    padding: 5px;
+    height: 64px;
+    width: 64px;
 }

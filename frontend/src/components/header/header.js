@@ -1,7 +1,6 @@
 import './header.css';
 import * as React from 'react';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import {
     Navbar,
@@ -11,7 +10,6 @@ import {
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Badge } from "@material-tailwind/react";
-
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -21,6 +19,12 @@ import ListIcon from '@mui/icons-material/List';
 import Logout from '@mui/icons-material/Logout';
 import ChatIcon from '@mui/icons-material/Chat';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { logoutUser } from '../../services/authservice';
+import { useDispatch } from 'react-redux';
+import { SET_LOGIN, SET_NAME, SET_STATUS } from '../../redux/features/auth/authSlice';
+import { useSelector } from 'react-redux';
+import { selectIsLoggedIn } from '../../redux/features/auth/authSlice';
+
 
 
 export function BadgeDefault() {
@@ -42,9 +46,9 @@ function NavList() {
                 color="blue-gray"
                 className="p-1 font-medium"
             >
-                <a href="#" className="flex items-center hover:text-yellow-600 transition-colors">
+                <Link to={"/about"} className="flex items-center hover:text-yellow-600 transition-colors">
                     About Us
-                </a>
+                </Link>
             </Typography>
             <Typography
                 as="li"
@@ -52,9 +56,9 @@ function NavList() {
                 color="blue-gray"
                 className="p-1 font-medium"
             >
-                <a href="#" className="flex items-center hover:text-yellow-600 transition-colors">
+                <Link to="/forum" className="flex items-center hover:text-yellow-600 transition-colors">
                     Forum
-                </a>
+                </Link>
             </Typography>
         </ul>
     );
@@ -63,16 +67,30 @@ function NavList() {
 
 
 const Header = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    
+    const isLoggedIn = useSelector(selectIsLoggedIn);
+    
     const [openNav, setOpenNav] = React.useState(false);
+
+    const logout = async () => {
+        await logoutUser();
+        dispatch(SET_LOGIN(false))
+        dispatch(SET_NAME(""))
+        dispatch(SET_STATUS("user"))
+        navigate('/login')
+        setAnchorEl(null);
+    };
 
     const handleWindowResize = () =>
         window.innerWidth >= 960 && setOpenNav(false);
 
     const handleLogoClick = () => {
 
-        window.location.href = './App.jsx';
+        window.location.href = './home';
     };
 
     React.useEffect(() => {
@@ -129,7 +147,7 @@ const Header = () => {
                         Forum
                     </button>
                 </Link>
-                {!isLoggedIn ? (
+                {isLoggedIn ? (
 
                     <div className="user-icons">
                         <BadgeDefault />
@@ -163,7 +181,7 @@ const Header = () => {
                         filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
                         mt: 1.5,
                         color: 'white',
-                        
+
 
                         '& .MuiAvatar-root': {
                             width: 32,
@@ -225,7 +243,7 @@ const Header = () => {
                     }} /> <span className='headerbodytext'> Chat </span>
                 </MenuItem>
                 <Divider />
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={logout}>
                     <ListItemIcon>
                         <Logout fontSize="small" style={{
                             width: 20,

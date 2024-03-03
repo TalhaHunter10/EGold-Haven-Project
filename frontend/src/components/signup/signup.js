@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import './signup.css'
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import { TEInput, TERipple } from "tw-elements-react";
-import { Link } from 'react-router-dom';
+import { Link , useNavigate} from 'react-router-dom';
 import { registerUser } from '../../services/authservice';
 import { Loader } from '../loader/loader';
 
 
+
 const Signup = () => {
+
+  const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState({})
@@ -66,10 +69,13 @@ const Signup = () => {
       setIsLoading(true)
       try {
         const data = await registerUser(userData)
+        if(data.name)
+        {
+        navigate('/login')
+        }
         setIsLoading(false)
       } catch (error) {
         setIsLoading(false)
-        console.log(error.message);
       }
     }
 
@@ -107,7 +113,7 @@ const Signup = () => {
             {/* <!-- Left column container --> */}
 
             <div className="mb-20 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12 h-[500px] ">
-              <h1 className='text-center text-stone-200 headingtext3 mb-7 '><span className='border-b-2 border-yellow-600 pb-2'>Sign-Up</span></h1>
+              <h1 className='text-center text-stone-200 headingtext3 mb-7 '><span className='border-b-2 border-yellow-600 pb-2'>User Registration</span></h1>
               <form>
 
                 <div className="flex flex-row items-center justify-center lg:justify-start">

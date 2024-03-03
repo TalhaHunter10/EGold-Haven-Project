@@ -30,7 +30,7 @@ function App() {
           
           <Routes>
               <Route path="" element={<Landing />} />
-              <Route path="/App.jsx" element={<Landing />} />
+              <Route path="/home" element={<Landing />} />
               <Route path="/login" element={<Login/>} />
               <Route path="/forum" element={<Forum/>} />
               <Route path="/about" element={<About/>} />
