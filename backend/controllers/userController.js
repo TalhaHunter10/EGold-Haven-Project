@@ -56,7 +56,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 
 const loginUser = asyncHandler(async (req, res) => {
-    const { name, password } = req.body;
+    const { name, password, remember } = req.body;
 
     //validation
     if (!name || !password) {
@@ -94,14 +94,28 @@ const loginUser = asyncHandler(async (req, res) => {
         //Generating Token
         const token = generateToken(user._id);
 
-        //Send HTTP-only cookie
-        res.cookie("token", token, {
+        if(remember == 'true')
+        {
+            //Send HTTP-only cookie
+            res.cookie("token", token, {
             path: "/",
             httpOnly: true,
-            expires: new Date(Date.now() + 1000 * 21600),
+            expires: new Date(Date.now() + 1000 * 604800),
+            sameSite: "none",
+            secure: true
+            
+        })
+        }else{
+            //Send HTTP-only cookie
+            res.cookie("token", token, {
+            path: "/",
+            httpOnly: true,
+            expires: new Date(Date.now() + 1000 * 3600),
             sameSite: "none",
             secure: true
         })
+        }
+        
 
         const { _id, name, email, phoneno, status } = user
         res.status(200).json({

@@ -80,7 +80,7 @@ const Landing = () => {
       </div>
 
 
-      <div className='categoriesarea mt-10 text-stone-200 pl-8 overflow-auto'>
+      <div className='categoriesarea mt-16 text-stone-200 pl-8 overflow-auto'>
         <h1 className='headingtextlanding'>All Categories</h1>
         <div className='categories flex flex-wrap  justify-left pt-5 pb-5 pl-8 pr-8 justify-center'>
 
