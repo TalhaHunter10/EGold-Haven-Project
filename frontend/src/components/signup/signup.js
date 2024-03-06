@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './signup.css'
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import { TEInput, TERipple } from "tw-elements-react";
-import { Link , useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { registerUser } from '../../services/authservice';
 import { Loader } from '../loader/loader';
 
@@ -69,9 +69,8 @@ const Signup = () => {
       setIsLoading(true)
       try {
         const data = await registerUser(userData)
-        if(data.name)
-        {
-        navigate('/login')
+        if (data.name) {
+          navigate('/login')
         }
         setIsLoading(false)
       } catch (error) {
@@ -112,7 +111,7 @@ const Signup = () => {
 
             {/* <!-- Left column container --> */}
 
-            <div className="mb-20 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12 h-[500px] ">
+            <div className="mb-20 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12 h-auto ">
               <h1 className='text-center text-stone-200 headingtext3 mb-7 '><span className='border-b-2 border-yellow-600 pb-2'>User Registration</span></h1>
               <form>
 

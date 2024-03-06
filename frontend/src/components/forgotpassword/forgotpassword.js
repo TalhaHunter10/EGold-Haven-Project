@@ -2,15 +2,19 @@ import React, { useState } from 'react';
 import './forgotpassword.css'
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import { TEInput, TERipple } from "tw-elements-react";
-import { Link } from 'react-router-dom';
+import { forgotPassword } from '../../services/authservice';
+import { Loader } from '../loader/loader';
+import { useNavigate } from 'react-router-dom';
 
 const ForgotPassword = () => {
 
-    const [errors, setErrors] = useState({})
+    const navigate = useNavigate();
 
+    const [isLoading, setIsLoading] = useState(false)
+    const [errors, setErrors] = useState({})
     const [FormData, setFormData] = useState({email:''})
 
-    const handleToken = (e) => {
+    const handleToken = async (e) => {
         e.preventDefault();
         const validationErrors = {}
 
@@ -21,9 +25,15 @@ const ForgotPassword = () => {
         }
 
         setErrors(validationErrors)
-
+        const { email } = FormData
+        const userData = {
+            email
+        }
         if (Object.keys(validationErrors).length === 0) {
-            alert('Reset Token Sent to Email!')
+            setIsLoading(true)
+            await forgotPassword(userData)
+            navigate("/login")
+            setIsLoading(false)
         }
 
     }
@@ -37,6 +47,7 @@ const ForgotPassword = () => {
 
     return (
         <div className="p-10">
+            {isLoading && <Loader />}
             <section className="">
                 <div className="h-full md:mb-32 ">
 
@@ -61,7 +72,6 @@ const ForgotPassword = () => {
                         <div className="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12 ">
                     
                             <h1 className='text-stone-200 headingtext3fp mb-5 '>Email Address</h1>
-
                             <form>
 
                                 <TEInput
@@ -90,6 +100,8 @@ const ForgotPassword = () => {
                                     </TERipple>
 
                                 </div>
+
+                               
                             </form>
                         </div>
                     </div>

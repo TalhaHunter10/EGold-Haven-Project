@@ -29,9 +29,9 @@ const SignupJeweler = () => {
 
         if (!FormData.name.trim()) {
             validationErrors.name = 'Name is required !';
-          }else if (!/^[a-zA-Z0-9]+([a-zA-Z0-9](_|-| )[a-zA-Z0-9])*[a-zA-Z0-9]+$/.test(FormData.name)) {
+        } else if (!/^[a-zA-Z0-9]+([a-zA-Z0-9](_|-| )[a-zA-Z0-9])*[a-zA-Z0-9]+$/.test(FormData.name)) {
             validationErrors.email = 'Enter a Valid Name !';
-          }
+        }
 
         if (!FormData.email.trim()) {
             validationErrors.email = 'Email is required !';
@@ -86,44 +86,40 @@ const SignupJeweler = () => {
 
 
     const [images, setImages] = React.useState([]);
- 
-    const maxNumber = 8;
+
+    const maxNumber = 1;
 
     const onChange = (imageList, addUpdateIndex) => {
-      // data for submit
-      console.log(imageList, addUpdateIndex);
-      setImages(imageList);
-
-      
-
+        console.log(imageList, addUpdateIndex);
+        setImages(imageList);
     };
 
-  const handleSubmit = async () => {
-    const formData = new FormData();
+    const handleSubmit = async () => {
+        const formData = new FormData();
 
-    // Append each image file to the FormData object
-    images.forEach((image, index) => { 
-      console.log(index)
-      formData.append(`image-${index + 1}`, image.file);
-    });
+        // Append each image file to the FormData object
+        images.forEach((image, index) => {
+            console.log(index)
+            formData.append(`image-${index + 1}`, image.file);
+        });
 
-    try {
-      // Send FormData object containing all images to the backend API endpoint
-      //const response = await axios.post('/upload-images', formData, {
-      //  headers: {
-      //    'Content-Type': 'multipart/form-data', // Set the Content-Type header to indicate multipart form data
-     //   },
-   //   });
+        try {
+            // Send FormData object containing all images to the backend API endpoint
+            //const response = await axios.post('/upload-images', formData, {
+            //  headers: {
+            //    'Content-Type': 'multipart/form-data', // Set the Content-Type header to indicate multipart form data
+            //   },
+            //   });
 
-   //console.log(imageList)
+            //console.log(imageList)
 
-      // Handle the response from the backend
-    //  console.log('Response from backend:', response.data);
-    } catch (error) {
-      // Handle any errors that occur during the request
-      console.error('Error uploading images:', error);
-    }
-  };
+            // Handle the response from the backend
+            //  console.log('Response from backend:', response.data);
+        } catch (error) {
+            // Handle any errors that occur during the request
+            console.error('Error uploading images:', error);
+        }
+    };
 
 
     return (
@@ -284,7 +280,7 @@ const SignupJeweler = () => {
 
                         ) : (
                             <div className="mb-20 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12 h-auto ">
-                                <h1 className='text-center text-stone-200 headingtext3 mb-10 '><span className='border-b-2 border-yellow-600 pb-2'>Sign Up as Jeweler</span></h1>
+                                <h1 className='text-center text-stone-200 headingtext3 mb-10 '><span className='border-b-2 border-yellow-600 pb-2'>Jeweler Registration</span></h1>
                                 <h2 className='flex flex-wrap justify-center text-center mb-10 '>
                                     <img
                                         src="/images/stepcurrent.png"
@@ -326,52 +322,52 @@ const SignupJeweler = () => {
 
 
 
-<ImageUploading
-        multiple
-        value={images}
-        onChange={onChange}
-        maxNumber={maxNumber}
-        dataURLKey="data_url"
-      >
-        {({
-          imageList,
-          onImageUpload,
-          onImageRemoveAll,
-          onImageUpdate,
-          onImageRemove,
-          isDragging,
-          dragProps,
-        }) => (
-          
-          <fieldset className="upload__image-wrapper upload-container flex flex-wrap justify-left">
-            <legend className='text-stone-300 ml-6 pl-2 pr-2'>Store Front Image (Cover)</legend>
-            <div className='upload-button'
-              style={isDragging ? { color: 'white' } : undefined}
-              onClick={onImageUpload}
-              {...dragProps}
-            >
-                <img className='uploader-icon' src='/images/add.png' alt="add" />
-              Click / Drop
-            </div>
-            &nbsp;
-            <div onClick={onImageRemoveAll} className='upload-button'>
-            <img className='uploader-icon' src='/images/remove.png' alt="remove" />
-                Drop Images
-                </div>
-            {imageList.map((image, index) => (
-              <div key={index} className="image-item upload-button">
-                <img className='m-auto mt-1 mb-3' src={image['data_url']} alt="" width="50" />
-                <div className="image-item__btn-wrapper flex flex-wrap justify-center">
-                  <img className='single-image-icon' src='/images/update.png' onClick={() => onImageUpdate(index)} alt='update' />
-                  <img className='single-image-icon' src='/images/remove.png' onClick={() => onImageRemove(index)} alt='remove' />
-                </div>
-              </div>
-            ))}
-            
-          </fieldset>
-        )}
-        
-      </ImageUploading>
+                                    <ImageUploading
+                                        multiple
+                                        value={images}
+                                        onChange={onChange}
+                                        maxNumber={maxNumber}
+                                        dataURLKey="data_url"
+                                    >
+                                        {({
+                                            imageList,
+                                            onImageUpload,
+                                            onImageRemoveAll,
+                                            onImageUpdate,
+                                            onImageRemove,
+                                            isDragging,
+                                            dragProps,
+                                        }) => (
+
+                                            <fieldset className="upload__image-wrapper upload-container flex flex-wrap justify-left">
+                                                <legend className='text-stone-300 ml-6 pl-2 pr-2'>Store Front Image (Cover)</legend>
+                                                <div className='upload-button'
+                                                    style={isDragging ? { color: 'white' } : undefined}
+                                                    onClick={onImageUpload}
+                                                    {...dragProps}
+                                                >
+                                                    <img className='uploader-icon' src='/images/add.png' alt="add" />
+                                                    Click / Drop
+                                                </div>
+                                                &nbsp;
+                                                <div onClick={onImageRemoveAll} className='upload-button'>
+                                                    <img className='uploader-icon' src='/images/remove.png' alt="remove" />
+                                                    Drop Images
+                                                </div>
+                                                {imageList.map((image, index) => (
+                                                    <div key={index} className="image-item image-container">
+                                                        <img className='m-auto mt-1 mb-3' src={image['data_url']} alt="" width="50" />
+                                                        <div className="image-item__btn-wrapper flex flex-wrap justify-center">
+                                                            <img className='single-image-icon' src='/images/update.png' onClick={() => onImageUpdate(index)} alt='update' />
+                                                            <img className='single-image-icon' src='/images/remove.png' onClick={() => onImageRemove(index)} alt='remove' />
+                                                        </div>
+                                                    </div>
+                                                ))}
+
+                                            </fieldset>
+                                        )}
+
+                                    </ImageUploading>
 
 
                                     <TEInput

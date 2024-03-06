@@ -156,19 +156,6 @@ const getUser = asyncHandler(async (req, res) => {
     }
 });
 
-const getUserStatus = asyncHandler(async (req, res) => {
-    const user = await User.findById(req.user._id)
-    if (user) {
-        const { status } = user
-        res.status(200).json({
-            status
-
-        })
-    } else {
-        res.status(400);
-        throw new Error("Request Failed (Status) !!");
-    }
-});
 
 const loginStatus = asyncHandler(async (req, res) => {
     const token = req.cookies.token;
@@ -311,7 +298,6 @@ module.exports = {
     loginUser,
     logOut,
     getUser,
-    getUserStatus,
     loginStatus,
     updateUser,
     changePassword,
