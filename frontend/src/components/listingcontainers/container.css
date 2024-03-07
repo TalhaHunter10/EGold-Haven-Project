@@ -1,0 +1,14 @@
+@font-face {
+    font-family: Llight;
+    src: url('/public/fonts/Lato-Light.ttf')
+}
+
+@font-face {
+    font-family: Mlight;
+    src: url('/public/fonts/Montserrat-Light.ttf')
+}
+
+.containertext{
+    font-family: Mlight;
+    font-size: 14px;
+}

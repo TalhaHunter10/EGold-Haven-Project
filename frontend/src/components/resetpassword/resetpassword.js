@@ -44,7 +44,7 @@ const ResetPassword = () => {
         if (Object.keys(validationErrors).length === 0) {
             setIsLoading(true)
            try {
-            const data = await resetPassword(userData, resetToken);
+            await resetPassword(userData, resetToken);
             navigate("/login")
             setIsLoading(false)
             

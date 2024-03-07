@@ -1,6 +1,8 @@
 import React from 'react';
 import './landing.css'
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
+import ContainerVertical from '../listingcontainers/containervertical';
+import { Link } from 'react-router-dom';
 
 const Landing = () => {
   return (
@@ -9,7 +11,7 @@ const Landing = () => {
         <div className='  mb-12 basis-auto md:mb-0 md:w-9/12 md:shrink-0 lg:w-6/12 xl:w-6/12 p-10'>
           <h1 className='headingtextlanding text-stone-200 text-center mb-6'>Have something to <span className='text-yellow-600'>SELL</span>?</h1>
           <p className='bodytextlanding text-stone-200 text-justify mb-6'>Got something special to sell? <span className='text-yellow-600'>EGold Haven</span> makes it easy! Sell your gold items at EGold Haven. List your treasures, set prices, and connect with eager buyers effortlessly. Join now and turn your gold into cash with simplicity and convenience.</p>
-          <div className='text-center mt-8'>
+          <div className='text-center mt-8 buttontextlanding'>
             <button
               type="button"
               className=" inline-block rounded bg-warning-600 text-semibold px-16 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600">
@@ -21,10 +23,10 @@ const Landing = () => {
         <div className='mb-12 md:mb-0 md:w-9/12 lg:w-6/12 xl:w-6/12 p-10'>
           <h1 className='headingtextlanding text-stone-200 text-center mb-6'>Professional Jewelers, <span className='text-yellow-600'>Join Us</span></h1>
           <p className='bodytextlanding text-stone-200 text-justify mb-6'>Attention jewelers! Join <span className='text-yellow-600'>EGold Haven</span> to showcase your gold creations. Earn commissions for certifying items, and manage your own store page to feature your unique designs. Let your craft shine, and start shaping gold elegance today!</p>
-          <div className='text-center mt-8'>
+          <div className='text-center mt-8 buttontextlanding'>
             <button
               type="button"
-              className=" inline-block rounded bg-warning-600 px-16 pb-2.5 pt-3 text-sm text-semibold font-medium uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600">
+              className=" inline-block rounded bg-warning-600 px-16 pb-2.5 pt-3 text-sm text-bold font-medium uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600">
               Join Platform
             </button>
           </div>
@@ -80,62 +82,93 @@ const Landing = () => {
       </div>
 
 
-      <div className='categoriesarea mt-16 text-stone-200 pl-8 overflow-auto'>
-        <h1 className='headingtextlanding'>All Categories</h1>
+      <div className='categoriesarea mt-16 text-stone-200  overflow-auto'>
+        <h1 className='headingtextlanding pl-8'>Categories</h1>
         <div className='categories flex flex-wrap  justify-left pt-5 pb-5 pl-8 pr-8 justify-center'>
 
           <item className='categorycard'>
-          <img className='cardicon' src='/images/rings.png' alt="Rings" />
+            <img className='cardicon' src='/images/rings.png' alt="Rings" />
             <p className='cardname'>Rings</p>
           </item>
 
           <item className='categorycard'>
-          <img className='cardicon' src='/images/earrings.png' alt="Earrings" />
+            <img className='cardicon' src='/images/earrings.png' alt="Earrings" />
             <p className='cardname'>Earrings</p>
           </item>
 
           <item className='categorycard'>
-          <img className='cardicon' src='/images/necklaces.png' alt="Necklaces" />
+            <img className='cardicon' src='/images/necklaces.png' alt="Necklaces" />
             <p className='cardname'>Necklaces</p>
           </item>
 
           <item className='categorycard'>
-          <img className='cardicon' src='/images/chains.png' alt="Chains" />
+            <img className='cardicon' src='/images/chains.png' alt="Chains" />
             <p className='cardname'>Chains</p>
           </item>
 
           <item className='categorycard'>
-          <img className='cardicon' src='/images/bracelets.png' alt="Bracelets" />
+            <img className='cardicon' src='/images/bracelets.png' alt="Bracelets" />
             <p className='cardname'>Bracelets</p>
           </item>
-         
+
           <item className='categorycard'>
-          <img className='cardicon' src='/images/bangles.png' alt="Bangles" />
+            <img className='cardicon' src='/images/bangles.png' alt="Bangles" />
             <p className='cardname'>Bangles</p>
           </item>
 
           <item className='categorycard'>
-          <img className='cardicon' src='/images/anklets.png' alt="Anklets" />
+            <img className='cardicon' src='/images/anklets.png' alt="Anklets" />
             <p className='cardname'>Anklets</p>
           </item>
 
           <item className='categorycard'>
-          <img className='cardicon' src='/images/pendants.png' alt="Pendants" />
+            <img className='cardicon' src='/images/pendants.png' alt="Pendants" />
             <p className='cardname'>Pendants</p>
           </item>
 
           <item className='categorycard'>
-          <img className='cardicon' src='/images/bridalsets.png' alt="Bridal Sets" />
+            <img className='cardicon' src='/images/bridalsets.png' alt="Bridal Sets" />
             <p className='cardname'>Bridal Sets</p>
           </item>
 
           <item className='categorycard'>
-          <img className='cardicon' src='/images/coins&bars.png' alt="Coins and Bars" />
+            <img className='cardicon' src='/images/coins&bars.png' alt="Coins and Bars" />
             <p className='cardname'>Coins & Bars</p>
           </item>
         </div>
       </div>
 
+      <div className='border-b-2 border-yellow-600 pt-10'>
+      </div>
+
+      <div className='categoriesarea mt-10 text-stone-200 overflow-auto pb-20'>
+        <h1 className='headingtextlanding pl-8'>Browse Listings</h1>
+        <p className='buttontextlanding text-right mt-4 mr-8'><Link to="" className='text-stone-200 hover:text-yellow-600 text-xl'>View More</Link></p>
+        <div className='categories flex flex-wrap  justify-center md:justify-start pt-5 pb-5 '>
+          <ContainerVertical />
+          <ContainerVertical />
+          <ContainerVertical />
+          <ContainerVertical />
+          <ContainerVertical />
+          <ContainerVertical />
+          <ContainerVertical />
+          <ContainerVertical />
+        </div>
+      </div>
+
+
+      <div className='text-stone-200 border-2 border-yellow-600 p-10 rounded-lg ml-10 mr-10'>
+        <h1 className='headingtextlanding pl-8'>Want to sell your gold items on <span className='text-yellow-600'>EGold Haven ?</span></h1>
+        <p className='buttontextlanding text-right mt-4 mr-8'>
+          <button
+            type="button"
+            className=" inline-block rounded bg-warning-600 px-16 pb-2.5 pt-3 text-sm text-semibold font-medium uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600">
+            Start Selling
+          </button></p>
+
+      </div>
+
+      <div className='pb-20'></div>
 
     </div>
   );
