@@ -6,6 +6,7 @@ const cors = require('cors');
 const bodyparser = require("body-parser");
 const errorHandler = require("./middlewares/errormiddleware")
 const cookieParser = require("cookie-parser")
+const path = require("path")
 require('dotenv').config();
 
 //app
@@ -24,10 +25,14 @@ app.use(cookieParser())
 app.use(morgan('dev'));
 app.use(cors({origin: "http://localhost:3000" , credentials:true}));
 app.use(express.json())
+app.use("/uploads", express.static(path.join(__dirname, "uploads")))
 
 //routes
-const Routes = require("./routes/userRoute");
-app.use('/api/users' , Routes);
+const userRoutes = require("./routes/userRoute");
+app.use('/api/users' , userRoutes);
+
+const listingRoutes = require("./routes/listingRoute");
+app.use('/api/listings' , listingRoutes);
 
 
 //ports
