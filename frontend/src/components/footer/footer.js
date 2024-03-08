@@ -1,5 +1,6 @@
 import './footer.css'
 import React from 'react';
+import { Link } from 'react-router-dom';
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 
 const Footer = () => {
@@ -72,19 +73,43 @@ const Footer = () => {
                         </h6>
                         <p className="mb-2 ftext">
                             <a className="text-stone-200 dark:text-neutral-200 active"
-                            href='#'>Angular</a>
+                            href='#'>Rings</a>
                         </p>
                         <p className="mb-2 ftext">
                             <a className="text-stone-200 dark:text-neutral-200 active"
-                            href='#'>React</a>
+                            href='#'>Earrings</a>
                         </p>
                         <p className="mb-2 ftext">
                             <a className="text-stone-200 dark:text-neutral-200 active"
-                            href='#'>Vue</a>
+                            href='#'>Necklaces</a>
                         </p>
                         <p className='mb-2 ftext'>
                             <a className="text-stone-200 dark:text-neutral-200 active"
-                            href='#'>Laravel</a>
+                            href='#'>Chains</a>
+                        </p>
+                        <p className='mb-2 ftext'>
+                            <a className="text-stone-200 dark:text-neutral-200 active"
+                            href='#'>Bracelets</a>
+                        </p>
+                        <p className='mb-2 ftext'>
+                            <a className="text-stone-200 dark:text-neutral-200 active"
+                            href='#'>Bangles</a>
+                        </p>
+                        <p className='mb-2 ftext'>
+                            <a className="text-stone-200 dark:text-neutral-200 active"
+                            href='#'>Anklets</a>
+                        </p>
+                        <p className='mb-2 ftext'>
+                            <a className="text-stone-200 dark:text-neutral-200 active"
+                            href='#'>Pendants</a>
+                        </p>
+                        <p className='mb-2 ftext'>
+                            <a className="text-stone-200 dark:text-neutral-200 active"
+                            href='#'>Bridal Sets</a>
+                        </p>
+                        <p className='mb-2 ftext'>
+                            <a className="text-stone-200 dark:text-neutral-200 active"
+                            href='#'>Coins & Bars</a>
                         </p>
                     </div>
                     {/* <!-- Useful links section --> */}
@@ -97,16 +122,16 @@ const Footer = () => {
                         </h6>
                         
                         <p className="mb-5 ftext">
-                            <a className="text-stone-200 dark:text-neutral-200 active"
-                            href='#'>Forum</a>
+                            <Link className="text-stone-200 dark:text-neutral-200 active"
+                            to='/forum'>Forum</Link>
                         </p>
                         <p className="mb-5 ftext">
-                            <a className="text-stone-200 dark:text-neutral-200 active"
-                            href='#'>About Us</a>
+                            <Link className="text-stone-200 dark:text-neutral-200 active"
+                            to='/about'>About Us</Link>
                         </p>
                         <p className="mb-5 ftext">
-                            <a className="text-stone-200 dark:text-neutral-200 active"
-                            href='#'>Contact Support</a>
+                            <Link className="text-stone-200 dark:text-neutral-200 active"
+                            to='/faq'>FAQ's</Link>
                         </p>
                         <p className='mb-5 ftext'>
                             <a className="text-stone-200 dark:text-neutral-200 active"
@@ -153,9 +178,9 @@ const Footer = () => {
             {/* <!--Copyright section--> */}
             <div className=" p-6 text-center dark:bg-neutral-700">
                 <span>© 2024 Copyright : </span>
-                <a
+                <Link
                     className="ftext text-yellow-600"
-                    href="#">EGold Haven</a>
+                    to="/">EGold Haven</Link>
             </div>
         </footer>
     );

@@ -137,7 +137,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const googleSignIn = asyncHandler(async (req, res) => {
 
-    const { tokenId, status, phoneNo } = req.body;
+    const { tokenId } = req.body;
 
     try {
       const ticket = await client.verifyIdToken({
@@ -154,16 +154,16 @@ const googleSignIn = asyncHandler(async (req, res) => {
         user = await User.create({
           email,
           name,
-          phoneno: phoneNo,
+          phoneno: "###########",
           password: '<#@#@#@#@#@>',
-          status
+          status:'user'
         });
       }
   
       // Generate token
       const token = generateToken(user._id);
   
-      const { _id, phoneno, name } = user;
+      const { _id, phoneno, name, status } = user;
 
       res.cookie("token", token, {
         path: "/",

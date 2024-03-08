@@ -60,6 +60,16 @@ function NavList() {
                     Forum
                 </Link>
             </Typography>
+            <Typography
+                as="li"
+                variant="small"
+                color="blue-gray"
+                className="p-1 font-medium"
+            >
+                <Link to="/forum" className="flex items-center hover:text-yellow-600 transition-colors">
+                    FAQ's
+                </Link>
+            </Typography>
         </ul>
     );
 }
@@ -71,10 +81,10 @@ const Header = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const userName = useSelector(selectName) 
+    const userName = useSelector(selectName)
     console.log(userName)
     const isLoggedIn = useSelector(selectIsLoggedIn);
-    
+
     const [openNav, setOpenNav] = React.useState(false);
 
     const logout = async () => {
@@ -89,10 +99,6 @@ const Header = () => {
     const handleWindowResize = () =>
         window.innerWidth >= 960 && setOpenNav(false);
 
-    const handleLogoClick = () => {
-
-        window.location.href = './home';
-    };
 
     React.useEffect(() => {
         window.addEventListener("resize", handleWindowResize);
@@ -116,7 +122,7 @@ const Header = () => {
         <header className="header">
 
 
-            <img src='/images/EGHLogo.png' alt='logo' className='weblogo  md:h-22.5 md:w-64 cursor-pointer' onClick={handleLogoClick}></img>
+            <Link to='/'><img src='/images/EGHLogo.png' alt='logo' className='weblogo  md:h-22.5 md:w-64 cursor-pointer' ></img></Link>
 
             <Navbar className="ml-auto max-w-screen-xl px-6 py-3 bg-transparent border-0 w-32 text-stone-200 nb">
                 <div className="flex justify-between text-blue-gray-900 bg-transparent">
@@ -146,6 +152,11 @@ const Header = () => {
                 <Link to='/forum'>
                     <button className="nav-button ml-5 hidden lg:block">
                         Forum
+                    </button>
+                </Link>
+                <Link to='/forum'>
+                    <button className="nav-button ml-5 hidden lg:block">
+                        FAQ's
                     </button>
                 </Link>
                 {isLoggedIn ? (

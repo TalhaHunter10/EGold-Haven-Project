@@ -1,10 +1,10 @@
 import './login.css'
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import { TEInput, TERipple } from "tw-elements-react";
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { loginUser } from '../../services/authservice';
+import { googlesso, loginUser } from '../../services/authservice';
 import { SET_LOGIN, SET_NAME, SET_STATUS } from '../../redux/features/auth/authSlice';
 import { Loader } from '../loader/loader';
 import axios from 'axios';
@@ -17,7 +17,6 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [errors, setErrors] = useState({})
-  const [phoneNo, setPhoneNo] = useState('###########')
   const [FormData, setFormData] = useState({
     name: '',
     password: '',
@@ -43,12 +42,11 @@ const Login = () => {
         window.gapi.auth2.getAuthInstance().signIn().then(async user => {
           const idToken = user.getAuthResponse().id_token;
           setIsLoading(true)
+          const userData = {
+            tokenId: idToken,
+          }
           try {
-            const { data } = await axios.post('http://localhost:5000/api/users/googlesso', {
-              tokenId: idToken,
-              status: 'user',
-              phoneNo: phoneNo
-            });
+            const data = await googlesso(userData);
             if (data.name) {
               dispatch(SET_LOGIN(true))
               dispatch(SET_NAME(data.name))

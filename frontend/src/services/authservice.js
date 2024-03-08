@@ -33,6 +33,21 @@ export const loginUser = async (userData) => {
     }
 };
 
+//login user through googlesso
+export const googlesso = async (userData) => {
+    try{
+        const response = await axios.post(`${BACKEND_URL}/api/users/googlesso`,userData)
+        if(response.statusText === 'OK'){
+            toast.success("Login Successful ...")
+        }
+        return response.data
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+};
+
 //Logout User
 export const logoutUser = async () => {
     try{
