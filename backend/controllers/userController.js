@@ -1,3 +1,9 @@
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client({
+  clientId: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET
+});
+
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
@@ -128,6 +134,53 @@ const loginUser = asyncHandler(async (req, res) => {
         throw new Error("Invalid Email or Password");
     }
 });
+
+const googleSignIn = asyncHandler(async (req, res) => {
+
+    const { tokenId, status, phoneNo } = req.body;
+
+    try {
+      const ticket = await client.verifyIdToken({
+        idToken: tokenId,
+        audience: process.env.CLIENT_ID,
+      });
+
+      const { email } = ticket.getPayload();
+  
+      // Check if the email exists in the database
+      let user = await User.findOne({ email });
+  
+      if (!user) {
+        user = await User.create({
+          email,
+          name,
+          phoneno: phoneNo,
+          password: '<#@#@#@#@#@>',
+          status
+        });
+      }
+  
+      // Generate token
+      const token = generateToken(user._id);
+  
+      const { _id, phoneno, name } = user;
+
+      res.cookie("token", token, {
+        path: "/",
+        httpOnly: true,
+        expires: new Date(Date.now() + 1000 * 3600),
+        sameSite: "none",
+        secure: true
+    })
+      res.status(200).json({
+        _id, name, email, phoneno, status, token
+      });
+
+    } catch (error) {
+      console.error('Google Sign-In Error:', error);
+      res.status(500).json({ message: 'Google Sign-In Error' });
+    }
+  });
 
 const logOut = asyncHandler(async (req, res) => {
 
@@ -302,5 +355,6 @@ module.exports = {
     updateUser,
     changePassword,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    googleSignIn
 }

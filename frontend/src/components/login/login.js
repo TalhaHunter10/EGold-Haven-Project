@@ -1,5 +1,5 @@
 import './login.css'
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import { TEInput, TERipple } from "tw-elements-react";
 import { Link, useNavigate } from 'react-router-dom';
@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { loginUser } from '../../services/authservice';
 import { SET_LOGIN, SET_NAME, SET_STATUS } from '../../redux/features/auth/authSlice';
 import { Loader } from '../loader/loader';
+import axios from 'axios';
 
 
 const Login = () => {
@@ -16,6 +17,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [errors, setErrors] = useState({})
+  const [phoneNo, setPhoneNo] = useState('###########')
   const [FormData, setFormData] = useState({
     name: '',
     password: '',
@@ -28,6 +30,43 @@ const Login = () => {
       ...FormData, remember: isChecked
     })
   };
+
+  // Load the Google API client library
+  const handleSignIn = async () => {
+    window.gapi.load('auth2', () => {
+      window.gapi.auth2.init({
+        client_id: `122547971868-cth18b7ghbhkn582ai0cj63jb87tk8pl.apps.googleusercontent.com`,
+        scope: 'openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+        plugin_name: 'Web client 1'
+      }).then(() => {
+        console.log('Google API client initialized');
+        window.gapi.auth2.getAuthInstance().signIn().then(async user => {
+          const idToken = user.getAuthResponse().id_token;
+          setIsLoading(true)
+          try {
+            const { data } = await axios.post('http://localhost:5000/api/users/googlesso', {
+              tokenId: idToken,
+              status: 'user',
+              phoneNo: phoneNo
+            });
+            if (data.name) {
+              dispatch(SET_LOGIN(true))
+              dispatch(SET_NAME(data.name))
+              dispatch(SET_STATUS(data.status))
+              navigate('/home')
+            }
+            setIsLoading(false)
+          } catch (error) {
+            console.error('Error:', error);
+          }
+        }).catch(error => {
+          console.error('Google Sign-In Error:', error);
+        });
+      }).catch((error) => {
+        console.error('Error initializing Google API client:', error);
+      });
+    });
+  }
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -46,21 +85,20 @@ const Login = () => {
     }
 
     setErrors(validationErrors)
-    const { name , password , remember} = FormData
+    const { name, password, remember } = FormData
     const userData = {
       name, password, remember
     }
-    
+
     if (Object.keys(validationErrors).length === 0) {
       setIsLoading(true)
       try {
         const data = await loginUser(userData);
-        if(data.name)
-        {
-        dispatch(SET_LOGIN(true))
-        dispatch(SET_NAME(data.name))
-        dispatch(SET_STATUS(data.status))
-        navigate('/home')
+        if (data.name) {
+          dispatch(SET_LOGIN(true))
+          dispatch(SET_NAME(data.name))
+          dispatch(SET_STATUS(data.status))
+          navigate('/home')
         }
         setIsLoading(false)
       } catch (error) {
@@ -104,28 +142,8 @@ const Login = () => {
                 <div className="flex flex-row items-center justify-center lg:justify-start">
                   <p className="mb-0 mr-4 text-lg bodytext text-stone-200">Sign in with</p>
 
-
                   <TERipple rippleColor="light">
-                    <button
-                      type="button"
-                      className="flex items-center justify-center mx-1 h-9 w-9 rounded-full bg-white uppercase leading-normal text-primary-600 transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] hover:text-white focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none"
-                    >
-
-
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="mx-auto h-3.5 w-3.5"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
-                      </svg>
-                    </button>
-                  </TERipple>
-
-
-                  <TERipple rippleColor="light">
-                    <button
+                    <button onClick={handleSignIn}
                       type="button"
                       className="flex items-center justify-center mx-1 h-9 w-9 rounded-full bg-white uppercase leading-normal text-danger-600 transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] hover:text-white focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none "
                     >
