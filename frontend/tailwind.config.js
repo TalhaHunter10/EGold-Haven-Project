@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+
+
 module.exports = {
   content: [
       "./index.html",
@@ -6,7 +8,8 @@ module.exports = {
       "./node_modules/tw-elements-react/dist/js/**/*.js"
   ],
   theme: {
-      extend: {},
+    extend: {
+    },
   },
   darkMode: "class",
   plugins: [require("tw-elements-react/dist/plugin.cjs")]

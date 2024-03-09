@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const Listing = require("../models/listingModel");
 
 const createListing = asyncHandler(async (req, res) => {
-    const { title, price, description, status, category, karats, weight, stones, stonetypes, address } = req.body;
+    const { title, price, description, status, category, karats, weight, stones, address } = req.body;
 
     if (!title || !price || !description || !status || !category || !karats || !weight || !stones || !address) {
         res.status(400)
@@ -39,7 +39,6 @@ const createListing = asyncHandler(async (req, res) => {
         karats,
         weights: { tola: weight, gram: grams },
         stones,
-        stonetypes,
         images,
         address,
     })

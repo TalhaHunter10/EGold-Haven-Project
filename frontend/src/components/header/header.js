@@ -82,7 +82,6 @@ const Header = () => {
     const navigate = useNavigate();
 
     const userName = useSelector(selectName)
-    console.log(userName)
     const isLoggedIn = useSelector(selectIsLoggedIn);
 
     const [openNav, setOpenNav] = React.useState(false);

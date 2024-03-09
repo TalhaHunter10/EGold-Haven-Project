@@ -45,10 +45,6 @@ const listingSchema = mongoose.Schema({
         type: String,
         required: [true,"Please add stone details !"]
     },
-    stonetypes: {
-        type: String,
-        default: ''
-    },
     images:{
         type:Object,
         required: [true,"Please add images !"]

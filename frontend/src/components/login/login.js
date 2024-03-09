@@ -7,7 +7,6 @@ import { useDispatch } from 'react-redux';
 import { googlesso, loginUser } from '../../services/authservice';
 import { SET_LOGIN, SET_NAME, SET_STATUS } from '../../redux/features/auth/authSlice';
 import { Loader } from '../loader/loader';
-import axios from 'axios';
 
 
 const Login = () => {

@@ -1,0 +1,28 @@
+@font-face {
+    font-family: Llight;
+    src: url('/public/fonts/Lato-Light.ttf')
+}
+
+@font-face {
+    font-family: Mlight;
+    src: url('/public/fonts/Montserrat-Light.ttf')
+}
+
+@font-face {
+    font-family: Msemibold;
+    src: url('/public/fonts/Montserrat-SemiBold.ttf')
+}
+
+.createListingHeading{
+    font-family: Mlight;
+    font-size: 36px;
+}
+
+.fieldheading{
+    font-family: Llight;
+    font-size: 28px;
+}
+
+.Note{
+    font-family: Mlight;
+}

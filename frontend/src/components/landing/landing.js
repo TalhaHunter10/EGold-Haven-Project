@@ -2,9 +2,26 @@ import React from 'react';
 import './landing.css'
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import ContainerVertical from '../listingcontainers/containervertical';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectIsLoggedIn } from '../../redux/features/auth/authSlice';
+import { toast } from 'react-toastify';
 
 const Landing = () => {
+
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const navigate = useNavigate();
+  const handlelisting = (e) => {
+
+    if ( isLoggedIn ) {
+      navigate('/createlisting');
+    }
+    else{
+      toast.error('Login first to create listing !')
+      navigate('/login');
+    }
+
+  };
   return (
     <div className="landing-container">
       <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between mt-5">
@@ -13,7 +30,7 @@ const Landing = () => {
           <p className='bodytextlanding text-stone-200 text-justify mb-6'>Got something special to sell? <span className='text-yellow-600'>EGold Haven</span> makes it easy! Sell your gold items at EGold Haven. List your treasures, set prices, and connect with eager buyers effortlessly. Join now and turn your gold into cash with simplicity and convenience.</p>
           <div className='text-center mt-8 buttontextlanding'>
             <button
-              type="button"
+              onClick={handlelisting}
               className=" inline-block rounded bg-warning-600 text-semibold px-16 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600">
               Start Selling
             </button>
@@ -162,6 +179,7 @@ const Landing = () => {
         <p className='buttontextlanding text-right mt-4 mr-8'>
           <button
             type="button"
+            onClick={handlelisting}
             className=" inline-block rounded bg-warning-600 px-16 pb-2.5 pt-3 text-sm text-semibold font-medium uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600">
             Start Selling
           </button></p>
