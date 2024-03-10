@@ -20,6 +20,7 @@ import ResetPassword from './components/resetpassword/resetpassword';
 import CreateListing from './components/createlisting/createlisting';
 import AdminDashboard from './components/admindashboard/admindashboard';
 import { getloginStatus } from './services/authservice';
+import JewelerRequest from './components/jewelerrequest/jewelerrequest';
 
 
 axios.defaults.withCredentials = true;
@@ -75,6 +76,7 @@ function App() {
               <Route path="/forum" element={<Forum/>} />
               <Route path="/about" element={<About/>} />
               <Route path="/signup" element={<Signup/>} />
+              <Route path="/jewelerrequest" element={<JewelerRequest/>} />
               <Route path="/forgotpassword" element={<ForgotPassword/>} />
               <Route path="/resetpassword/:resetToken" element={<ResetPassword/>} />
               <Route path="/createlisting" element={<CreateListing/>} />

@@ -4,8 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import { logoutUser } from '../../services/authservice';
 import { SET_LOGIN, SET_NAME, SET_STATUS } from '../../redux/features/auth/authSlice';
+import { getStats } from '../../services/adminservice';
+import { Loader } from '../loader/loader';
 
 const AdminDashboard = () => {
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const [data, setData] = useState({
         registeredUsers: 'reload',
@@ -33,18 +37,36 @@ const AdminDashboard = () => {
         navigate('/login')
     };
 
-    const Refresh = async () => {
-
+    const RefreshStats = async () => {
+        setIsLoading(true);
+        try {
+            const getdata = await getStats();
+            setData(data => ({
+                ...data,
+                registeredUsers: getdata.registeredUsers,
+                registeredJewelers: getdata.registeredJewelers,
+                jewelerRequests: getdata.jewelerRequests,
+                live: getdata.liveListings,
+                sold: getdata.soldListings,
+                expired: getdata.expiredListings,
+                rejected: getdata.rejectedListings,
+                listingRequests: getdata.pendingApproval,
+            }));
+        } catch (error) {
+            console.error('Error fetching stats:', error);
+        }
+        setIsLoading(false);
     };
 
     return (
         <div className='bg text-neutral-900 pb-20'>
+            {isLoading && <Loader />}
             <div className='min-h-screen'>
                 <div className='p-10 flex flex-wrap justify-center md:justify-between '>
                     <h1 className='m-5 text-5xl font-medium text-yellow-600 text-center'>Admin Dashboard</h1>
                     <button
                         type="button"
-                        onClick={Refresh}
+                        onClick={RefreshStats}
                         className="m-5 inline-block rounded bg-warning-600 px-16 pb-2.5 pt-3 text-lg text-semibold font-medium uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600"
                     >
                         Load / Refresh Stats

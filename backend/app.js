@@ -34,6 +34,12 @@ app.use('/api/users' , userRoutes);
 const listingRoutes = require("./routes/listingRoute");
 app.use('/api/listings' , listingRoutes);
 
+const jewelerRoutes = require("./routes/jewelerRoute");
+app.use('/api/jeweler' , jewelerRoutes);
+
+const adminRoutes = require("./routes/adminRoute");
+app.use('/api/admin' , adminRoutes);
+
 
 //ports
 const port = process.env.PORT || 8080;

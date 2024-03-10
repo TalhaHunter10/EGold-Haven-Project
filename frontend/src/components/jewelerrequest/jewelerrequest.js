@@ -1,259 +1,213 @@
 import React, { useState } from 'react';
-import './createlisting.css'
+import './jewelerrequest.css'
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import { useNavigate } from 'react-router-dom';
-import { Select, Input, InputNumber } from 'antd';
+import { Select, Input } from 'antd';
 import ImageUploading from 'react-images-uploading'
-import { createListing } from '../../services/listingservice';
-import { useSelector } from 'react-redux';
-import { selectIsLoggedIn } from '../../redux/features/auth/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { SET_STATUS, selectIsLoggedIn, selectStatus } from '../../redux/features/auth/authSlice';
 import { toast } from 'react-toastify';
 import { Loader } from '../loader/loader';
-const { TextArea } = Input;
+import { registerJeweler } from '../../services/jewelerservice';
 
-
-const CreateListing = () => {
+const JewelerRequest = () => {
 
     const isLoggedIn = useSelector(selectIsLoggedIn);
+    const userstatus = useSelector(selectStatus);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
 
-    const [isCategory, setIsCategory] = useState('');
-    const [isTitle, setIsTitle] = useState('');
-    const [isDescription, setIsDescription] = useState('');
-    const [isPrice, setIsPrice] = useState('');
-    const [isKarats, setIsKarats] = useState('');
-    const [isWeight, setIsWeight] = useState('');
-    const [isStones, setIsStones] = useState('');
-    const [isLocation, setIsLocation] = useState('');
+    if (!userstatus === 'user') {
+        navigate('/')
+    }
+
+    const [cnicno, setCnicNo] = useState('');
+    const [phoneno, setPhoneNo] = useState('');
+    const [storename, setStoreName] = useState('');
+    const [commissionrate, setCommissionRate] = useState('2.5');
+    const [shopno, setShopNo] = useState('');
+    const [address, setAddress] = useState('');
+    const [city, setCity] = useState('');
 
     const [errors, setErrors] = useState({})
 
-    const handleCategoryChange = (value) => {
-        setIsCategory(value);
-    };
-
-    const handleTitleChange = (e) => {
-        setIsTitle(e.target.value);
-    };
-
-    const handleDescriptionChange = (e) => {
-        setIsDescription(e.target.value);
-
-    };
-
-    const onPriceChange = (value) => {
-        setIsPrice(value)
+    const handleStoreNameChange = (e) => {
+        setStoreName(e.target.value);
     }
 
-    const handleKaratsChange = (value) => {
-        setIsKarats(value);
+    const handleShopNoChange = (e) => {
+        setShopNo(e.target.value);
+    }
+
+    const handlePhoneNoChange = (e) => {
+        setPhoneNo(e.target.value);
+    }
+
+    const handleCnicNoChange = (e) => {
+        setCnicNo(e.target.value);
+    }
+
+    const handleAddressChange = (e) => {
+        setAddress(e.target.value);
+    }
+
+    const handleCityChange = (value) => {
+        setCity(value);
+    }
+
+    const [cnicimages, setCnicImages] = React.useState([]);
+
+    const cnicmaxNumber = 2;
+
+    const onCnicChange = (imageList, addUpdateIndex) => {
+        setCnicImages(imageList);
     };
 
-    const handleStonesChange = (value) => {
-        setIsStones(value);
+    const [storeimages, setStoreImages] = React.useState([]);
+
+    const storemaxNumber = 4;
+
+    const onStoreChange = (imageList, addUpdateIndex) => {
+        setStoreImages(imageList);
     };
 
-    const onWeightChange = (value) => {
-        setIsWeight(value);
+    const [coverimage, setCoverImage] = React.useState([]);
+
+    const covermaxNumber = 1;
+
+    const onCoverChange = (imageList, addUpdateIndex) => {
+        setCoverImage(imageList);
     };
 
-    const handleLocationChange = (value) => {
-        setIsLocation(value);
-    };
-
-
-    const [images, setImages] = React.useState([]);
-
-    const maxNumber = 8;
-
-    const onChange = (imageList, addUpdateIndex) => {
-        setImages(imageList);
-    };
 
     const handleSubmit = async (e) => {
 
         e.preventDefault();
 
-        if(!isLoggedIn){
+        if (!isLoggedIn) {
             navigate('/login')
-            toast.error('Login first to create listing')
+            toast.error('Login first to request for Jeweler Status')
         }
+
         const validationErrors = {}
 
-        if (!isCategory.trim()) {
-            validationErrors.category = 'Category is required !';
+        if (!storename.trim()) {
+            validationErrors.storename = 'Store Name is required !';
+        } else if (!/^[a-zA-Z0-9]+([a-zA-Z0-9](_|-| )[a-zA-Z0-9])*[a-zA-Z0-9]+$/.test(storename)) {
+            validationErrors.email = 'Enter a Valid Store Name !';
         }
 
-        if (!isTitle.trim()) {
-            validationErrors.title = 'Title is required !';
+        if (!shopno.trim()) {
+            validationErrors.shopno = 'Shop / Store No is required !';
         }
-        if (!isDescription.trim()) {
-            validationErrors.description = 'Description is required !';
+
+        if (!phoneno.trim()) {
+            validationErrors.phoneno = 'Phone No. is required !';
+        } else if (!/^((\+92)?(0092)?(92)?(0)?)(3)([0-9]{9})$/gm.test(phoneno)) {
+            validationErrors.phoneno = 'Enter a Valid Phone No. !';
         }
-        if (isPrice === '') {
-            validationErrors.price = 'Price is required !';
+
+        if (!cnicno.trim()) {
+            validationErrors.cnicno = 'CNIC No. is required !';
+        } else if (!/^([0-9]{5})([0-9]{7})([0-9]{1})+/.test(cnicno)) {
+            validationErrors.cnicno = 'Enter a Valid CNIC No. !';
         }
-        if (!isKarats.trim()) {
-            validationErrors.karats = 'Please select a value for karats !';
+
+        if (!address.trim()) {
+            validationErrors.address = 'Address is required !';
         }
-        if (isWeight === '') {
-            validationErrors.weight = 'Weight is required !';
+        if (!city.trim()) {
+            validationErrors.city = 'Please select store city !';
         }
-        if (!isStones.trim()) {
-            validationErrors.stones = 'Stones detail is required !';
+
+        if (coverimage.length === 0) {
+            validationErrors.coverimage = 'Cover Image is required !';
         }
-        if (!isLocation.trim()) {
-            validationErrors.location = 'Location is required !';
+
+        if (cnicimages.length === 0) {
+            validationErrors.cnicimages = 'Cnic Images are required !';
+        } else if (cnicimages.length < 2) {
+            validationErrors.cnicimages = 'Front and Back both sides are required !';
         }
-        if (images.length === 0) {
-            validationErrors.images = 'Atleast one Image is required !';
+
+        if (storeimages.length === 0) {
+            validationErrors.storeimages = 'Atleast one Store Image is required !';
         }
+
 
         setErrors(validationErrors)
 
         if (Object.keys(validationErrors).length === 0) {
             const formData = new FormData();
 
-            images.forEach((image, index) => {
-                formData.append(`images`, image.file);
+            cnicimages.forEach((image, index) => {
+                formData.append(`cnicimages`, image.file);
             });
 
-            formData.append('category', isCategory);
-            formData.append('title', isTitle);
-            formData.append('description', isCategory);
-            formData.append('price', isPrice);
-            formData.append('weight', isWeight);
-            formData.append('karats', isKarats);
-            formData.append('address', isLocation);
-            formData.append('stones', isStones);
-            formData.append('status', 'pending approval');
+            coverimage.forEach((image, index) => {
+                formData.append(`coverimage`, image.file);
+            });
+
+            storeimages.forEach((image, index) => {
+                formData.append(`storeimages`, image.file);
+            });
+
+            formData.append('storename', storename);
+            formData.append('shopno', shopno);
+            formData.append('cnicno', cnicno);
+            formData.append('phoneno', phoneno);
+            formData.append('address', address);
+            formData.append('city', city);
+            formData.append('commissionrate', commissionrate);
 
             setIsLoading(true)
             try {
-                    const data = createListing(formData);
-                    if(data){
+                const data = registerJeweler(formData);
+                if (data) {
                     navigate('/')
+                    dispatch(SET_STATUS('requested'))
                     setIsLoading(false)
-                    }
-                
+                }
+
             } catch (error) {
                 setIsLoading(false)
             }
 
-        }else{
-            toast.error('Please remove the field error !!')
+        } else {
+            toast.error('Please remove the field error/s !!')
         }
 
     };
+
+
 
 
     return (
         <div className='p-5'>
             {isLoading && <Loader />}
             <p className='createListingHeading text-center pt-5 text-stone-200'>
-                CREATE LISTING
+                Request for Jeweler Status
             </p>
 
             <form className='p-5 m-5 border-2 border-yellow-600 rounded-lg'>
-                <p className='fieldheading pt-5 pb-2 text-stone-200'>Category</p>
-                <Select className='' style={{ width: '100%', height: 50, marginBottom: 20 }} onChange={handleCategoryChange}
-                    options={[
-                        {
-                            value: 'Rings',
-                            label: 'Rings',
-                        },
-                        {
-                            value: 'Earrings',
-                            label: 'Earrings',
-                        },
-                        {
-                            value: 'Necklaces',
-                            label: 'Necklaces',
-                        },
-                        {
-                            value: 'Chains',
-                            label: 'Chains',
-                        },
-                        {
-                            value: 'Bracelets',
-                            label: 'Bracelets',
-                        },
-                        {
-                            value: 'Bangles',
-                            label: 'Bangles',
-                        },
-                        {
-                            value: 'Anklets',
-                            label: 'Anklets',
-                        },
-                        {
-                            value: 'Pendants',
-                            label: 'Pendants',
-                        },
-                        {
-                            value: 'Bridal Sets',
-                            label: 'Bridal Sets',
-                        },
-                        {
-                            value: 'Coins & Bars',
-                            label: 'Coins & Bars',
-                        }
-                    ]} />
-                {errors.category && <h1 className='text-danger mt-[-15px] mb-6'>{errors.category}</h1>}
 
-                <p className='fieldheading pt-10 pb-2 text-stone-200'>Title</p>
-                <Input variant='Outlined' style={{ width: '100%', height: 50, fontSize: '18px', marginBottom: 20 }} onChange={handleTitleChange} />
-                {errors.title && <h1 className='text-danger mt-[-15px] mb-6'>{errors.title}</h1>}
+                <p className='fieldheading pt-10 pb-2 text-stone-200'>Store Name</p>
+                <Input variant='Outlined' style={{ width: '100%', height: 50, fontSize: '18px', marginBottom: 20 }} onChange={handleStoreNameChange} />
+                {errors.storename && <h1 className='text-danger mt-[-15px] mb-6'>{errors.storename}</h1>}
 
-                <p className='fieldheading pt-10 pb-2 text-stone-200'>Description</p>
-                <TextArea placeholder='Write description here...' allowClear style={{ width: '100%', height: 120, fontSize: '18px', marginBottom: 20 }} onChange={handleDescriptionChange} />
-                {errors.description && <h1 className='text-danger mt-[-15px] mb-6'>{errors.description}</h1>}
 
-                <p className='fieldheading pt-10 pb-2 text-stone-200'>Price</p>
-                <InputNumber min={1} style={{ width: '100%', height: 50, fontSize: '18px', marginBottom: 1 }} onChange={onPriceChange} />;
-                {errors.price && <h1 className='text-danger mt-[-15px] mb-6'>{errors.price}</h1>}
+                <p className='fieldheading pt-10 pb-2 text-stone-200'>Shop / Store Number (Area / Building wise)</p>
+                <Input variant='Outlined' style={{ width: '100%', height: 50, fontSize: '18px', marginBottom: 20 }} onChange={handleShopNoChange} />
+                {errors.shopno && <h1 className='text-danger mt-[-15px] mb-6'>{errors.shopno}</h1>}
 
-                <p className='fieldheading pt-5 pb-2 text-stone-200'>Karats</p>
-                <Select className='' style={{ width: '100%', height: 50, marginBottom: 20 }} onChange={handleKaratsChange}
-                    options={[
-                        {
-                            value: '10k',
-                            label: '10k',
-                        },
-                        {
-                            value: '12k',
-                            label: '12k',
-                        },
-                        {
-                            value: '14k',
-                            label: '14k',
-                        },
-                        {
-                            value: '18k',
-                            label: '18k',
-                        },
-                        {
-                            value: '22k',
-                            label: '22k',
-                        },
-                        {
-                            value: '24k',
-                            label: '24k',
-                        }
-                    ]} />
-                {errors.karats && <h1 className='text-danger mt-[-15px] mb-6'>{errors.karats}</h1>}
 
-                <p className='fieldheading pt-10 pb-2 text-stone-200'>Weight (tola)</p>
-                <InputNumber  style={{ width: '100%', height: 50, fontSize: '18px', marginBottom: 20 }} onChange={onWeightChange} />
-                {errors.weight && <h1 className='text-danger mt-[-15px] mb-6'>{errors.weight}</h1>}
-
-                <p className='fieldheading pt-5 pb-2 text-stone-200'>Images</p>
+                <p className='fieldheading pt-5 pb-2 text-stone-200'>Store Cover Image</p>
                 <ImageUploading
                     multiple
-                    value={images}
-                    onChange={onChange}
-                    maxNumber={maxNumber}
+                    value={coverimage}
+                    onChange={onCoverChange}
+                    maxNumber={covermaxNumber}
                     dataURLKey="data_url"
                 >
                     {({
@@ -266,8 +220,8 @@ const CreateListing = () => {
                         dragProps,
                     }) => (
 
-                        <fieldset className="upload__image-wrapper upload-container flex flex-wrap justify-left border-2 border-stone-200">
-                            <legend className='text-stone-300 ml-6 pl-2 pr-2'>Store Front Image (Cover)</legend>
+                        <fieldset className="upload__image-wrapper upload-container flex flex-wrap justify-left border-2 border-stone-200 mb-8">
+                            <legend className='text-stone-300 ml-6 pl-2 pr-2'>Store Front (Max - 1)</legend>
                             <div className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600'
                                 style={isDragging ? { color: 'white' } : undefined}
                                 onClick={onImageUpload}
@@ -295,36 +249,137 @@ const CreateListing = () => {
                     )}
 
                 </ImageUploading>
-                {errors.images && <h1 className='text-danger mt-[-15px] mb-6'>{errors.images}</h1>}
+                {errors.coverimage && <h1 className='text-danger mt-[-15px] mb-6'>{errors.coverimage}</h1>}
 
-                <p className='fieldheading pt-5 pb-2 text-stone-200'>Stones</p>
-                <Select className='' style={{ width: '100%', height: 50, marginBottom: 20 }} onChange={handleStonesChange}
-                    options={[
-                        {
-                            value: 'None',
-                            label: 'None',
-                        },
-                        {
-                            value: 'Inclusive - Artificial',
-                            label: 'Inclusive - Artificial',
-                        },
-                        {
-                            value: 'Inclusive - Diamonds',
-                            label: 'Inclusive - Diamonds',
-                        },
-                        {
-                            value: 'Exclusive - Artificial',
-                            label: 'Exclusive - Artificial',
-                        },
-                        {
-                            value: 'Exclusive - Diamonds',
-                            label: 'Exclusive - Diamonds',
-                        },
-                    ]} />
-                {errors.stones && <h1 className='text-danger mt-[-15px] mb-6'>{errors.stones}</h1>}
 
-                <p className='fieldheading pt-5 pb-2 text-stone-200'>Location</p>
-                <Select placeholder="Select the city" style={{ width: '100%', height: 50, marginBottom: 20 }} onChange={handleLocationChange}
+
+                <p className='fieldheading pt-5 pb-2 text-stone-200'>Store Images</p>
+                <ImageUploading
+                    multiple
+                    value={storeimages}
+                    onChange={onStoreChange}
+                    maxNumber={storemaxNumber}
+                    dataURLKey="data_url"
+                >
+                    {({
+                        imageList,
+                        onImageUpload,
+                        onImageRemoveAll,
+                        onImageUpdate,
+                        onImageRemove,
+                        isDragging,
+                        dragProps,
+                    }) => (
+
+                        <fieldset className="upload__image-wrapper upload-container flex flex-wrap justify-left border-2 border-stone-200 mb-8">
+                            <legend className='text-stone-300 ml-6 pl-2 pr-2'>Store Inside Images (Max - 4)</legend>
+                            <div className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600'
+                                style={isDragging ? { color: 'white' } : undefined}
+                                onClick={onImageUpload}
+                                {...dragProps}
+                            >
+                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/add.png' alt="add" />
+                                Click / Drop
+                            </div>
+                            &nbsp;
+                            <div onClick={onImageRemoveAll} className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600'>
+                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/remove.png' alt="remove" />
+                                Drop Images
+                            </div>
+                            {imageList.map((image, index) => (
+                                <div key={index} className="image-item image-container text-center w-32 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer">
+                                    <img className='m-auto mt-1 mb-3' src={image['data_url']} alt="" width="60" />
+                                    <div className="image-item__btn-wrapper flex flex-wrap justify-center">
+                                        <img className='single-image-icon w-5 mr-2 transform duration-300 hover:scale-110' src='/images/update.png' onClick={() => onImageUpdate(index)} alt='update' />
+                                        <img className='single-image-icon w-5 ml-2 transform duration-300 hover:scale-110' src='/images/remove.png' onClick={() => onImageRemove(index)} alt='remove' />
+                                    </div>
+                                </div>
+                            ))}
+
+                        </fieldset>
+                    )}
+
+                </ImageUploading>
+                {errors.storeimages && <h1 className='text-danger mt-[-15px] mb-6'>{errors.storeimages}</h1>}
+
+
+
+                <p className='fieldheading pt-10 pb-2 text-stone-200'>Phone #</p>
+                <Input variant='Outlined' placeholder='03###########' style={{ width: '100%', height: 50, fontSize: '18px', marginBottom: 20 }} onChange={handlePhoneNoChange} />
+                {errors.phoneno && <h1 className='text-danger mt-[-15px] mb-6'>{errors.phoneno}</h1>}
+
+
+
+
+                <p className='fieldheading pt-10 pb-2 text-stone-200'>CNIC No.</p>
+                <Input variant='Outlined' placeholder='#############' style={{ width: '100%', height: 50, fontSize: '18px', marginBottom: 20 }} onChange={handleCnicNoChange} />
+                {errors.cnicno && <h1 className='text-danger mt-[-15px] mb-6'>{errors.cnicno}</h1>}
+
+
+                <p className='fieldheading pt-5 pb-2 text-stone-200'>Cnic Images</p>
+                <ImageUploading
+                    multiple
+                    value={cnicimages}
+                    onChange={onCnicChange}
+                    maxNumber={cnicmaxNumber}
+                    dataURLKey="data_url"
+                >
+                    {({
+                        imageList,
+                        onImageUpload,
+                        onImageRemoveAll,
+                        onImageUpdate,
+                        onImageRemove,
+                        isDragging,
+                        dragProps,
+                    }) => (
+
+                        <fieldset className="upload__image-wrapper upload-container flex flex-wrap justify-left border-2 border-stone-200 mb-8">
+                            <legend className='text-stone-300 ml-6 pl-2 pr-2'>Front and Back</legend>
+                            <div className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600'
+                                style={isDragging ? { color: 'white' } : undefined}
+                                onClick={onImageUpload}
+                                {...dragProps}
+                            >
+                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/add.png' alt="add" />
+                                Click / Drop
+                            </div>
+                            &nbsp;
+                            <div onClick={onImageRemoveAll} className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600'>
+                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/remove.png' alt="remove" />
+                                Drop Images
+                            </div>
+                            {imageList.map((image, index) => (
+                                <div key={index} className="image-item image-container text-center w-32 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer">
+                                    <img className='m-auto mt-1 mb-3' src={image['data_url']} alt="" width="60" />
+                                    <div className="image-item__btn-wrapper flex flex-wrap justify-center">
+                                        <img className='single-image-icon w-5 mr-2 transform duration-300 hover:scale-110' src='/images/update.png' onClick={() => onImageUpdate(index)} alt='update' />
+                                        <img className='single-image-icon w-5 ml-2 transform duration-300 hover:scale-110' src='/images/remove.png' onClick={() => onImageRemove(index)} alt='remove' />
+                                    </div>
+                                </div>
+                            ))}
+
+                        </fieldset>
+                    )}
+
+                </ImageUploading>
+                {errors.cnicimages && <h1 className='text-danger mt-[-15px] mb-6'>{errors.cnicimages}</h1>}
+
+
+                <p className='fieldheading pt-10 pb-2 text-stone-200'>Commission Rate</p>
+                <Input variant='Outlined' defaultValue={'2.5%'} disabled style={{ width: '100%', height: 50, fontSize: '18px', marginBottom: 20 }} />
+                <p className='Note text-lg text-blue-500'>Note: The Commission rate for all jewelers is fixed. You can also request for rate change once you are registered and approved. </p>
+
+
+
+                <p className='fieldheading pt-10 pb-2 text-stone-200'>Address</p>
+                <Input variant='Outlined' style={{ width: '100%', height: 50, fontSize: '18px', marginBottom: 20 }} onChange={handleAddressChange} />
+                {errors.address && <h1 className='text-danger mt-[-15px] mb-6'>{errors.address}</h1>}
+
+
+
+                <p className='fieldheading pt-5 pb-2 text-stone-200'>City</p>
+                <Select placeholder="Select the city" style={{ width: '100%', height: 50, marginBottom: 20 }} onChange={handleCityChange}
                     options={[
 
                         { value: 'Islamabad, Pakistan', label: 'Islamabad' },
@@ -575,9 +630,10 @@ const CreateListing = () => {
                         { value: 'Skardu, Pakistan', label: 'Skardu' }
                     ]}
                 />
-                {errors.location && <h1 className='text-danger mt-[-15px] mb-6'>{errors.location}</h1>}
+                {errors.city && <h1 className='text-danger mt-[-15px] mb-6'>{errors.city}</h1>}
 
-                <p className='Note text-lg text-blue-500'>Note: The listing will go for admin approval before getting posted which may take some time. Approval status can be seen from Profile Menu - View listings. </p>
+                <p className='Note text-lg text-blue-500'>Note: The request will go for admin approval which may take some time. Approval status can be seen by clicking on the join platform button on the home page. </p>
+
                 <p className='text-center pr-16 pt-8'>
                     <button
                         type="button"
@@ -588,8 +644,9 @@ const CreateListing = () => {
                     </button>
                 </p>
             </form>
+
         </div>
     );
-};
+}
 
-export default CreateListing;
+export default JewelerRequest
