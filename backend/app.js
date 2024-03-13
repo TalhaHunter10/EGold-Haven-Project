@@ -23,7 +23,7 @@ mongoose.connect(process.env.MONGO_URI,{
 //middleware
 app.use(cookieParser())
 app.use(morgan('dev'));
-app.use(cors({origin: "http://localhost:3000" , credentials:true}));
+app.use(cors({origin: process.env.FRONTEND_URL , credentials:true}));
 app.use(express.json())
 app.use("/uploads", express.static(path.join(__dirname, "uploads")))
 

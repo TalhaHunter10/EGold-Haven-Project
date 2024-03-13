@@ -29,7 +29,14 @@ const getStats = asyncHandler(async (req, res) => {
     });
 });
 
+const getJewelerRequests = asyncHandler(async (req, res) => {
+    const allJewelers = await Jeweler.find();
+
+    res.status(200).json(allJewelers);
+});
+
 module.exports = {
     getStats,
+    getJewelerRequests
 }
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import './about.css'
 import { useState } from 'react';
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import { TEInput, TERipple } from "tw-elements-react";

@@ -21,6 +21,10 @@ import CreateListing from './components/createlisting/createlisting';
 import AdminDashboard from './components/admindashboard/admindashboard';
 import { getloginStatus } from './services/authservice';
 import JewelerRequest from './components/jewelerrequest/jewelerrequest';
+import JewelerRequests from './components/admindashboard/jewelerrequests';
+import ListingDetails from './components/listingcontainers/listingdetails';
+import ScrollToTop from './components/ScrollToTop';
+import PageNotFound from './components/PageNotFound';
 
 
 axios.defaults.withCredentials = true;
@@ -29,18 +33,6 @@ function App() {
   const dispatch = useDispatch();
   const [isAdmin, setIsAdmin] = useState('')
   const userstatus = useSelector(selectStatus);
-
-  useEffect (() => {
-    async function loginStatus() {
-      try {
-        const status = await getloginStatus();
-        dispatch(SET_LOGIN(status));
-      } catch (error) {
-        console.error("Error while fetching login status:", error);
-      }
-    }
-    loginStatus();
-  }, [dispatch]);
 
   useEffect(() => {
     setIsAdmin(userstatus === 'admin');
@@ -60,7 +52,7 @@ function App() {
       return (
         <Routes>
           <Route path="/home" element={<AdminDashboard />} />
-          
+          <Route path="/jewelerrequests" element={<JewelerRequests/>} />
         </Routes>
       );
     } else {
@@ -80,6 +72,10 @@ function App() {
               <Route path="/forgotpassword" element={<ForgotPassword/>} />
               <Route path="/resetpassword/:resetToken" element={<ResetPassword/>} />
               <Route path="/createlisting" element={<CreateListing/>} />
+              <Route path="/listingdetails/:id" element={<ListingDetails/>} />
+
+
+              <Route path="*" element={<PageNotFound/>} />
             </Routes>
           </div>
         </div>
@@ -96,6 +92,7 @@ function App() {
 
   return (
     <BrowserRouter>
+    <ScrollToTop />
     <ToastContainer limit={3} bodyClassName={"customtoastbody"}/>
         {renderLayout()}
     </BrowserRouter>

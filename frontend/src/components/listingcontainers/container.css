@@ -8,7 +8,16 @@
     src: url('/public/fonts/Montserrat-Light.ttf')
 }
 
+@font-face {
+    font-family: Msemi;
+    src: url('/public/fonts/Montserrat-SemiBold.ttf')
+}
+
 .containertext{
     font-family: Mlight;
     font-size: 14px;
+}
+
+.container-title{
+    font-family: MLight;
 }

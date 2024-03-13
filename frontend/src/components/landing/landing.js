@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import './landing.css'
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import ContainerVertical from '../listingcontainers/containervertical';
 import { Link, useNavigate } from 'react-router-dom';
@@ -7,8 +6,15 @@ import { useSelector } from 'react-redux';
 import { selectIsLoggedIn, selectStatus } from '../../redux/features/auth/authSlice';
 import { toast } from 'react-toastify';
 import { Button, Modal } from 'antd';
+import { getLiveListings } from '../../services/listingservice';
+import { FileAnimationsmall } from '../loader/loader';
+import ContainerVertical2 from '../listingcontainers/containervertical2';
 
 const Landing = () => {
+
+  useEffect(() => {
+    fetchdata();
+  }, []);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -31,28 +37,44 @@ const Landing = () => {
   }, [userstatus]);
 
   const handlelisting = (e) => {
-    if ( isLoggedIn ) {
+    if (isLoggedIn) {
       navigate('/createlisting');
     }
-    else{
+    else {
       toast.error('Login first to create listing !')
       navigate('/login');
     }
   };
 
   const handleRequest = () => {
-    if(isLoggedIn){
-    if(userstatus === 'requested'){
-      showModal();
-    }else if(userstatus === 'user'){
-      navigate('/jewelerrequest')
+    if (isLoggedIn) {
+      if (userstatus === 'requested') {
+        showModal();
+      } else if (userstatus === 'user') {
+        navigate('/jewelerrequest')
+      }
+    } else {
+      toast.error('Please login first to request for Jeweler status ! ')
+      navigate('/login')
     }
-  }else{
-    toast.error('Please login first to request for Jeweler status ! ')
-    navigate('/login')
-  }
 
   }
+
+
+  const [listing, setListing] = useState([])
+
+  const fetchdata = async () => {
+    try {
+      const data = await getLiveListings();
+      setListing(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchdata();
+  }, []);
 
 
   return (
@@ -62,13 +84,13 @@ const Landing = () => {
         open={isModalOpen}
         onCancel={handleOk}
         footer={[
-          <Button key="submit"  onClick={handleOk} className="bg-yellow-600 border-yellow-600">
+          <Button key="submit" onClick={handleOk} className="bg-yellow-600 border-yellow-600">
             Ok
           </Button>,
         ]}
       >
         <p className='text-base'>Your request for Jeweler Status is Pending Approval which may take some time.. Kindly check after 24 hours.. Thank you for being patient !</p>
-        
+
       </Modal>
 
       <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between mt-5">
@@ -85,37 +107,37 @@ const Landing = () => {
         </div>
 
         <div className='mb-12 md:mb-0 md:w-9/12 lg:w-6/12 xl:w-6/12 p-10'>
-          {userstatus === 'user' || userstatus === 'requested'? (
+          {userstatus === 'user' || userstatus === 'requested' ? (
             <div>
-            <h1 className='headingtextlanding text-stone-200 text-center mb-6'>Professional Jewelers, <span className='text-yellow-600'>Join Us</span></h1>
-            <p className='bodytextlanding text-stone-200 text-justify mb-6'>Attention jewelers! Join <span className='text-yellow-600'>EGold Haven</span> to showcase your gold creations. Earn commissions for certifying items, and manage your own store page to feature your unique designs. Let your craft shine, and start shaping gold elegance today!</p>
-            <div className='text-center mt-8 buttontextlanding'>
-              <button
-                type="button"
-                onClick={handleRequest}
-                className=" inline-block rounded bg-warning-600 px-16 pb-2.5 pt-3 text-sm text-bold font-medium uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600">
-                Join Platform
-              </button>
-            </div>
+              <h1 className='headingtextlanding text-stone-200 text-center mb-6'>Professional Jewelers, <span className='text-yellow-600'>Join Us</span></h1>
+              <p className='bodytextlanding text-stone-200 text-justify mb-6'>Attention jewelers! Join <span className='text-yellow-600'>EGold Haven</span> to showcase your gold creations. Earn commissions for certifying items, and manage your own store page to feature your unique designs. Let your craft shine, and start shaping gold elegance today!</p>
+              <div className='text-center mt-8 buttontextlanding'>
+                <button
+                  type="button"
+                  onClick={handleRequest}
+                  className=" inline-block rounded bg-warning-600 px-16 pb-2.5 pt-3 text-sm text-bold font-medium uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600">
+                  Join Platform
+                </button>
+              </div>
             </div>
           ) : userstatus === 'jeweler' ? (
             <div>
-            <h1 className='headingtextlanding text-stone-200 text-center mb-6'>Manage Your <span className='text-yellow-600'>Store Page</span></h1>
-            <p className='bodytextlanding text-stone-200 text-justify mb-6'>As a registered jeweler, you'll have the chance to curate your own store page on <span className='text-yellow-600'>EGold Haven</span> allowing you to showcase your unique designs and reach a wider audience. Handle certification requests and earn commissions. Click below to visit page!</p>
-            <div className='text-center mt-8 buttontextlanding'>
-              <button
-                type="button"
-                className=" inline-block rounded bg-warning-600 px-16 pb-2.5 pt-3 text-sm text-bold font-medium uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600">
-                Store Page
-              </button>
+              <h1 className='headingtextlanding text-stone-200 text-center mb-6'>Manage Your <span className='text-yellow-600'>Store Page</span></h1>
+              <p className='bodytextlanding text-stone-200 text-justify mb-6'>As a registered jeweler, you'll have the chance to curate your own store page on <span className='text-yellow-600'>EGold Haven</span> allowing you to showcase your unique designs and reach a wider audience. Handle certification requests and earn commissions. Click below to visit page!</p>
+              <div className='text-center mt-8 buttontextlanding'>
+                <button
+                  type="button"
+                  className=" inline-block rounded bg-warning-600 px-16 pb-2.5 pt-3 text-sm text-bold font-medium uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600">
+                  Store Page
+                </button>
+              </div>
             </div>
-            </div>
-          ): (
+          ) : (
             <div>
 
             </div>
           )}
-          
+
         </div>
       </div>
 
@@ -231,14 +253,17 @@ const Landing = () => {
         <h1 className='headingtextlanding pl-8'>Browse Listings</h1>
         <p className='buttontextlanding text-right mt-4 mr-8'><Link to="" className='text-stone-200 hover:text-yellow-600 text-xl'>View More</Link></p>
         <div className='categories flex flex-wrap  justify-center md:justify-start pt-5 pb-5 '>
-          <ContainerVertical />
-          <ContainerVertical />
-          <ContainerVertical />
-          <ContainerVertical />
-          <ContainerVertical />
-          <ContainerVertical />
-          <ContainerVertical />
-          <ContainerVertical />
+          {listing.length === 0 ? (
+            <FileAnimationsmall />
+          ) : (
+            <ContainerVertical listing={listing} />
+          )}
+
+          {listing.length === 0 ? (
+            <div></div>
+          ) : (
+            <ContainerVertical2 listing={listing} />
+          )}
         </div>
       </div>
 

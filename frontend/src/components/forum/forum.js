@@ -1,4 +1,4 @@
-import './forum.css'
+
 import React from 'react'
 
 const forum = () => {

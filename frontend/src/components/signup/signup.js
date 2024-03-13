@@ -33,7 +33,7 @@ const Signup = () => {
     if (!FormData.name.trim()) {
       validationErrors.name = 'Name is required !';
     } else if (!/^[a-zA-Z0-9]+([a-zA-Z0-9](_|-| )[a-zA-Z0-9])*[a-zA-Z0-9]+$/.test(FormData.name)) {
-      validationErrors.email = 'Enter a Valid Name !';
+      validationErrors.name = 'Enter a Valid Name !';
     }
 
     if (!FormData.email.trim()) {

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './jewelerrequest.css'
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import { useNavigate } from 'react-router-dom';
 import { Select, Input } from 'antd';
@@ -25,7 +24,7 @@ const JewelerRequest = () => {
     const [cnicno, setCnicNo] = useState('');
     const [phoneno, setPhoneNo] = useState('');
     const [storename, setStoreName] = useState('');
-    const [commissionrate, setCommissionRate] = useState('2.5');
+    const commissionrate = '2.5';
     const [shopno, setShopNo] = useState('');
     const [address, setAddress] = useState('');
     const [city, setCity] = useState('');
@@ -95,7 +94,7 @@ const JewelerRequest = () => {
         if (!storename.trim()) {
             validationErrors.storename = 'Store Name is required !';
         } else if (!/^[a-zA-Z0-9]+([a-zA-Z0-9](_|-| )[a-zA-Z0-9])*[a-zA-Z0-9]+$/.test(storename)) {
-            validationErrors.email = 'Enter a Valid Store Name !';
+            validationErrors.storename = 'Enter a Valid Store Name !';
         }
 
         if (!shopno.trim()) {
@@ -190,196 +189,28 @@ const JewelerRequest = () => {
                 Request for Jeweler Status
             </p>
 
-            <form className='p-5 m-5 border-2 border-yellow-600 rounded-lg'>
+            <form className='p-10 m-5 border-2 border-yellow-600 rounded-lg'>
 
-                <p className='fieldheading pt-10 pb-2 text-stone-200'>Store Name</p>
-                <Input variant='Outlined' style={{ width: '100%', height: 50, fontSize: '18px', marginBottom: 20 }} onChange={handleStoreNameChange} />
+            <p className='formheading text-4xl pt-4 pb-4 text-stone-200 border-b-2 border-yellow-600 '>Fill The Store Details</p>
+
+                <p className='field-heading pt-6 pb-2 text-stone-200'>Store Name</p>
+                <Input  style={{ width: '100%', height: 40, fontSize: '18px', marginBottom: 20 }} onChange={handleStoreNameChange} />
                 {errors.storename && <h1 className='text-danger mt-[-15px] mb-6'>{errors.storename}</h1>}
 
 
-                <p className='fieldheading pt-10 pb-2 text-stone-200'>Shop / Store Number (Area / Building wise)</p>
-                <Input variant='Outlined' style={{ width: '100%', height: 50, fontSize: '18px', marginBottom: 20 }} onChange={handleShopNoChange} />
+                <p className='field-heading pb-2 text-stone-200'>Shop / Store Number (Area / Building wise)</p>
+                <Input  style={{ width: '100%', height: 40, fontSize: '18px', marginBottom: 20 }} onChange={handleShopNoChange} />
                 {errors.shopno && <h1 className='text-danger mt-[-15px] mb-6'>{errors.shopno}</h1>}
 
 
-                <p className='fieldheading pt-5 pb-2 text-stone-200'>Store Cover Image</p>
-                <ImageUploading
-                    multiple
-                    value={coverimage}
-                    onChange={onCoverChange}
-                    maxNumber={covermaxNumber}
-                    dataURLKey="data_url"
-                >
-                    {({
-                        imageList,
-                        onImageUpload,
-                        onImageRemoveAll,
-                        onImageUpdate,
-                        onImageRemove,
-                        isDragging,
-                        dragProps,
-                    }) => (
-
-                        <fieldset className="upload__image-wrapper upload-container flex flex-wrap justify-left border-2 border-stone-200 mb-8">
-                            <legend className='text-stone-300 ml-6 pl-2 pr-2'>Store Front (Max - 1)</legend>
-                            <div className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600'
-                                style={isDragging ? { color: 'white' } : undefined}
-                                onClick={onImageUpload}
-                                {...dragProps}
-                            >
-                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/add.png' alt="add" />
-                                Click / Drop
-                            </div>
-                            &nbsp;
-                            <div onClick={onImageRemoveAll} className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600'>
-                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/remove.png' alt="remove" />
-                                Drop Images
-                            </div>
-                            {imageList.map((image, index) => (
-                                <div key={index} className="image-item image-container text-center w-32 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer">
-                                    <img className='m-auto mt-1 mb-3' src={image['data_url']} alt="" width="60" />
-                                    <div className="image-item__btn-wrapper flex flex-wrap justify-center">
-                                        <img className='single-image-icon w-5 mr-2 transform duration-300 hover:scale-110' src='/images/update.png' onClick={() => onImageUpdate(index)} alt='update' />
-                                        <img className='single-image-icon w-5 ml-2 transform duration-300 hover:scale-110' src='/images/remove.png' onClick={() => onImageRemove(index)} alt='remove' />
-                                    </div>
-                                </div>
-                            ))}
-
-                        </fieldset>
-                    )}
-
-                </ImageUploading>
-                {errors.coverimage && <h1 className='text-danger mt-[-15px] mb-6'>{errors.coverimage}</h1>}
-
-
-
-                <p className='fieldheading pt-5 pb-2 text-stone-200'>Store Images</p>
-                <ImageUploading
-                    multiple
-                    value={storeimages}
-                    onChange={onStoreChange}
-                    maxNumber={storemaxNumber}
-                    dataURLKey="data_url"
-                >
-                    {({
-                        imageList,
-                        onImageUpload,
-                        onImageRemoveAll,
-                        onImageUpdate,
-                        onImageRemove,
-                        isDragging,
-                        dragProps,
-                    }) => (
-
-                        <fieldset className="upload__image-wrapper upload-container flex flex-wrap justify-left border-2 border-stone-200 mb-8">
-                            <legend className='text-stone-300 ml-6 pl-2 pr-2'>Store Inside Images (Max - 4)</legend>
-                            <div className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600'
-                                style={isDragging ? { color: 'white' } : undefined}
-                                onClick={onImageUpload}
-                                {...dragProps}
-                            >
-                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/add.png' alt="add" />
-                                Click / Drop
-                            </div>
-                            &nbsp;
-                            <div onClick={onImageRemoveAll} className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600'>
-                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/remove.png' alt="remove" />
-                                Drop Images
-                            </div>
-                            {imageList.map((image, index) => (
-                                <div key={index} className="image-item image-container text-center w-32 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer">
-                                    <img className='m-auto mt-1 mb-3' src={image['data_url']} alt="" width="60" />
-                                    <div className="image-item__btn-wrapper flex flex-wrap justify-center">
-                                        <img className='single-image-icon w-5 mr-2 transform duration-300 hover:scale-110' src='/images/update.png' onClick={() => onImageUpdate(index)} alt='update' />
-                                        <img className='single-image-icon w-5 ml-2 transform duration-300 hover:scale-110' src='/images/remove.png' onClick={() => onImageRemove(index)} alt='remove' />
-                                    </div>
-                                </div>
-                            ))}
-
-                        </fieldset>
-                    )}
-
-                </ImageUploading>
-                {errors.storeimages && <h1 className='text-danger mt-[-15px] mb-6'>{errors.storeimages}</h1>}
-
-
-
-                <p className='fieldheading pt-10 pb-2 text-stone-200'>Phone #</p>
-                <Input variant='Outlined' placeholder='03###########' style={{ width: '100%', height: 50, fontSize: '18px', marginBottom: 20 }} onChange={handlePhoneNoChange} />
-                {errors.phoneno && <h1 className='text-danger mt-[-15px] mb-6'>{errors.phoneno}</h1>}
-
-
-
-
-                <p className='fieldheading pt-10 pb-2 text-stone-200'>CNIC No.</p>
-                <Input variant='Outlined' placeholder='#############' style={{ width: '100%', height: 50, fontSize: '18px', marginBottom: 20 }} onChange={handleCnicNoChange} />
-                {errors.cnicno && <h1 className='text-danger mt-[-15px] mb-6'>{errors.cnicno}</h1>}
-
-
-                <p className='fieldheading pt-5 pb-2 text-stone-200'>Cnic Images</p>
-                <ImageUploading
-                    multiple
-                    value={cnicimages}
-                    onChange={onCnicChange}
-                    maxNumber={cnicmaxNumber}
-                    dataURLKey="data_url"
-                >
-                    {({
-                        imageList,
-                        onImageUpload,
-                        onImageRemoveAll,
-                        onImageUpdate,
-                        onImageRemove,
-                        isDragging,
-                        dragProps,
-                    }) => (
-
-                        <fieldset className="upload__image-wrapper upload-container flex flex-wrap justify-left border-2 border-stone-200 mb-8">
-                            <legend className='text-stone-300 ml-6 pl-2 pr-2'>Front and Back</legend>
-                            <div className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600'
-                                style={isDragging ? { color: 'white' } : undefined}
-                                onClick={onImageUpload}
-                                {...dragProps}
-                            >
-                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/add.png' alt="add" />
-                                Click / Drop
-                            </div>
-                            &nbsp;
-                            <div onClick={onImageRemoveAll} className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600'>
-                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/remove.png' alt="remove" />
-                                Drop Images
-                            </div>
-                            {imageList.map((image, index) => (
-                                <div key={index} className="image-item image-container text-center w-32 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer">
-                                    <img className='m-auto mt-1 mb-3' src={image['data_url']} alt="" width="60" />
-                                    <div className="image-item__btn-wrapper flex flex-wrap justify-center">
-                                        <img className='single-image-icon w-5 mr-2 transform duration-300 hover:scale-110' src='/images/update.png' onClick={() => onImageUpdate(index)} alt='update' />
-                                        <img className='single-image-icon w-5 ml-2 transform duration-300 hover:scale-110' src='/images/remove.png' onClick={() => onImageRemove(index)} alt='remove' />
-                                    </div>
-                                </div>
-                            ))}
-
-                        </fieldset>
-                    )}
-
-                </ImageUploading>
-                {errors.cnicimages && <h1 className='text-danger mt-[-15px] mb-6'>{errors.cnicimages}</h1>}
-
-
-                <p className='fieldheading pt-10 pb-2 text-stone-200'>Commission Rate</p>
-                <Input variant='Outlined' defaultValue={'2.5%'} disabled style={{ width: '100%', height: 50, fontSize: '18px', marginBottom: 20 }} />
-                <p className='Note text-lg text-blue-500'>Note: The Commission rate for all jewelers is fixed. You can also request for rate change once you are registered and approved. </p>
-
-
-
-                <p className='fieldheading pt-10 pb-2 text-stone-200'>Address</p>
-                <Input variant='Outlined' style={{ width: '100%', height: 50, fontSize: '18px', marginBottom: 20 }} onChange={handleAddressChange} />
+                <p className='field-heading pb-2 text-stone-200'>Address</p>
+                <Input style={{ width: '100%', height: 40, fontSize: '18px', marginBottom: 20 }} onChange={handleAddressChange} />
                 {errors.address && <h1 className='text-danger mt-[-15px] mb-6'>{errors.address}</h1>}
 
 
 
-                <p className='fieldheading pt-5 pb-2 text-stone-200'>City</p>
-                <Select placeholder="Select the city" style={{ width: '100%', height: 50, marginBottom: 20 }} onChange={handleCityChange}
+                <p className='field-heading pb-2 text-stone-200'>City</p>
+                <Select placeholder="Select the city" style={{ width: '100%', height: 40, marginBottom: 20 }} onChange={handleCityChange}
                     options={[
 
                         { value: 'Islamabad, Pakistan', label: 'Islamabad' },
@@ -632,9 +463,177 @@ const JewelerRequest = () => {
                 />
                 {errors.city && <h1 className='text-danger mt-[-15px] mb-6'>{errors.city}</h1>}
 
-                <p className='Note text-lg text-blue-500'>Note: The request will go for admin approval which may take some time. Approval status can be seen by clicking on the join platform button on the home page. </p>
 
-                <p className='text-center pr-16 pt-8'>
+                <p className='field-heading pb-2 text-stone-200'>Store Cover Image</p>
+                <ImageUploading
+                    multiple
+                    value={coverimage}
+                    onChange={onCoverChange}
+                    maxNumber={covermaxNumber}
+                    dataURLKey="data_url"
+                >
+                    {({
+                        imageList,
+                        onImageUpload,
+                        onImageRemoveAll,
+                        onImageUpdate,
+                        onImageRemove,
+                        isDragging,
+                        dragProps,
+                    }) => (
+
+                        <fieldset className="upload__image-wrapper upload-container flex flex-wrap justify-left border-2 border-stone-200 mb-8">
+                            <legend className='text-stone-300 ml-6 pl-2 pr-2'>Store Front (Max - 1)</legend>
+                            <div className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600'
+                                style={isDragging ? { color: 'white' } : undefined}
+                                onClick={onImageUpload}
+                                {...dragProps}
+                            >
+                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/add.png' alt="add" />
+                                Click / Drop
+                            </div>
+                            &nbsp;
+                            <div onClick={onImageRemoveAll} className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600'>
+                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/remove.png' alt="remove" />
+                                Drop Images
+                            </div>
+                            {imageList.map((image, index) => (
+                                <div key={index} className="image-item image-container text-center w-32 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer">
+                                    <img className='m-auto mt-1 mb-3' src={image['data_url']} alt="" width="60" />
+                                    <div className="image-item__btn-wrapper flex flex-wrap justify-center">
+                                        <img className='single-image-icon w-5 mr-2 transform duration-300 hover:scale-110' src='/images/update.png' onClick={() => onImageUpdate(index)} alt='update' />
+                                        <img className='single-image-icon w-5 ml-2 transform duration-300 hover:scale-110' src='/images/remove.png' onClick={() => onImageRemove(index)} alt='remove' />
+                                    </div>
+                                </div>
+                            ))}
+
+                        </fieldset>
+                    )}
+
+                </ImageUploading>
+                {errors.coverimage && <h1 className='text-danger mt-[-15px] mb-6'>{errors.coverimage}</h1>}
+
+
+
+                <p className='field-heading pb-2 text-stone-200'>Store Images</p>
+                <ImageUploading
+                    multiple
+                    value={storeimages}
+                    onChange={onStoreChange}
+                    maxNumber={storemaxNumber}
+                    dataURLKey="data_url"
+                >
+                    {({
+                        imageList,
+                        onImageUpload,
+                        onImageRemoveAll,
+                        onImageUpdate,
+                        onImageRemove,
+                        isDragging,
+                        dragProps,
+                    }) => (
+
+                        <fieldset className="upload__image-wrapper upload-container flex flex-wrap justify-left border-2 border-stone-200 mb-8">
+                            <legend className='text-stone-300 ml-6 pl-2 pr-2'>Store Inside Images (Max - 4)</legend>
+                            <div className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600'
+                                style={isDragging ? { color: 'white' } : undefined}
+                                onClick={onImageUpload}
+                                {...dragProps}
+                            >
+                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/add.png' alt="add" />
+                                Click / Drop
+                            </div>
+                            &nbsp;
+                            <div onClick={onImageRemoveAll} className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600'>
+                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/remove.png' alt="remove" />
+                                Drop Images
+                            </div>
+                            {imageList.map((image, index) => (
+                                <div key={index} className="image-item image-container text-center w-32 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer">
+                                    <img className='m-auto mt-1 mb-3' src={image['data_url']} alt="" width="60" />
+                                    <div className="image-item__btn-wrapper flex flex-wrap justify-center">
+                                        <img className='single-image-icon w-5 mr-2 transform duration-300 hover:scale-110' src='/images/update.png' onClick={() => onImageUpdate(index)} alt='update' />
+                                        <img className='single-image-icon w-5 ml-2 transform duration-300 hover:scale-110' src='/images/remove.png' onClick={() => onImageRemove(index)} alt='remove' />
+                                    </div>
+                                </div>
+                            ))}
+
+                        </fieldset>
+                    )}
+
+                </ImageUploading>
+                {errors.storeimages && <h1 className='text-danger mt-[-15px] mb-6'>{errors.storeimages}</h1>}
+
+                <p className='formheading text-4xl pt-8 pb-4 text-stone-200 border-b-2 border-yellow-600 '>Fill Personal Details</p>
+
+                <p className='field-heading pt-6 pb-2 text-stone-200'>Phone #</p>
+                <Input  placeholder='03###########' style={{ width: '100%', height: 40, fontSize: '18px', marginBottom: 20 }} onChange={handlePhoneNoChange} />
+                {errors.phoneno && <h1 className='text-danger mt-[-15px] mb-6'>{errors.phoneno}</h1>}
+
+                <p className='field-heading pb-2 text-stone-200'>Commission Rate</p>
+                <Input variant='Outlined' defaultValue={'2.5%'} disabled style={{ width: '100%', height: 50, fontSize: '18px', marginBottom: 20 }} />
+                <p className='Note text-lg text-blue-300 pt-2 md:p-8 text-justify'>Note: The Commission rate for all jewelers is fixed. You can also request for rate change once you are registered and approved. </p>
+
+
+
+                <p className='field-heading pt-5 pb-2 text-stone-200'>CNIC No.</p>
+                <Input placeholder='#############' style={{ width: '100%', height: 40, fontSize: '18px', marginBottom: 20 }} onChange={handleCnicNoChange} />
+                {errors.cnicno && <h1 className='text-danger mt-[-15px] mb-6'>{errors.cnicno}</h1>}
+
+
+                <p className='field-heading pb-2 text-stone-200'>Cnic Images</p>
+                <ImageUploading
+                    multiple
+                    value={cnicimages}
+                    onChange={onCnicChange}
+                    maxNumber={cnicmaxNumber}
+                    dataURLKey="data_url"
+                >
+                    {({
+                        imageList,
+                        onImageUpload,
+                        onImageRemoveAll,
+                        onImageUpdate,
+                        onImageRemove,
+                        isDragging,
+                        dragProps,
+                    }) => (
+
+                        <fieldset className="upload__image-wrapper upload-container flex flex-wrap justify-left border-2 border-stone-200 mb-8">
+                            <legend className='text-stone-300 ml-6 pl-2 pr-2'>Front and Back</legend>
+                            <div className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600'
+                                style={isDragging ? { color: 'white' } : undefined}
+                                onClick={onImageUpload}
+                                {...dragProps}
+                            >
+                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/add.png' alt="add" />
+                                Click / Drop
+                            </div>
+                            &nbsp;
+                            <div onClick={onImageRemoveAll} className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600'>
+                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/remove.png' alt="remove" />
+                                Drop Images
+                            </div>
+                            {imageList.map((image, index) => (
+                                <div key={index} className="image-item image-container text-center w-32 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer">
+                                    <img className='m-auto mt-1 mb-3' src={image['data_url']} alt="" width="60" />
+                                    <div className="image-item__btn-wrapper flex flex-wrap justify-center">
+                                        <img className='single-image-icon w-5 mr-2 transform duration-300 hover:scale-110' src='/images/update.png' onClick={() => onImageUpdate(index)} alt='update' />
+                                        <img className='single-image-icon w-5 ml-2 transform duration-300 hover:scale-110' src='/images/remove.png' onClick={() => onImageRemove(index)} alt='remove' />
+                                    </div>
+                                </div>
+                            ))}
+
+                        </fieldset>
+                    )}
+
+                </ImageUploading>
+                {errors.cnicimages && <h1 className='text-danger mt-[-15px] mb-6'>{errors.cnicimages}</h1>}
+
+
+                <p className='Note text-lg text-blue-300 pt-8 md:p-8 text-justify'>Note: The request will go for admin approval which may take some time. Approval status can be seen by clicking on the join platform button on the home page. </p>
+
+                <p className='text-center pt-8'>
                     <button
                         type="button"
                         onClick={handleSubmit}

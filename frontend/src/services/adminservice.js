@@ -18,3 +18,19 @@ export const getStats = async () => {
             toast.error(message)
     }
 };
+
+//Get Jeweler Requests
+export const getJewelerRequests = async () => {
+    try{
+        const response = await axios.get(`${BACKEND_URL}/api/admin/getjewelerrequests`)
+            
+        if(response.status === 200){
+            toast.success("Data Fetched and Updated Successfully !!!")
+        }
+        return response.data;
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+};

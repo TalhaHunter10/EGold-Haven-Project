@@ -33,7 +33,25 @@ export function FileAnimation() {
 
     return (
         <div className='file-animation'>
-            <Lottie options={defaultOptions} height={400} width={800}/> 
+            <Lottie options={defaultOptions} height={300} width={600}/> 
+        </div>
+    );
+}
+
+
+export function FileAnimationsmall() {
+    const defaultOptions = {
+        loop: true,
+        autoplay: true,
+        animationData: fileanimation,
+        rendererSettings: {
+            preserveAspectRatio: 'xMidYMid slice'
+        }
+    };
+
+    return (
+        <div className='file-animation-small'>
+            <Lottie options={defaultOptions} height={300} width={600}/> 
         </div>
     );
 }

@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import { logoutUser } from '../../services/authservice';
-import { SET_LOGIN, SET_NAME, SET_STATUS } from '../../redux/features/auth/authSlice';
+import { SET_LOGIN, SET_NAME, SET_STATUS, selectIsLoggedIn } from '../../redux/features/auth/authSlice';
 import { getStats } from '../../services/adminservice';
 import { Loader } from '../loader/loader';
 
 const AdminDashboard = () => {
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -26,8 +29,6 @@ const AdminDashboard = () => {
         productsRequests: 'reload'
     })
 
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const logout = async () => {
         await logoutUser();
@@ -104,8 +105,8 @@ const AdminDashboard = () => {
                                 </tr>
                                 <tr>
                                     <td colSpan={2} className="flex justify-left m-5">
-                                        <button className="m-3 text-base bg-transparent border border-dashed border-danger-600 text-danger-600 rounded-lg px-8 py-2 hover:bg-danger-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-danger-500">Inspect Jeweler Requests</button>
-                                        <button className="m-3 text-base bg-transparent border border-dashed border-danger-600 text-danger-600 rounded-lg px-8 py-2 hover:bg-danger-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-danger-500">Inspect User Profiles</button>
+                                        <Link to='/jewelerrequests' className="m-3 text-base bg-transparent border border-dashed border-danger-600 text-danger-600 rounded-lg px-8 py-2 hover:bg-danger-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-danger-500">Inspect Jeweler Requests</Link>
+                                        <Link className="m-3 text-base bg-transparent border border-dashed border-danger-600 text-danger-600 rounded-lg px-8 py-2 hover:bg-danger-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-danger-500">Inspect User Profiles</Link>
                                     </td>
                                 </tr>
                             </tbody>

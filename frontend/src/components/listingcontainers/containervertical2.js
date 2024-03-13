@@ -17,10 +17,10 @@ const getTimeSinceCreation = (createdAt) => {
       const hoursDiff = Math.floor(timeDiff / (1000 * 60 * 60));
       return `${hoursDiff} hour${hoursDiff > 1 ? 's' : ''} ago`;
     }
-  };
+};
 
 
-  const capitalizeFirstLetter = (str) => {
+const capitalizeFirstLetter = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
@@ -36,10 +36,10 @@ const formatPriceWithCommas = (price) => {
     return price.toLocaleString();
 };
 
-const ContainerVertical = ({ listing }) => {
+const ContainerVertical2 = ({ listing }) => {
     return (
         <div className="pl-2 pr-2 containertext cursor-pointer mt-1 pb-10 pt-5 flex">
-            {listing.slice(0,4).map((item) => (
+            {listing.slice(4,8).map((item) => (
                 <Link to={`/listingdetails/${item._id}`} key={item._id} className="w-80 transform overflow-hidden rounded-lg bg-stone-600/30 text-stone-200 duration-300 hover:scale-105 m-2">
                     <img className="h-48 w-full object-cover object-center md:h-48 bg-stone-200" src={item.images && item.images.length > 0 ? `http://localhost:5000/${item.images[0].filePath}` : ''} alt="Item" />
                     <div className="p-4">
@@ -63,4 +63,4 @@ const ContainerVertical = ({ listing }) => {
     );
 }
 
-export default ContainerVertical;
+export default ContainerVertical2;
