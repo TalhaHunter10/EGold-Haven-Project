@@ -34,6 +34,24 @@ export const getLiveListings = async () => {
     }
 };
 
+
+//Get Similar Listings
+export const getSimilarListings = async (userdata, excludeId) => {
+    try{
+        const response = await axios.get(`${BACKEND_URL}/api/listings/getsimilarlistings`, {
+            params: {
+                category: userdata,
+                excludeId: excludeId
+            }
+        })
+        return response.data;
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+};
+
 //Get Listings by Id
 export const getListingsById = async (id) => {
     try{

@@ -58,6 +58,15 @@ const getLiveListings = asyncHandler(async (req, res) => {
     res.status(200).json(liveListings);
 });
 
+const getSimilarListings = asyncHandler(async (req, res) => {
+
+    const { category } = req.query;
+    const { excludeId } = req.query;
+
+    const similarListings = await Listing.find({ status: 'live', category: category, _id: { $ne: excludeId } } ).sort({ createdAt: -1 });
+    res.status(200).json(similarListings);
+});
+
 const getListingsById = asyncHandler(async (req, res) => {
     const {id} = req.params;
 
@@ -82,6 +91,7 @@ const getListingsById = asyncHandler(async (req, res) => {
 module.exports = {
     createListing,
     getLiveListings,
-    getListingsById
+    getListingsById,
+    getSimilarListings
 
 }

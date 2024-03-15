@@ -222,7 +222,7 @@ const Header = () => {
             >
                 <MenuItem onClick={handleClose}>
                     <Avatar />
-                    <span className='headerbodytext'> My Profile ({userName}) </span>
+                    <span className='headerbodytext'> My Profile ({userName.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}) </span>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                     <ListIcon style={{

@@ -7,7 +7,7 @@
 
 @font-face {
   font-family: Llight;
-  src: url('/public/fonts/Lato-Light.ttf')
+  src: url('/public/fonts/Raleway-Light.ttf')
 }
 
 
@@ -204,3 +204,58 @@ body {
 .modal-button-cancel{
   font-family: Mlight;
 }
+
+
+
+/* Listing Page*/
+.ant-carousel .slick-prev{
+  display: block;
+  color: white !important;
+  font-size: 12px;
+  height: 30px;
+  width: 30px;
+}
+
+.ant-carousel .slick-next{
+  display: block;
+  color: white !important;
+  font-size: 12px;
+}
+
+.ant-carousel {
+  .slick-next {
+    &::before {
+      content: '';
+    }
+  }
+  .slick-prev { 
+    &::before {
+      content: '';
+    }
+  }
+}
+
+
+
+::-webkit-scrollbar {
+  width: 7px;
+ 
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* You can change the color */
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #555; /* You can change the color */
+  border-radius: 6px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #ca8a04; /* You can change the color */
+}
+

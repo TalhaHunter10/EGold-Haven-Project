@@ -8,6 +8,7 @@ import { SET_STATUS, selectIsLoggedIn, selectStatus } from '../../redux/features
 import { toast } from 'react-toastify';
 import { Loader } from '../loader/loader';
 import { registerJeweler } from '../../services/jewelerservice';
+import Modal from '../Modal';
 
 const JewelerRequest = () => {
 
@@ -56,27 +57,38 @@ const JewelerRequest = () => {
     }
 
     const [cnicimages, setCnicImages] = React.useState([]);
-
     const cnicmaxNumber = 2;
-
     const onCnicChange = (imageList, addUpdateIndex) => {
         setCnicImages(imageList);
     };
+    const [cnicopen, setCnicOpen] = React.useState(false);
+    const handleRemoveAllCnicImages = () => {
+        setCnicImages([]);
+        setCnicOpen(false);
+    };
+
 
     const [storeimages, setStoreImages] = React.useState([]);
-
     const storemaxNumber = 4;
-
     const onStoreChange = (imageList, addUpdateIndex) => {
         setStoreImages(imageList);
     };
+    const [storeopen, setStoreOpen] = React.useState(false);
+    const handleRemoveAllStoreImages = () => {
+        setStoreImages([]);
+        setStoreOpen(false);
+    };
+
 
     const [coverimage, setCoverImage] = React.useState([]);
-
     const covermaxNumber = 1;
-
     const onCoverChange = (imageList, addUpdateIndex) => {
         setCoverImage(imageList);
+    };
+    const [coveropen, setCoverOpen] = React.useState(false);
+    const handleRemoveAllCoverImage = () => {
+        setCoverImage([]);
+        setCoverOpen(false);
     };
 
 
@@ -191,15 +203,15 @@ const JewelerRequest = () => {
 
             <form className='p-10 m-5 border-2 border-yellow-600 rounded-lg'>
 
-            <p className='formheading text-4xl pt-4 pb-4 text-stone-200 border-b-2 border-yellow-600 '>Fill The Store Details</p>
+                <p className='formheading text-4xl pt-4 pb-4 text-stone-200 border-b-2 border-yellow-600 '>Fill The Store Details</p>
 
                 <p className='field-heading pt-6 pb-2 text-stone-200'>Store Name</p>
-                <Input  style={{ width: '100%', height: 40, fontSize: '18px', marginBottom: 20 }} onChange={handleStoreNameChange} />
+                <Input style={{ width: '100%', height: 40, fontSize: '18px', marginBottom: 20 }} onChange={handleStoreNameChange} />
                 {errors.storename && <h1 className='text-danger mt-[-15px] mb-6'>{errors.storename}</h1>}
 
 
                 <p className='field-heading pb-2 text-stone-200'>Shop / Store Number (Area / Building wise)</p>
-                <Input  style={{ width: '100%', height: 40, fontSize: '18px', marginBottom: 20 }} onChange={handleShopNoChange} />
+                <Input style={{ width: '100%', height: 40, fontSize: '18px', marginBottom: 20 }} onChange={handleShopNoChange} />
                 {errors.shopno && <h1 className='text-danger mt-[-15px] mb-6'>{errors.shopno}</h1>}
 
 
@@ -464,7 +476,7 @@ const JewelerRequest = () => {
                 {errors.city && <h1 className='text-danger mt-[-15px] mb-6'>{errors.city}</h1>}
 
 
-                <p className='field-heading pb-2 text-stone-200'>Store Cover Image</p>
+                <p className='field-heading pt-4 pb-2 text-stone-200'>Store Cover Image</p>
                 <ImageUploading
                     multiple
                     value={coverimage}
@@ -475,31 +487,18 @@ const JewelerRequest = () => {
                     {({
                         imageList,
                         onImageUpload,
-                        onImageRemoveAll,
                         onImageUpdate,
                         onImageRemove,
                         isDragging,
                         dragProps,
                     }) => (
 
-                        <fieldset className="upload__image-wrapper upload-container flex flex-wrap justify-left border-2 border-stone-200 mb-8">
+                        <fieldset className="upload__image-wrapper upload-container flex flex-wrap justify-left border-2 border-stone-200 mb-8 rounded-lg">
                             <legend className='text-stone-300 ml-6 pl-2 pr-2'>Store Front (Max - 1)</legend>
-                            <div className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600'
-                                style={isDragging ? { color: 'white' } : undefined}
-                                onClick={onImageUpload}
-                                {...dragProps}
-                            >
-                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/add.png' alt="add" />
-                                Click / Drop
-                            </div>
-                            &nbsp;
-                            <div onClick={onImageRemoveAll} className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600'>
-                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/remove.png' alt="remove" />
-                                Drop Images
-                            </div>
+
                             {imageList.map((image, index) => (
                                 <div key={index} className="image-item image-container text-center w-32 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer">
-                                    <img className='m-auto mt-1 mb-3' src={image['data_url']} alt="" width="60" />
+                                    <img className='m-auto mt-1 mb-3 h-14 rounded-lg' src={image['data_url']} alt="" />
                                     <div className="image-item__btn-wrapper flex flex-wrap justify-center">
                                         <img className='single-image-icon w-5 mr-2 transform duration-300 hover:scale-110' src='/images/update.png' onClick={() => onImageUpdate(index)} alt='update' />
                                         <img className='single-image-icon w-5 ml-2 transform duration-300 hover:scale-110' src='/images/remove.png' onClick={() => onImageRemove(index)} alt='remove' />
@@ -507,11 +506,35 @@ const JewelerRequest = () => {
                                 </div>
                             ))}
 
+                            {coverimage.length < 1 && (<div className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600 hover:text-yellow-600'
+                                style={isDragging ? { color: 'white' } : undefined}
+                                onClick={onImageUpload}
+                                {...dragProps}
+                            >
+                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/add.png' alt="add" />
+                                Click / Drop
+                            </div>
+                            )}
+                            &nbsp;
+                            <div onClick={() => setCoverOpen(true)} className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg m-5 p-2 cursor-pointer duration-300 hover:border-danger-600 hover:text-danger-600'>
+                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/remove.png' alt="remove" />
+                                Drop Images
+                            </div>
+
                         </fieldset>
                     )}
 
                 </ImageUploading>
                 {errors.coverimage && <h1 className='text-danger mt-[-15px] mb-6'>{errors.coverimage}</h1>}
+
+                <Modal isOpen={coveropen} onClose={() => setCoverOpen(false)}>
+                    <>
+                        <h1 className='modal-heading text-stone-700 text-xl font-bold p-2'>Confirm Removal</h1>
+                        <h3 className='modal-text p-2 text-lg font-semibold text-stone-700 '>Are you sure you want to remove all images?</h3>
+                        <button className='modal-button-ok font-semibold border-2 border-danger-600 text-danger-600 text-base transform duration:300 hover:border-yellow-600 hover:text-yellow-600 px-4 p-1 m-5 rounded-lg' onClick={handleRemoveAllCoverImage}>Confirm</button>
+                        <button className='modal-button-cancel font-semibold border-2 border-primary-600 text-primary-600 text-base transform duration:300 hover:border-yellow-600 hover:text-yellow-600 px-4 p-1 rounded-lg' onClick={() => setCoverOpen(false)}>Cancel</button>
+                    </>
+                </Modal>
 
 
 
@@ -526,31 +549,18 @@ const JewelerRequest = () => {
                     {({
                         imageList,
                         onImageUpload,
-                        onImageRemoveAll,
                         onImageUpdate,
                         onImageRemove,
                         isDragging,
                         dragProps,
                     }) => (
 
-                        <fieldset className="upload__image-wrapper upload-container flex flex-wrap justify-left border-2 border-stone-200 mb-8">
+                        <fieldset className="upload__image-wrapper upload-container flex flex-wrap justify-left border-2 border-stone-200 mb-8 rounded-lg">
                             <legend className='text-stone-300 ml-6 pl-2 pr-2'>Store Inside Images (Max - 4)</legend>
-                            <div className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600'
-                                style={isDragging ? { color: 'white' } : undefined}
-                                onClick={onImageUpload}
-                                {...dragProps}
-                            >
-                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/add.png' alt="add" />
-                                Click / Drop
-                            </div>
-                            &nbsp;
-                            <div onClick={onImageRemoveAll} className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600'>
-                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/remove.png' alt="remove" />
-                                Drop Images
-                            </div>
+
                             {imageList.map((image, index) => (
                                 <div key={index} className="image-item image-container text-center w-32 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer">
-                                    <img className='m-auto mt-1 mb-3' src={image['data_url']} alt="" width="60" />
+                                    <img className='m-auto mt-1 mb-3 h-14 rounded-lg' src={image['data_url']} alt="" />
                                     <div className="image-item__btn-wrapper flex flex-wrap justify-center">
                                         <img className='single-image-icon w-5 mr-2 transform duration-300 hover:scale-110' src='/images/update.png' onClick={() => onImageUpdate(index)} alt='update' />
                                         <img className='single-image-icon w-5 ml-2 transform duration-300 hover:scale-110' src='/images/remove.png' onClick={() => onImageRemove(index)} alt='remove' />
@@ -558,16 +568,44 @@ const JewelerRequest = () => {
                                 </div>
                             ))}
 
+
+                            {storeimages.length < 4 && (<div className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600 hover:text-yellow-600'
+                                style={isDragging ? { color: 'white' } : undefined}
+                                onClick={onImageUpload}
+                                {...dragProps}
+                            >
+                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/add.png' alt="add" />
+                                Click / Drop
+                            </div>
+                            )}
+                            &nbsp;
+                            <div onClick={() => setStoreOpen(true)} className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg m-5 p-2 cursor-pointer duration-300 hover:border-danger-600 hover:text-danger-600'>
+                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/remove.png' alt="remove" />
+                                Drop Images
+                            </div>
+
+
                         </fieldset>
                     )}
 
                 </ImageUploading>
                 {errors.storeimages && <h1 className='text-danger mt-[-15px] mb-6'>{errors.storeimages}</h1>}
 
+                <Modal isOpen={storeopen} onClose={() => setStoreOpen(false)}>
+                    <>
+                        <h1 className='modal-heading text-stone-700 text-xl font-bold p-2'>Confirm Removal</h1>
+                        <h3 className='modal-text p-2 text-lg font-semibold text-stone-700 '>Are you sure you want to remove all images?</h3>
+                        <button className='modal-button-ok font-semibold border-2 border-danger-600 text-danger-600 text-base transform duration:300 hover:border-yellow-600 hover:text-yellow-600 px-4 p-1 m-5 rounded-lg' onClick={handleRemoveAllStoreImages}>Confirm</button>
+                        <button className='modal-button-cancel font-semibold border-2 border-primary-600 text-primary-600 text-base transform duration:300 hover:border-yellow-600 hover:text-yellow-600 px-4 p-1 rounded-lg' onClick={() => setStoreOpen(false)}>Cancel</button>
+                    </>
+                </Modal>
+
+
+
                 <p className='formheading text-4xl pt-8 pb-4 text-stone-200 border-b-2 border-yellow-600 '>Fill Personal Details</p>
 
                 <p className='field-heading pt-6 pb-2 text-stone-200'>Phone #</p>
-                <Input  placeholder='03###########' style={{ width: '100%', height: 40, fontSize: '18px', marginBottom: 20 }} onChange={handlePhoneNoChange} />
+                <Input placeholder='03###########' style={{ width: '100%', height: 40, fontSize: '18px', marginBottom: 20 }} onChange={handlePhoneNoChange} />
                 {errors.phoneno && <h1 className='text-danger mt-[-15px] mb-6'>{errors.phoneno}</h1>}
 
                 <p className='field-heading pb-2 text-stone-200'>Commission Rate</p>
@@ -599,24 +637,12 @@ const JewelerRequest = () => {
                         dragProps,
                     }) => (
 
-                        <fieldset className="upload__image-wrapper upload-container flex flex-wrap justify-left border-2 border-stone-200 mb-8">
+                        <fieldset className="upload__image-wrapper upload-container flex flex-wrap justify-left border-2 border-stone-200 mb-8 rounded-lg">
                             <legend className='text-stone-300 ml-6 pl-2 pr-2'>Front and Back</legend>
-                            <div className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600'
-                                style={isDragging ? { color: 'white' } : undefined}
-                                onClick={onImageUpload}
-                                {...dragProps}
-                            >
-                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/add.png' alt="add" />
-                                Click / Drop
-                            </div>
-                            &nbsp;
-                            <div onClick={onImageRemoveAll} className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600'>
-                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/remove.png' alt="remove" />
-                                Drop Images
-                            </div>
+
                             {imageList.map((image, index) => (
                                 <div key={index} className="image-item image-container text-center w-32 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer">
-                                    <img className='m-auto mt-1 mb-3' src={image['data_url']} alt="" width="60" />
+                                    <img className='m-auto mt-1 mb-3 h-14 rounded-lg' src={image['data_url']} alt="" />
                                     <div className="image-item__btn-wrapper flex flex-wrap justify-center">
                                         <img className='single-image-icon w-5 mr-2 transform duration-300 hover:scale-110' src='/images/update.png' onClick={() => onImageUpdate(index)} alt='update' />
                                         <img className='single-image-icon w-5 ml-2 transform duration-300 hover:scale-110' src='/images/remove.png' onClick={() => onImageRemove(index)} alt='remove' />
@@ -624,11 +650,37 @@ const JewelerRequest = () => {
                                 </div>
                             ))}
 
+                            {cnicimages.length < 2 && (<div className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg mt-5 mb-5 ml-5 p-2 cursor-pointer duration-300 hover:border-yellow-600 hover:text-yellow-600'
+                                style={isDragging ? { color: 'white' } : undefined}
+                                onClick={onImageUpload}
+                                {...dragProps}
+                            >
+                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/add.png' alt="add" />
+                                Click / Drop
+                            </div>
+                            )}
+                            &nbsp;
+                            <div onClick={() => setCnicOpen(true)} className='upload-button text-center w-28 border-2 border-stone-200 bg-stone-200/30 text-black rounded-lg m-5 p-2 cursor-pointer duration-300 hover:border-danger-600 hover:text-danger-600'>
+
+                                <img className='uploader-icon w-10 m-auto mb-3 transform duration-300 hover:scale-110' src='/images/remove.png' alt="remove" />
+                                Drop Images
+                            </div>
+
+
                         </fieldset>
                     )}
 
                 </ImageUploading>
                 {errors.cnicimages && <h1 className='text-danger mt-[-15px] mb-6'>{errors.cnicimages}</h1>}
+
+                <Modal isOpen={cnicopen} onClose={() => setCnicOpen(false)}>
+                    <>
+                        <h1 className='modal-heading text-stone-700 text-xl font-bold p-2'>Confirm Removal</h1>
+                        <h3 className='modal-text p-2 text-lg font-semibold text-stone-700 '>Are you sure you want to remove all images?</h3>
+                        <button className='modal-button-ok font-semibold border-2 border-danger-600 text-danger-600 text-base transform duration:300 hover:border-yellow-600 hover:text-yellow-600 px-4 p-1 m-5 rounded-lg' onClick={handleRemoveAllCnicImages}>Confirm</button>
+                        <button className='modal-button-cancel font-semibold border-2 border-primary-600 text-primary-600 text-base transform duration:300 hover:border-yellow-600 hover:text-yellow-600 px-4 p-1 rounded-lg' onClick={() => setCnicOpen(false)}>Cancel</button>
+                    </>
+                </Modal>
 
 
                 <p className='Note text-lg text-blue-300 pt-8 md:p-8 text-justify'>Note: The request will go for admin approval which may take some time. Approval status can be seen by clicking on the join platform button on the home page. </p>
@@ -639,7 +691,7 @@ const JewelerRequest = () => {
                         onClick={handleSubmit}
                         className="inline-block rounded bg-warning-600 px-16 pb-2.5 pt-3 text-lg text-semibold font-medium uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600"
                     >
-                        Sell
+                        Send Request
                     </button>
                 </p>
             </form>

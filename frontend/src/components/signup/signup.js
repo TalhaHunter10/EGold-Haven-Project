@@ -104,12 +104,9 @@ const Signup = () => {
 
             <div className="mb-20 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12 h-auto ">
               <h1 className='text-center text-stone-200 headingtext3 mb-7 '><span className='border-b-2 border-yellow-600 pb-2'>User Registration</span></h1>
-              <form>
 
-                
-
-
-                
+            
+              <form onSubmit={handleSignUp}>
 
                 <TEInput
                   type="text"
@@ -171,8 +168,7 @@ const Signup = () => {
                 <div className="text-center lg:text-left">
                   <TERipple rippleColor="light">
                     <button
-                      type="button"
-                      onClick={handleSignUp}
+                      type="submit"
                       className="inline-block rounded bg-warning-600 px-7 pb-2.5 pt-3 text-sm text-semibold font-medium uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600"
                     >
                       Sign Up

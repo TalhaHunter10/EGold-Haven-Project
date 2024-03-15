@@ -54,7 +54,7 @@ const ContainerVertical = ({ listing }) => {
                             <div className="flex-auto flex space-x-2 text-xs">
                                 <p>{getTimeSinceCreation(item.createdAt)}</p>
                             </div>
-                            <img alt="favorite" src="./images/favoriteblank.png" className="w-7 h-7 mb-4 hover:scale-110 duration-200 transform z-10"  />
+                            <img alt="favorite" src="/images/favoriteblank.png" className="w-7 h-7 mb-4 hover:scale-110 duration-200 transform z-10"  />
                         </div>
                     </div>
                 </Link>

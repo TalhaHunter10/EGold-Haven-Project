@@ -249,20 +249,20 @@ const Landing = () => {
       <div className='border-b-2 border-yellow-600 pt-10'>
       </div>
 
-      <div className='categoriesarea mt-10 text-stone-200 overflow-auto pb-20'>
+      <div className='categoriesarea mt-10 text-stone-200 overflow-auto mb-20'>
         <h1 className='headingtextlanding pl-8'>Browse Listings</h1>
         <p className='buttontextlanding text-right mt-4 mr-8'><Link to="" className='text-stone-200 hover:text-yellow-600 text-xl'>View More</Link></p>
-        <div className='categories flex flex-wrap  justify-center md:justify-start pt-5 pb-5 '>
+        <div className='categories flex flex-wrap lg:justify-center md:justify-start pt-5 pb-5  '>
           {listing.length === 0 ? (
             <FileAnimationsmall />
           ) : (
-            <ContainerVertical listing={listing} />
-          )}
-
-          {listing.length === 0 ? (
-            <div></div>
-          ) : (
-            <ContainerVertical2 listing={listing} />
+            <div className="">
+              
+                <ContainerVertical listing={listing} />
+              
+                <ContainerVertical2 listing={listing} />
+              
+            </div>
           )}
         </div>
       </div>

@@ -131,7 +131,7 @@ const CreateListing = () => {
 
             formData.append('category', isCategory);
             formData.append('title', isTitle);
-            formData.append('description', isCategory);
+            formData.append('description', isDescription);
             formData.append('price', isPrice);
             formData.append('weight', isWeight);
             formData.append('karats', isKarats);
@@ -560,7 +560,6 @@ const CreateListing = () => {
                     {({
                         imageList,
                         onImageUpload,
-                        onImageRemoveAll,
                         onImageUpdate,
                         onImageRemove,
                         isDragging,
@@ -603,10 +602,10 @@ const CreateListing = () => {
 
                 <Modal isOpen={open} onClose={() => setOpen(false)}>
                 <>
-                    <h1>Confirm Removal</h1>
-                    <h3>Are you sure you want to remove all images?</h3>
-                    <button onClick={handleRemoveAllImages}>Yes, Remove All</button>
-                    <button onClick={() => setOpen(false)}>Cancel</button>
+                    <h1 className='modal-heading text-stone-700 text-xl font-bold p-2'>Confirm Removal</h1>
+                    <h3 className='modal-text p-2 text-lg font-semibold text-stone-700 '>Are you sure you want to remove all images?</h3>
+                    <button className='modal-button-ok font-semibold border-2 border-danger-600 text-danger-600 text-base transform duration:300 hover:border-yellow-600 hover:text-yellow-600 px-4 p-1 m-5 rounded-lg' onClick={handleRemoveAllImages}>Confirm</button>
+                    <button className='modal-button-cancel font-semibold border-2 border-primary-600 text-primary-600 text-base transform duration:300 hover:border-yellow-600 hover:text-yellow-600 px-4 p-1 rounded-lg' onClick={() => setOpen(false)}>Cancel</button>
                 </>
             </Modal>
 
