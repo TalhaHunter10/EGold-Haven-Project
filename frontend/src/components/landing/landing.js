@@ -30,11 +30,6 @@ const Landing = () => {
   const navigate = useNavigate();
 
   const userstatus = useSelector(selectStatus)
-  const [status, setStatus] = useState('')
-
-  useEffect(() => {
-    setStatus(userstatus);
-  }, [userstatus]);
 
   const handlelisting = (e) => {
     if (isLoggedIn) {

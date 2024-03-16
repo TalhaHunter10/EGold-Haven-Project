@@ -141,7 +141,7 @@ const CreateListing = () => {
 
             setIsLoading(true)
             try {
-                const data = createListing(formData);
+                const data = await createListing(formData);
                 if (data) {
                     navigate('/')
                     setIsLoading(false)

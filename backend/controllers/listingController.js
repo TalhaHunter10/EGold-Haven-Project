@@ -85,7 +85,7 @@ const getListingsById = asyncHandler(async (req, res) => {
         res.status(200).json({listings , seller});
       } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Server Error' });
+        res.status(500).json({ message: 'Listing not Found' });
       }
 });
 
@@ -127,6 +127,7 @@ const getLikedStatus = asyncHandler(async (req, res) => {
         res.status(200).json({ liked: false });
     }
 });
+
 
 module.exports = {
     createListing,

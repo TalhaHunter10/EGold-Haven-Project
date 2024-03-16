@@ -38,17 +38,21 @@ const authSlice = createSlice({
             state.user.email = profile.email;
             state.user.phoneno = profile.phoneno;
             state.user.status = profile.status;
+        },
+        SET_USERID(state, action){
+            state.userID = action.payload
         }
         
 
     }
 })
 
-export const { SET_LOGIN, SET_NAME, SET_USER, SET_STATUS } = authSlice.actions;
+export const { SET_LOGIN, SET_NAME, SET_USER, SET_STATUS, SET_USERID } = authSlice.actions;
 
 export const selectIsLoggedIn = (state) => state.auth.isLoggedIn;
 export const selectName = (state) => state.auth.name;
 export const selectStatus = (state) => state.auth.status;
 export const selectUser = (state) => state.auth.user;
+export const selectUserID = (state) => state.auth.userID;
 
 export default authSlice.reducer;

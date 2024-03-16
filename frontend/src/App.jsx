@@ -6,7 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { SET_LOGIN, selectStatus } from './redux/features/auth/authSlice';
+import { SET_LOGIN, SET_USERID, selectStatus } from './redux/features/auth/authSlice';
 import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
 import Header from './components/header/header';
 import Footer from './components/footer/footer';
@@ -43,7 +43,8 @@ function App() {
   useEffect (() => {
     async function loginStatus() {
       const status = await getloginStatus()
-      dispatch(SET_LOGIN(status))
+      dispatch(SET_LOGIN(status.verified))
+      dispatch(SET_USERID(status.id))
     }
     loginStatus()
   }, [dispatch]);

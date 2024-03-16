@@ -7,12 +7,14 @@ import { LeftOutlined, RightOutlined, HeartOutlined, HeartFilled } from '@ant-de
 import ContainerVertical from './containervertical';
 import Modal from '../Modal';
 import { useSelector } from 'react-redux';
-import { selectIsLoggedIn } from '../../redux/features/auth/authSlice';
+import { selectIsLoggedIn, selectUserID } from '../../redux/features/auth/authSlice';
 
 const ListingDetails = () => {
 
     const navigate = useNavigate();
     const isLoggedIn = useSelector(selectIsLoggedIn)
+    const userId = useSelector(selectUserID)
+    const [button, setButton] = useState(false)
 
     const [isLoading, setIsLoading] = useState('false')
     const [isLiked, setIsLiked] = useState(false);
@@ -28,6 +30,9 @@ const ListingDetails = () => {
         const fetchListing = async () => {
             try {
                 const data = await getListingsById(id);
+                if(!data){
+                    navigate('/')
+                }
                 setListing(data.listings[0]);
                 setSeller(data.seller[0]);
                 setIsLoading(false)
@@ -46,7 +51,7 @@ const ListingDetails = () => {
         try {
             const data = await getSimilarListings(userdata, excludeId);
             setSimilarListing(data);
-            
+
         } catch (error) {
             console.log(error);
         }
@@ -63,12 +68,12 @@ const ListingDetails = () => {
         try {
             if (isLiked) {
                 const data = await unlikeListing(listing._id);
-                if(!data){
+                if (!data) {
                     navigate('/login');
                 }
             } else {
                 const data = await likeListing(listing._id);
-                if(!data){
+                if (!data) {
                     navigate('/login');
                 }
             }
@@ -88,8 +93,11 @@ const ListingDetails = () => {
     };
 
     useEffect(() => {
-        if (isLoggedIn &&  listing._id) {
+        if (isLoggedIn && listing._id) {
             fetchLikedStatus(listing._id);
+            if (userId === seller._id) {
+                setButton(true)
+            }
         }
     }, [listing]);
 
@@ -186,9 +194,15 @@ const ListingDetails = () => {
                                 Rs. {formatPriceWithCommas(parseInt(listing.price))}
                             </p>
 
+                            {button ? (
+                            <div disabled='true' className='disabled-button z-10'>
+                                <HeartOutlined style={{ color: '#ca8a04', fontSize: '28px' }} />
+                            </div>
+                            ):(
                             <button onClick={toggleLike} className=' hover:scale-110 duration-200 transform z-10 cursor-pointer'>
-                                {isLiked ? <HeartFilled style={{ color: '#ca8a04', fontSize:'28px'  }} /> : <HeartOutlined style={{ color: '#ca8a04', fontSize:'28px'  }}/>}
+                                {isLiked ? <HeartFilled style={{ color: '#ca8a04', fontSize: '28px' }} /> : <HeartOutlined style={{ color: '#ca8a04', fontSize: '28px' }} />}
                             </button>
+                            )}
                         </div>
 
                         {listing && listing.title && (<p className='pt-2 alluse text-3xl text-stone-200'>
@@ -279,7 +293,7 @@ const ListingDetails = () => {
                             Description
                         </p>
 
-                        <p className='alluse text-lg text-stone-200 pt-3 pl-10'>
+                        <p className='alluse text-lg text-stone-200 pt-3 pl-10' style={{ whiteSpace: 'pre-line' }}>
                             {listing.description}
                         </p>
                     </div>
@@ -314,12 +328,19 @@ const ListingDetails = () => {
                         </p>
 
                         <p className='text-center pt-8'>
-                            <Link to={``} className='flex justify-center w-[100%] alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600'>
+                            {button ? (
+                                <button disabled='true' className='disabled-button flex justify-center w-[100%] alluse inline-block rounded bg-stone-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white '>
+                                    <img className='w-6 h-6' src='/images/chat.png' alt='chat' />
+                                    <p className='my-auto pl-3'>Chat with seller</p>
+                                </button>
+                            ) : (
+                                <Link to={``} className='flex justify-center w-[100%] alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600'>
 
-                                <img className='w-6 h-6' src='/images/chat.png' alt='chat' />
-                                <p className='my-auto pl-3'>Chat with seller</p>
+                                    <img className='w-6 h-6' src='/images/chat.png' alt='chat' />
+                                    <p className='my-auto pl-3'>Chat with seller</p>
 
-                            </Link>
+                                </Link>
+                            )}
                         </p>
 
 
@@ -331,12 +352,18 @@ const ListingDetails = () => {
                             <p className='my-auto pl-3 text-base'>About this feature</p>
                         </div>
 
-                        <Link to={``} className='flex justify-center w-[100%] alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600'>
+                        {button ? (
+                            <button disabled='true' className='disabled-button flex justify-center w-[100%] alluse inline-block rounded bg-stone-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white '>
+                                <img className='w-6 h-6' src='/images/chat.png' alt='chat' />
+                                <p className='my-auto pl-3'>Chat with seller</p>
+                            </button>
+                        ) : (<Link to={``} className='flex justify-center w-[100%] alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600'>
 
                             <img className='w-6 h-6' src='/images/request.png' alt='chat' />
                             <p className='my-auto pl-3'>Request Certification</p>
 
                         </Link>
+                        )}
 
                         <Modal isOpen={open} onClose={() => setOpen(false)}>
                             <>

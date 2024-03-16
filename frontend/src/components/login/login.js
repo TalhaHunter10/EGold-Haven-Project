@@ -5,7 +5,7 @@ import { TEInput, TERipple } from "tw-elements-react";
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { googlesso, loginUser } from '../../services/authservice';
-import { SET_LOGIN, SET_NAME, SET_STATUS, selectIsLoggedIn } from '../../redux/features/auth/authSlice';
+import { SET_LOGIN, SET_NAME, SET_STATUS, SET_USERID, selectIsLoggedIn } from '../../redux/features/auth/authSlice';
 import { Loader } from '../loader/loader';
 
 
@@ -60,6 +60,7 @@ const Login = () => {
               dispatch(SET_LOGIN(true))
               dispatch(SET_NAME(data.name))
               dispatch(SET_STATUS(data.status))
+              dispatch(SET_USERID(data._id))
               navigate('/home')
             }
             setIsLoading(false)
@@ -105,6 +106,7 @@ const Login = () => {
           dispatch(SET_LOGIN(true))
           dispatch(SET_NAME(data.name))
           dispatch(SET_STATUS(data.status))
+          dispatch(SET_USERID(data._id))
           navigate('/home')
         }
         setIsLoading(false)

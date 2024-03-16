@@ -13,8 +13,9 @@ export const createListing = async (formData) => {
             
         if(response.statusText === 'Created'){
             toast.success("Listing Created Successfully... Pending Approval !!!")
+            return true
         }
-        return true
+        return
     }catch(error){
         const message = (
             error.response && error.response.data && error.response.data.message) || error.message || error.toString();
@@ -104,6 +105,9 @@ export const getLikedStatus = async (listingid) => {
 export const getListingsById = async (id) => {
     try{
         const response = await axios.get(`${BACKEND_URL}/api/listings/getlistingsbyid/${id}`,)
+        if(response.statusCode === 500){
+            return false;
+        }
         return response.data;
     }catch(error){
         const message = (
