@@ -46,8 +46,28 @@ function NavList() {
                 color="blue-gray"
                 className="p-1 font-medium"
             >
-                <Link to={"/about"} className="flex items-center hover:text-yellow-600 transition-colors">
-                    About Us
+                <Link to={"/"} className="flex items-center hover:text-yellow-600 transition-colors">
+                    Home
+                </Link>
+            </Typography>
+            <Typography
+                as="li"
+                variant="small"
+                color="blue-gray"
+                className="p-1 font-medium"
+            >
+                <Link to={"/searchlistings"} className="flex items-center hover:text-yellow-600 transition-colors">
+                    Listings
+                </Link>
+            </Typography>
+            <Typography
+                as="li"
+                variant="small"
+                color="blue-gray"
+                className="p-1 font-medium"
+            >
+                <Link to={"/products"} className="flex items-center hover:text-yellow-600 transition-colors">
+                    Products
                 </Link>
             </Typography>
             <Typography
@@ -143,9 +163,19 @@ const Header = () => {
                 </Collapse>
             </Navbar>
             <div className="nav-container">
-                <Link to='/about'>
+                <Link to='/'>
                     <button className="nav-button ml-5 hidden lg:block">
-                        About Us
+                        Home
+                    </button>
+                </Link>
+                <Link to='/searchlistings'>
+                    <button className="nav-button ml-5 hidden lg:block">
+                        Listings
+                    </button>
+                </Link>
+                <Link to='/products'>
+                    <button className="nav-button ml-5 hidden lg:block">
+                        Products
                     </button>
                 </Link>
                 <Link to='/forum'>
@@ -153,7 +183,7 @@ const Header = () => {
                         Forum
                     </button>
                 </Link>
-                <Link to='/forum'>
+                <Link to='/faq'>
                     <button className="nav-button ml-5 hidden lg:block">
                         FAQ's
                     </button>

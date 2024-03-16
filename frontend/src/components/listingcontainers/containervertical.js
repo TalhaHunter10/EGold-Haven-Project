@@ -11,16 +11,16 @@ const getTimeSinceCreation = (createdAt) => {
     const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
 
     if (daysDiff > 0) {
-      return `${daysDiff} day${daysDiff > 1 ? 's' : ''} ago`;
+        return `${daysDiff} day${daysDiff > 1 ? 's' : ''} ago`;
     } else {
-      // Calculate hours difference if less than a day
-      const hoursDiff = Math.floor(timeDiff / (1000 * 60 * 60));
-      return `${hoursDiff} hour${hoursDiff > 1 ? 's' : ''} ago`;
+        // Calculate hours difference if less than a day
+        const hoursDiff = Math.floor(timeDiff / (1000 * 60 * 60));
+        return `${hoursDiff} hour${hoursDiff > 1 ? 's' : ''} ago`;
     }
-  };
+};
 
 
-  const capitalizeFirstLetter = (str) => {
+const capitalizeFirstLetter = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
@@ -36,26 +36,34 @@ const formatPriceWithCommas = (price) => {
     return price.toLocaleString();
 };
 
+
+
+
 const ContainerVertical = ({ listing }) => {
+
+
+
     return (
         <div className="pl-2 pr-2 containertext cursor-pointer mt-1 pb-10 pt-5 flex">
-            {listing.slice(0,4).map((item) => (
+            {listing.slice(0, 4).map((item) => (
                 <Link to={`/listingdetails/${item._id}`} key={item._id} className="w-80 transform overflow-hidden rounded-lg bg-stone-600/30 text-stone-200 duration-300 hover:scale-105 m-2">
                     <img className="h-48 w-full object-cover object-center md:h-48 bg-stone-200" src={item.images && item.images.length > 0 ? `http://localhost:5000/${item.images[0].filePath}` : ''} alt="Item" />
                     <div className="p-4">
                         <p className="mr-2 text-base font-extrabold text-right"><span className="text-yellow-500 tracking-widest">Rs. </span>{formatPriceWithCommas(parseInt(item.price))}</p>
-                        <h2 className="container-title mb-4 text-2xl mt-2">{capitalizeFirstLetter(shortenTitle(item.title, 20))}</h2>
+                        <h2 className="container-title mb-4 text-2xl mt-1">{capitalizeFirstLetter(shortenTitle(item.title, 20))}</h2>
                         <p className=" text-medium"><span className='text-yellow-600 font-semibold'>Category</span> : <span className="font-semibold ml-3">{item.category}</span></p>
                         <p className="mb-2 text-medium"><span className='text-yellow-600 font-semibold mr-3'>Weight </span> : <span className="font-semibold ml-3">{item.weights.tola} tola</span></p>
-                        <div className="flex-auto flex space-x-2 mt-5 text-sm">
+                        <div className='text-right'>
+                        <div className=" mt-5 text-sm">
                             <p>{item.address}</p>
                         </div>
-                        <div className="flex justify-between ">
-                            <div className="flex-auto flex space-x-2 text-xs">
-                                <p>{getTimeSinceCreation(item.createdAt)}</p>
-                            </div>
-                            <img alt="favorite" src="/images/favoriteblank.png" className="w-7 h-7 mb-4 hover:scale-110 duration-200 transform z-10"  />
+
+                        <div className=" text-xs">
+                            <p>{getTimeSinceCreation(item.createdAt)}</p>
                         </div>
+                        </div>
+
+
                     </div>
                 </Link>
             ))}

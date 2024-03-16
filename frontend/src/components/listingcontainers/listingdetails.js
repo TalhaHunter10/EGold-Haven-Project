@@ -1,20 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { getListingsById, getSimilarListings } from '../../services/listingservice';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { getLikedStatus, getListingsById, getSimilarListings, likeListing, unlikeListing } from '../../services/listingservice';
 import { FileAnimation, FileAnimationsmall } from '../loader/loader';
-import { Carousel, Modal } from 'antd';
-import { LeftOutlined, RightOutlined } from '@ant-design/icons'
+import { Carousel } from 'antd';
+import { LeftOutlined, RightOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons'
 import ContainerVertical from './containervertical';
+import Modal from '../Modal';
+import { useSelector } from 'react-redux';
+import { selectIsLoggedIn } from '../../redux/features/auth/authSlice';
 
 const ListingDetails = () => {
 
+    const navigate = useNavigate();
+    const isLoggedIn = useSelector(selectIsLoggedIn)
+
     const [isLoading, setIsLoading] = useState('false')
+    const [isLiked, setIsLiked] = useState(false);
 
     const { id } = useParams();
     const [listing, setListing] = useState({});
     const [seller, setSeller] = useState({});
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
         setIsLoading(true)
@@ -39,6 +46,7 @@ const ListingDetails = () => {
         try {
             const data = await getSimilarListings(userdata, excludeId);
             setSimilarListing(data);
+            
         } catch (error) {
             console.log(error);
         }
@@ -47,6 +55,41 @@ const ListingDetails = () => {
     useEffect(() => {
         if (listing.category !== undefined && listing._id) {
             fetchdata(listing.category, listing._id);
+        }
+    }, [listing]);
+
+
+    const toggleLike = async () => {
+        try {
+            if (isLiked) {
+                const data = await unlikeListing(listing._id);
+                if(!data){
+                    navigate('/login');
+                }
+            } else {
+                const data = await likeListing(listing._id);
+                if(!data){
+                    navigate('/login');
+                }
+            }
+            setIsLiked(!isLiked);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const fetchLikedStatus = async (listingid) => {
+        try {
+            const data = await getLikedStatus(listingid);
+            setIsLiked(data.liked);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        if (isLoggedIn &&  listing._id) {
+            fetchLikedStatus(listing._id);
         }
     }, [listing]);
 
@@ -86,9 +129,6 @@ const ListingDetails = () => {
             </div>
         )
     }
-
-
-
     const settings = {
         nextArrow: <SampleNextArrow />,
         prevArrow: <SamplePrevArrow />
@@ -114,6 +154,7 @@ const ListingDetails = () => {
             return `${hoursDiff} hour${hoursDiff > 1 ? 's' : ''} ago`;
         }
     };
+
 
 
     return (
@@ -145,8 +186,9 @@ const ListingDetails = () => {
                                 Rs. {formatPriceWithCommas(parseInt(listing.price))}
                             </p>
 
-                            <img alt="favorite" src="/images/favoriteblank.png" className="w-8 h-8 mb-4 hover:scale-110 duration-200 transform z-10 cursor-pointer" />
-
+                            <button onClick={toggleLike} className=' hover:scale-110 duration-200 transform z-10 cursor-pointer'>
+                                {isLiked ? <HeartFilled style={{ color: '#ca8a04', fontSize:'28px'  }} /> : <HeartOutlined style={{ color: '#ca8a04', fontSize:'28px'  }}/>}
+                            </button>
                         </div>
 
                         {listing && listing.title && (<p className='pt-2 alluse text-3xl text-stone-200'>
@@ -182,7 +224,7 @@ const ListingDetails = () => {
                         </p>
 
                         <div className='text-stone-200 alluse tracking-wide text-lg'>
-                            <div className='pt-3 pb-3 grid grid-flow-col justify-stretch lg:ml-4 lg:mr-4'>
+                            <div className='pt-3 pb-1 grid grid-flow-col justify-stretch lg:ml-4 lg:mr-4'>
                                 <div className='flex flex-col md:flex-row w-full'>
                                     <div className='flex justify-between ml-6 mr-6 mb-3 md:my-auto md:w-1/2'>
                                         <div className='p-1 w-[100%] md:w-auto text-center lg:text-left text-yellow-600 font-semibold'>
@@ -205,7 +247,7 @@ const ListingDetails = () => {
                             </div>
 
 
-                            <div className='pt-3 pb-3 grid grid-flow-col justify-stretch lg:ml-4 lg:mr-4'>
+                            <div className='pt-1 pb-3 grid grid-flow-col justify-stretch lg:ml-4 lg:mr-4'>
                                 <div className='flex flex-col md:flex-row w-full'>
                                     <div className='flex  justify-between ml-6 mr-6 my-auto  mb-3 md:my-auto md:w-1/2'>
                                         <div className='p-1 w-[100%] md:w-auto text-center md:text-left text-yellow-600 font-semibold'>
@@ -220,8 +262,8 @@ const ListingDetails = () => {
                                             Weight
                                         </div>
                                         <div className='p-1 w-[100%] md:w-auto text-center md:text-left'>
-                                            <p>{listing.weights && parseFloat(listing.weights.tola).toFixed(2)} tola</p>
-                                            <p>{listing.weights && parseFloat(listing.weights.gram).toFixed(2)} gram</p>
+                                            <p className='text-right'>{listing.weights && parseFloat(listing.weights.tola).toFixed(2)} tola</p>
+                                            <p className='text-right'>{listing.weights && parseFloat(listing.weights.gram).toFixed(2)} gram</p>
                                         </div>
                                     </div>
                                 </div>
@@ -284,21 +326,29 @@ const ListingDetails = () => {
                         <div className='border-b border-yellow-700 mt-6 mb-6'></div>
 
                         <h1 className='alluse text-4xl text-center text-stone-200 pb-3'>Gold Certification</h1>
-                        <div className='flex flex-wrap text-stone-200 p-3 alluse hover:text-yellow-600 cursor-pointer' onClick={() => setOpen(true)}>
-                            <img className='w-8 h-8' src='/images/information.png' alt='chat' />
+                        <div className='flex flex-wrap text-stone-200 p-3 alluse hover:text-yellow-600 cursor-pointer mb-3' onClick={() => setOpen(true)}>
+                            <img className='w-6 h-6' src='/images/information.png' alt='chat' />
                             <p className='my-auto pl-3 text-base'>About this feature</p>
                         </div>
 
+                        <Link to={``} className='flex justify-center w-[100%] alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600'>
+
+                            <img className='w-6 h-6' src='/images/request.png' alt='chat' />
+                            <p className='my-auto pl-3'>Request Certification</p>
+
+                        </Link>
+
                         <Modal isOpen={open} onClose={() => setOpen(false)}>
                             <>
-                                <h1 className='modal-heading text-stone-700 text-xl font-bold p-2'>Gold Certification Request</h1>
-                                <h3 className='modal-text p-2 text-lg font-semibold text-stone-700 '></h3>
-                                <button className='modal-button-cancel font-semibold border-2 border-primary-600 text-primary-600 text-base transform duration:300 hover:border-yellow-600 hover:text-yellow-600 px-4 p-1 rounded-lg' onClick={() => setOpen(false)}>OK</button>
+                                <h1 className='modal-heading text-stone-700 text-2xl font-bold p-2'>Gold Certification Request</h1>
+                                <h3 className='modal-text p-3 text-justify font-semibold text-base text-stone-700 '>This feature allows you to ask the seller to certify the authenticity of the gold through your selected jewelers registered on this platform.
+                                    <br />Select a number of jewelers and seller can approve one of them. The seller can then certify gold from that jeweler and you can pick it up directly from that jeweler. </h3>
+                                <button className='ml-3 modal-button-cancel font-semibold border-2 border-primary-600 text-primary-600 text-base transform duration:300 hover:border-yellow-600 hover:text-yellow-600 px-5 py-1 rounded-lg' onClick={() => setOpen(false)}>OK</button>
                             </>
                         </Modal>
 
 
-                        <div className='border-b border-yellow-700 mt-10 mb-6'></div>
+                        <div className='border-b border-yellow-700 mt-6 mb-6'></div>
 
 
                         <h1 className='alluse text-4xl text-center text-stone-200 pb-6'>Location</h1>

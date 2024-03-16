@@ -47,15 +47,16 @@ const ContainerVertical2 = ({ listing }) => {
                         <h2 className="container-title mb-4 text-2xl mt-2">{capitalizeFirstLetter(shortenTitle(item.title, 20))}</h2>
                         <p className=" text-medium"><span className='text-yellow-600 font-semibold'>Category</span> : <span className="font-semibold ml-3">{item.category}</span></p>
                         <p className="mb-2 text-medium"><span className='text-yellow-600 font-semibold mr-3'>Weight </span> : <span className="font-semibold ml-3">{item.weights.tola} tola</span></p>
-                        <div className="flex-auto flex space-x-2 mt-5 text-sm">
+                        <div className='text-right'>
+                        <div className=" mt-5 text-sm">
                             <p>{item.address}</p>
                         </div>
-                        <div className="flex justify-between ">
-                            <div className="flex-auto flex space-x-2 text-xs">
-                                <p>{getTimeSinceCreation(item.createdAt)}</p>
-                            </div>
-                            <img alt="favorite" src="./images/favoriteblank.png" className="w-7 h-7 mb-4 hover:scale-110 duration-200 transform z-10"  />
+
+                        <div className=" text-xs">
+                            <p>{getTimeSinceCreation(item.createdAt)}</p>
                         </div>
+                        </div>
+
                     </div>
                 </Link>
             ))}

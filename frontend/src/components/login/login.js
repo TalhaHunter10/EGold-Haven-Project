@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import { TEInput, TERipple } from "tw-elements-react";
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { googlesso, loginUser } from '../../services/authservice';
-import { SET_LOGIN, SET_NAME, SET_STATUS } from '../../redux/features/auth/authSlice';
+import { SET_LOGIN, SET_NAME, SET_STATUS, selectIsLoggedIn } from '../../redux/features/auth/authSlice';
 import { Loader } from '../loader/loader';
 
 
@@ -13,6 +13,7 @@ const Login = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
   const [isLoading, setIsLoading] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [errors, setErrors] = useState({})
@@ -21,6 +22,15 @@ const Login = () => {
     password: '',
     remember: ''
   })
+
+
+  React.useEffect(() => {
+    if (isLoggedIn) {
+      navigate('/home')
+    }
+  }, [])
+
+  
 
   const handleCheckboxChange = (e) => {
     setIsChecked(e.target.checked);

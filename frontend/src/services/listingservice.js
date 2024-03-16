@@ -52,6 +52,54 @@ export const getSimilarListings = async (userdata, excludeId) => {
     }
 };
 
+//Like Listing
+export const likeListing = async (listingId) => {
+    try{
+        const response = await axios.post(`${BACKEND_URL}/api/listings/likelisting`, {listingId})
+        if(response.statusCode === 401){
+            toast.error("Please Login to Like the Listing")
+            return false;
+        }
+        return response.data;
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+};
+
+//unLike Listing
+export const unlikeListing = async (listingId) => {
+    try{
+        const response = await axios.post(`${BACKEND_URL}/api/listings/unlikelisting`, {listingId})
+        if(response.statusCode === 401){
+            return false;
+        }
+        return response.data;
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+};
+
+
+//Get Like Status
+export const getLikedStatus = async (listingid) => {
+    try{
+        const response = await axios.get(`${BACKEND_URL}/api/listings/getlikedstatus`, {
+            params: {
+                listingId: listingid
+            }
+        })
+        return response.data;
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+};
+
 //Get Listings by Id
 export const getListingsById = async (id) => {
     try{

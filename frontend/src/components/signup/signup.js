@@ -32,7 +32,7 @@ const Signup = () => {
 
     if (!FormData.name.trim()) {
       validationErrors.name = 'Name is required !';
-    } else if (!/^[a-zA-Z0-9]+([a-zA-Z0-9](_|-| )[a-zA-Z0-9])*[a-zA-Z0-9]+$/.test(FormData.name)) {
+    } else if (!/^[a-zA-Z]{2,40}(?: [a-zA-Z]{2,40}){1,3}$/.test(FormData.name)) {
       validationErrors.name = 'Enter a Valid Name !';
     }
 
@@ -161,7 +161,7 @@ const Signup = () => {
 
                 <div className="mb-6 ">
 
-                  <a href="#!" className='bodytext text-stone-200 hover:text-yellow-600 text-center'>Terms and Conditions</a>
+                  <Link to='/terms' target='_blank' className='bodytext text-stone-200 hover:text-yellow-600 text-center'>Terms and Conditions</Link>
                 </div>
 
 

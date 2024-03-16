@@ -8,7 +8,7 @@ const protect = asyncHandler(async (req, res, next) => {
         const token = req.cookies.token;
         if (!token) {
             res.status(401)
-            throw new Error("Not authorized, please login 1")
+            throw new Error("Not authorized, please login")
         }
         
         const verified = jwt.verify(token, process.env.JWT_SECRET)
@@ -27,7 +27,7 @@ const protect = asyncHandler(async (req, res, next) => {
         next();
     }catch(error){
         res.status(401)
-            throw new Error("Not authorized, please login 2")
+            throw new Error("Not authorized, please login")
     }
    
 });

@@ -25,6 +25,8 @@ import JewelerRequests from './components/admindashboard/jewelerrequests';
 import ListingDetails from './components/listingcontainers/listingdetails';
 import ScrollToTop from './components/ScrollToTop';
 import PageNotFound from './components/PageNotFound';
+import TermsConditions from './components/login/termsconditions';
+import PrivacyPolicy from './components/privacypolicy';
 
 
 axios.defaults.withCredentials = true;
@@ -65,6 +67,8 @@ function App() {
               <Route path="/" element={<Landing />} />
               <Route path="/home" element={<Landing />} />
               <Route path="/login" element={<Login/>} />
+              <Route path="/terms" element={<TermsConditions/>} />
+              <Route path="/privacypolicy" element={<PrivacyPolicy/>} />
               <Route path="/forum" element={<Forum/>} />
               <Route path="/about" element={<About/>} />
               <Route path="/signup" element={<Signup/>} />

@@ -21,11 +21,11 @@ const Modal = ({ isOpen, onClose, children }) => {
             <div
                 style={{
                     background: "white",
-                    height: 230,
+                    height: 'auto',
                     width: 420,
                     margin: "auto",
                     padding: 20,
-                    border: "4px solid #dc4c64",
+                    border: "4px solid #ca8a04",
                     borderRadius: 10,
                     boxShadow: "4px solid black",
                 }}

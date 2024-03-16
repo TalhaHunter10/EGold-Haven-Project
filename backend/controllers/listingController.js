@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Listing = require("../models/listingModel");
 const User = require("../models/userModel");
+const LikedListing = require("../models/LikedListingModel");
 
 const createListing = asyncHandler(async (req, res) => {
     const { title, price, description, status, category, karats, weight, stones, address } = req.body;
@@ -88,10 +89,51 @@ const getListingsById = asyncHandler(async (req, res) => {
       }
 });
 
+
+// Controller function to handle liking a listing
+ const likeListing = asyncHandler(async (req, res) => {
+    const { listingId } = req.body;
+    const userId = req.user.id;
+
+    // Create a new like entry
+    const newLike = new LikedListing({ userId, listingId });
+    await newLike.save();
+
+    res.status(201).json({ message: 'Listing liked successfully' });
+});
+
+// Controller function to handle unliking a listing
+const unlikeListing = asyncHandler(async (req, res) => {
+    const { listingId } = req.body;
+    const userId = req.user.id;
+    
+    // Find and delete the like entry
+    await LikedListing.findOneAndDelete({ userId, listingId });
+
+    res.status(200).json({ message: 'Listing unliked successfully' });
+});
+
+const getLikedStatus = asyncHandler(async (req, res) => {
+    const { listingId } = req.query;
+    const userId = req.user.id;
+
+    // Check if the user has liked the listing
+    const like = await LikedListing.findOne({ userId, listingId });
+
+    if (like) {
+        res.status(200).json({ liked: true });
+    }
+    else {
+        res.status(200).json({ liked: false });
+    }
+});
+
 module.exports = {
     createListing,
     getLiveListings,
     getListingsById,
-    getSimilarListings
-
+    getSimilarListings,
+    likeListing,
+    unlikeListing,
+    getLikedStatus
 }
