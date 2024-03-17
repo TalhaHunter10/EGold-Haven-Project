@@ -250,11 +250,11 @@ const Header = () => {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem onClick={handleClose}>
+                <Link to="/userprofile"><MenuItem onClick={handleClose}>
                     <Avatar />
                     <span className='headerbodytext'> My Profile ({userName.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}) </span>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
+                </MenuItem></Link>
+               <Link to="/mylistings"> <MenuItem onClick={handleClose}>
                     <ListIcon style={{
                         width: 24,
                         height: 24,
@@ -262,8 +262,8 @@ const Header = () => {
                         color: '#d2ac47',
                         backgroundColor: '#4b4e49'
                     }} /> <span className='headerbodytext'> My Listings </span>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
+                </MenuItem></Link>
+                <Link to="/favoritelistings"><MenuItem onClick={handleClose}>
                     <FavoriteBorderIcon style={{
                         width: 22,
                         height: 22,
@@ -271,8 +271,8 @@ const Header = () => {
                         marginRight: 12,
                         color: '#d2ac47',
                         backgroundColor: '#4b4e49'
-                    }} /> <span className='headerbodytext'> Favorites </span>
-                </MenuItem>
+                    }} /> <span className='headerbodytext'>My Favorites </span>
+                </MenuItem></Link>
                 <MenuItem onClick={handleClose}>
                     <ChatIcon style={{
                         width: 20,

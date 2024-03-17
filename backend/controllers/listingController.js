@@ -89,6 +89,17 @@ const getListingsById = asyncHandler(async (req, res) => {
       }
 });
 
+const getFavoritelistings = asyncHandler(async (req, res) => {
+    const userId = req.user.id;
+    const likedListings = await LikedListing.find({ userId });
+
+    const listingIds = likedListings.map((listing) => listing.listingId);
+
+    const favoriteListings = await Listing.find({ _id: { $in: listingIds }, status: 'pending approval'});
+
+    res.status(200).json(favoriteListings);
+});
+
 
 // Controller function to handle liking a listing
  const likeListing = asyncHandler(async (req, res) => {
@@ -136,5 +147,6 @@ module.exports = {
     getSimilarListings,
     likeListing,
     unlikeListing,
-    getLikedStatus
+    getLikedStatus,
+    getFavoritelistings
 }

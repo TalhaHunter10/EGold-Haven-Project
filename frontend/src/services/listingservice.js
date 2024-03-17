@@ -53,6 +53,19 @@ export const getSimilarListings = async (userdata, excludeId) => {
     }
 };
 
+
+//Get Fvorite Listings
+export const getFavoriteListings = async () => {
+    try{
+        const response = await axios.get(`${BACKEND_URL}/api/listings/getfavoritelistings`)
+        return response.data;
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+};
+
 //Like Listing
 export const likeListing = async (listingId) => {
     try{

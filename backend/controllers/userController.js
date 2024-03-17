@@ -226,18 +226,12 @@ const updateUser = asyncHandler(async(req,res) => {
     const user = await User.findById(req.user._id);
     if(user){
         const { name, email, phoneno } = user;
-        user.email = email,
+        user.email =req.body.email || email,
         user.name = req.body.name || name,
-        user.phoneno = phoneno
+        user.phoneno =req.body.phoneno || phoneno
 
         const updatedUser = await user.save();
-        res.status(200).json({
-                _id : updatedUser._id,
-                 name : updatedUser.name,
-                  email : updatedUser.email,
-                   phoneno : updatedUser.phoneno,
-                   status : updatedUser.status
-        })
+        res.status(200).json({message: "User Updated Successfully", user: updatedUser})
     }else{
         res.status(404)
         throw new Error("User not Found")
@@ -258,7 +252,7 @@ const changePassword = asyncHandler(async(req, res) => {
         if(passwordIsCorrect){
             user.password = password;
             await user.save();
-            res.status(200).send("Password change Successful");
+            res.status(200).json({message: "Password Change Successful"});
         }else{
             res.status(400)
             throw new Error("Old password is incorrect")

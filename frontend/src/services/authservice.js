@@ -89,6 +89,34 @@ export const forgotPassword = async (userData) => {
     }
 };
 
+//Change Password
+export const ChangePassword = async (userData) => {
+    try{
+        const response = await axios.patch(`${BACKEND_URL}/api/users/changepassword`,userData)
+        toast.success(response.data.message)
+        return true
+
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+};
+
+//Edit Profile
+export const UpdateUser = async (userData) => {
+    try{
+        const response = await axios.patch(`${BACKEND_URL}/api/users/updateuser`,userData)
+        toast.success(response.data.message)
+        return true
+
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+};
+
 //Reset Passowrd
 export const resetPassword = async (userData, resetToken) => {
     try{
@@ -97,6 +125,19 @@ export const resetPassword = async (userData, resetToken) => {
             toast.success(response.data.message)
         }
         return response.data
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+};
+
+
+//Get User Data
+export const getUserData = async () => {
+    try{
+        const response = await axios.get(`${BACKEND_URL}/api/users/getuserdata`)
+        return response.data;
     }catch(error){
         const message = (
             error.response && error.response.data && error.response.data.message) || error.message || error.toString();

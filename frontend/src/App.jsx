@@ -27,6 +27,9 @@ import ScrollToTop from './components/ScrollToTop';
 import PageNotFound from './components/PageNotFound';
 import TermsConditions from './components/login/termsconditions';
 import PrivacyPolicy from './components/privacypolicy';
+import Favoritelistings from './components/profile/favoritelistings';
+import Mylistings from './components/profile/mylistings';
+import UserProfile from './components/profile/userprofile';
 
 
 axios.defaults.withCredentials = true;
@@ -73,11 +76,15 @@ function App() {
               <Route path="/forum" element={<Forum/>} />
               <Route path="/about" element={<About/>} />
               <Route path="/signup" element={<Signup/>} />
+              <Route path="/userprofile" element={<UserProfile/>} />
+              <Route path="/favoritelistings" element={<Favoritelistings />} />
+              <Route path="/mylistings" element={<Mylistings/>} />
               <Route path="/jewelerrequest" element={<JewelerRequest/>} />
               <Route path="/forgotpassword" element={<ForgotPassword/>} />
               <Route path="/resetpassword/:resetToken" element={<ResetPassword/>} />
               <Route path="/createlisting" element={<CreateListing/>} />
               <Route path="/listingdetails/:id" element={<ListingDetails/>} />
+             
 
 
               <Route path="*" element={<PageNotFound/>} />
