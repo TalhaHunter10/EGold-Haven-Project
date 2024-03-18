@@ -54,7 +54,20 @@ export const getSimilarListings = async (userdata, excludeId) => {
 };
 
 
-//Get Fvorite Listings
+//Get User Listings
+export const getUserListings = async () => {
+    try{
+        const response = await axios.get(`${BACKEND_URL}/api/listings/getuserlistings`)
+        return response.data;
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+};
+
+
+//Get Favorite Listings
 export const getFavoriteListings = async () => {
     try{
         const response = await axios.get(`${BACKEND_URL}/api/listings/getfavoritelistings`)

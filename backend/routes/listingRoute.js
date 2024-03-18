@@ -1,6 +1,6 @@
 const express = require("express");
 const protect = require("../middlewares/authmiddleware");
-const { createListing, getLiveListings, getListingsById, getSimilarListings, likeListing, unlikeListing, getLikedStatus, getFavoritelistings } = require("../controllers/listingController");
+const { createListing, getLiveListings, getListingsById, getSimilarListings, likeListing, unlikeListing, getLikedStatus, getFavoritelistings, getUserListings } = require("../controllers/listingController");
 const { upload } = require("../utils/fileUpload")
 
 const router =  express.Router();
@@ -13,6 +13,7 @@ router.get('/getlistingsbyid/:id', getListingsById)
 router.post('/likelisting',protect, likeListing)
 router.post('/unlikelisting',protect, unlikeListing)
 router.get('/getlikedstatus',protect, getLikedStatus)
+router.get('/getuserlistings',protect, getUserListings)
 
 
 module.exports = router

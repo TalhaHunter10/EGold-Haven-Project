@@ -30,6 +30,7 @@ import PrivacyPolicy from './components/privacypolicy';
 import Favoritelistings from './components/profile/favoritelistings';
 import Mylistings from './components/profile/mylistings';
 import UserProfile from './components/profile/userprofile';
+import MyListingDetails from './components/profile/mylistings/mylistingdetails';
 
 
 axios.defaults.withCredentials = true;
@@ -84,6 +85,7 @@ function App() {
               <Route path="/resetpassword/:resetToken" element={<ResetPassword/>} />
               <Route path="/createlisting" element={<CreateListing/>} />
               <Route path="/listingdetails/:id" element={<ListingDetails/>} />
+              <Route path="/mylistingdetails/:id" element={<MyListingDetails/>} />
              
 
 

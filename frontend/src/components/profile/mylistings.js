@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import ContainerVertical from "../listingcontainers/containervertical";
-import { FileAnimationsmall } from "../loader/loader";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectIsLoggedIn } from "../../redux/features/auth/authSlice";
 import { toast } from "react-toastify";
+import Container from "./mylistings/container";
+import { FileAnimationsmall } from "../loader/loader";
+import { getUserListings } from "../../services/listingservice";
 
 
 
@@ -15,7 +16,7 @@ const Mylistings = () => {
 
     const fetchdata = async () => {
         try {
-            const data = [];
+            const data = await getUserListings();
             if (data && data.length > 0) {
                 setListing(data);
             } else {
@@ -29,6 +30,8 @@ const Mylistings = () => {
     useEffect(() => {
         fetchdata();
     }, []);
+
+    console.log(listing);
 
 
 
@@ -59,7 +62,7 @@ const Mylistings = () => {
                     <FileAnimationsmall />
                 ) : (
                     <div className="">
-                        <ContainerVertical listing={listing} />
+                        <Container listing={listing} />
                     </div>
                 )
             )}

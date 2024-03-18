@@ -89,6 +89,13 @@ const getListingsById = asyncHandler(async (req, res) => {
       }
 });
 
+const getUserListings = asyncHandler(async (req, res) => {
+    const userId = req.user.id;
+    const userlistings = await Listing.find({ user: userId }).sort({ createdAt: -1 });
+
+    res.status(200).json(userlistings);
+});
+
 const getFavoritelistings = asyncHandler(async (req, res) => {
     const userId = req.user.id;
     const likedListings = await LikedListing.find({ userId });
@@ -148,5 +155,6 @@ module.exports = {
     likeListing,
     unlikeListing,
     getLikedStatus,
-    getFavoritelistings
+    getFavoritelistings,
+    getUserListings
 }

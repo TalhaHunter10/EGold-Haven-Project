@@ -88,7 +88,7 @@ const UserProfile = () => {
             }
             setIsLoading(true)
             try {
-                const data = await ChangePassword(userData)
+                await ChangePassword(userData)
                 
                 setShowChangePasswordForm(false);
                 setShowEditProfileForm(false);
@@ -132,7 +132,7 @@ const UserProfile = () => {
             }
             setIsLoading(true)
             try {
-                const data = await UpdateUser(userData)
+                await UpdateUser(userData)
                 
                 setShowChangePasswordForm(false);
                 setShowEditProfileForm(false);
