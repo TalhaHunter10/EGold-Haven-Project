@@ -143,7 +143,7 @@ const CreateListing = () => {
             try {
                 const data = await createListing(formData);
                 if (data) {
-                    navigate('/')
+                    navigate('/mylistings');
                     setIsLoading(false)
                 }
 

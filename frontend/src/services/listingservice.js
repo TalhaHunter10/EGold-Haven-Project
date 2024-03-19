@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from "axios";
 import {toast} from 'react-toastify'
 
 export const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -142,3 +142,30 @@ export const getListingsById = async (id) => {
     }
 };
 
+//Get Listings by Id
+export const deleteListingById = async (id) => {
+    try{
+        const response = await axios.delete(`${BACKEND_URL}/api/listings/deletelistingbyid/${id}`,)
+        
+            toast.success("Listing Deleted Successfully !!!")
+            return true;
+        
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+};
+
+
+//Get Image by URL
+export const getImageByUrl = async (imageUrl) => {
+    try{
+        const response = await axios.get(`${BACKEND_URL}/api/listings/getimagebyurl`, imageUrl)
+        return response.data;
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+};

@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const Listing = require("../models/listingModel");
 const User = require("../models/userModel");
 const LikedListing = require("../models/LikedListingModel");
+const fetch = require('node-fetch');
 
 const createListing = asyncHandler(async (req, res) => {
     const { title, price, description, status, category, karats, weight, stones, address } = req.body;
@@ -89,6 +90,27 @@ const getListingsById = asyncHandler(async (req, res) => {
       }
 });
 
+const deleteListing = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const listing = await Listing.findById(id);
+
+        if (!listing) {
+            res.status(404);
+            throw new Error('Listing not found');
+        }
+
+        await Listing.deleteOne({ _id: id });
+        res.status(200).json({ message: 'Listing Deleted Successfully!' });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+
+
 const getUserListings = asyncHandler(async (req, res) => {
     const userId = req.user.id;
     const userlistings = await Listing.find({ user: userId }).sort({ createdAt: -1 });
@@ -146,6 +168,33 @@ const getLikedStatus = asyncHandler(async (req, res) => {
     }
 });
 
+const downloadImageFromURL = asyncHandler(async (req, res) => {
+    try {
+
+        const { imageUrl } = req.body;
+
+      console.log(imageUrl);
+
+      // Fetch the image data from the URL
+      const response = await fetch(imageUrl);
+  
+      // Check if the response is successful
+      if (!response.ok) {
+        throw new Error(`Failed to fetch image: ${response.statusText}`);
+      }
+  
+      // Get the image data as a Blob
+      const imageBlob = await response.blob();
+  
+      // Set the appropriate headers and send the image data as the response
+      res.set('Content-Type', 'image/jpeg'); // Adjust the content type based on the image type
+      res.send(imageBlob);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+);
 
 module.exports = {
     createListing,
@@ -156,5 +205,7 @@ module.exports = {
     unlikeListing,
     getLikedStatus,
     getFavoritelistings,
-    getUserListings
+    getUserListings,
+    deleteListing,
+    downloadImageFromURL
 }

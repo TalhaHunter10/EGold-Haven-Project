@@ -276,8 +276,8 @@ const ListingDetails = () => {
                                             Weight
                                         </div>
                                         <div className='p-1 w-[100%] md:w-auto text-center md:text-left'>
-                                            <p className='text-right'>{listing.weights && parseFloat(listing.weights.tola).toFixed(2)} tola</p>
-                                            <p className='text-right'>{listing.weights && parseFloat(listing.weights.gram).toFixed(2)} gram</p>
+                                            <p className='md:text-right'>{listing.weights && parseFloat(listing.weights.tola).toFixed(2)} tola</p>
+                                            <p className='md:text-right'>{listing.weights && parseFloat(listing.weights.gram).toFixed(2)} gram</p>
                                         </div>
                                     </div>
                                 </div>

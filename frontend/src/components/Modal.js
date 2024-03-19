@@ -16,6 +16,7 @@ const Modal = ({ isOpen, onClose, children }) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                zIndex: 1000,
             }}
         >
             <div
@@ -28,6 +29,7 @@ const Modal = ({ isOpen, onClose, children }) => {
                     border: "4px solid #ca8a04",
                     borderRadius: 10,
                     boxShadow: "4px solid black",
+                    
                 }}
             >
                 {children}

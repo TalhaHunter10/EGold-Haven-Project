@@ -50,6 +50,7 @@ const Favoritelistings = () => {
     return (
         <div className="p-12">
             <h1 className='alluse text-4xl text-stone-200 pb-8'>Favorite Listings</h1>
+            <div className="overflow-auto">
             {message ? (
                 <div className="text-center alluse text-3xl text-stone-200 pb-5">
                     You have no favorite listings
@@ -58,11 +59,12 @@ const Favoritelistings = () => {
                 listing.length === 0 ? (
                     <FileAnimationsmall />
                 ) : (
-                    <div className="">
+                    <div className="flex flex-wrap justify-start">
                         <ContainerVertical listing={listing} />
                     </div>
                 )
             )}
+            </div>
 
             <div className='text-stone-200 border-2 border-yellow-600 p-10 rounded-lg ml-10 mr-10 mt-10'>
                 <h1 className='headingtextlanding pl-8'>Want to sell your gold items on <span className='text-yellow-600'>EGold Haven ?</span></h1>

@@ -179,16 +179,16 @@ const UserProfile = () => {
     return (
         <div className="p-12">
             {isLoading && <Loader />}
-            <div className="flex flex-wrap justify-between">
+            <div className="flex flex-wrap justify-between mb-5">
                 <h1 className="alluse text-4xl text-stone-200 pb-8">My Profile</h1>
                 <div>
-                    <button className="m-2 px-3 alluse inline-block rounded bg-warning-600 pb-2.5 pt-3 font-semibold text-sm uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600" onClick={handleShowProfile}>
+                    <button className="m-1 md:m-2 px-1 md:px-3 alluse inline-block rounded bg-warning-600 pb-2.5 pt-3 font-semibold text-xs md:text-sm uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600" onClick={handleShowProfile}>
                         <p className="">View Profile</p>
                     </button>
-                    <button className="m-2 px-3 alluse inline-block rounded bg-warning-600 pb-2.5 pt-3 font-semibold text-sm uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600" onClick={handleShowChangePasswordForm}>
+                    <button className="m-1 md:m-2 px-1 md:px-3 alluse inline-block rounded bg-warning-600 pb-2.5 pt-3 font-semibold text-xs md:text-sm uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600" onClick={handleShowChangePasswordForm}>
                         <p className="">Change Password</p>
                     </button>
-                    <button className="m-2 px-3 alluse inline-block rounded bg-warning-600 pb-2.5 pt-3 font-semibold text-sm uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600" onClick={handleShowEditProfileForm}>
+                    <button className="m-1 md:m-2 px-1 md:px-3 alluse inline-block rounded bg-warning-600 pb-2.5 pt-3 font-semibold text-xs md:text-sm uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600" onClick={handleShowEditProfileForm}>
                         <p className="">Edit Profile</p>
                     </button>
                 </div>
@@ -198,7 +198,7 @@ const UserProfile = () => {
                 // Change password form
                 <div className="p-6 rounded-md bg-neutral-900 alluse text-xl text-stone-200 text-center align-center justify-center">
                     <p className="text-3xl text-center">Change Password</p>
-                    <div className="mt-5 w-96 text-center m-auto">
+                    <div className="mt-5 md:w-96 text-center m-auto">
 
 
                         <TEInput
@@ -243,7 +243,7 @@ const UserProfile = () => {
                 // Edit profile form
                 <div className="p-6 rounded-md bg-neutral-900 alluse text-xl text-stone-200 text-center align-center justify-center">
                 <p className="text-3xl text-center">Edit Profile</p>
-                <div className="mt-5 w-96 text-center m-auto">
+                <div className="mt-5 md:w-96 text-center m-auto">
 
                     <TEInput
                   type="text"
