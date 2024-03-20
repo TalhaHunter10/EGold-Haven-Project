@@ -161,8 +161,48 @@ export const deleteListingById = async (id) => {
 //Get Image by URL
 export const getImageByUrl = async (imageUrl) => {
     try{
-        const response = await axios.get(`${BACKEND_URL}/api/listings/getimagebyurl`, imageUrl)
+        const response = await axios.get(`${BACKEND_URL}/api/listings/getimagebyurl`, {
+            params: {
+                imageUrl: imageUrl
+            },
+            responseType: 'blob'
+        })
         return response.data;
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+};
+
+
+//Edit Listing
+export const editListing = async (formData) => {
+    try{
+        const response = await axios.patch(`${BACKEND_URL}/api/listings/editlisting`,formData , {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+             }})
+            
+        toast.success("Listing Edited Successfully... Pending Approval !!!")
+        return true
+    }catch(error){  
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+};
+
+
+
+//Set listing sold by Id
+export const setListingSold = async (id) => {
+    try{
+            await axios.patch(`${BACKEND_URL}/api/listings/setlistingsold/${id}`,)
+        
+            toast.success("Listing Marked as Sold Successfully !!!")
+            return true;
+        
     }catch(error){
         const message = (
             error.response && error.response.data && error.response.data.message) || error.message || error.toString();

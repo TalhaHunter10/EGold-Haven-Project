@@ -30,7 +30,7 @@ const createListing = asyncHandler(async (req, res) => {
     }
     const images = fileData;
 
-    if(images.length === 0){
+    if (images.length === 0) {
         res.status(500);
         throw new Error('Something wrong with image upload')
     }
@@ -65,29 +65,29 @@ const getSimilarListings = asyncHandler(async (req, res) => {
     const { category } = req.query;
     const { excludeId } = req.query;
 
-    const similarListings = await Listing.find({ status: 'live', category: category, _id: { $ne: excludeId } } ).sort({ createdAt: -1 });
+    const similarListings = await Listing.find({ status: 'live', category: category, _id: { $ne: excludeId } }).sort({ createdAt: -1 });
     res.status(200).json(similarListings);
 });
 
 const getListingsById = asyncHandler(async (req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
 
     try {
         const listings = await Listing.find({ _id: id });
 
         const sellerId = listings[0].user;
 
-        const seller = await User.find({_id : sellerId})
-    
+        const seller = await User.find({ _id: sellerId })
+
         if (!listings) {
-          return res.status(404).json({ message: 'Listings not found' });
+            return res.status(404).json({ message: 'Listings not found' });
         }
-    
-        res.status(200).json({listings , seller});
-      } catch (error) {
+
+        res.status(200).json({ listings, seller });
+    } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Listing not Found' });
-      }
+    }
 });
 
 const deleteListing = asyncHandler(async (req, res) => {
@@ -124,14 +124,14 @@ const getFavoritelistings = asyncHandler(async (req, res) => {
 
     const listingIds = likedListings.map((listing) => listing.listingId);
 
-    const favoriteListings = await Listing.find({ _id: { $in: listingIds }, status: 'pending approval'});
+    const favoriteListings = await Listing.find({ _id: { $in: listingIds }, status: 'pending approval' });
 
     res.status(200).json(favoriteListings);
 });
 
 
 // Controller function to handle liking a listing
- const likeListing = asyncHandler(async (req, res) => {
+const likeListing = asyncHandler(async (req, res) => {
     const { listingId } = req.body;
     const userId = req.user.id;
 
@@ -146,7 +146,7 @@ const getFavoritelistings = asyncHandler(async (req, res) => {
 const unlikeListing = asyncHandler(async (req, res) => {
     const { listingId } = req.body;
     const userId = req.user.id;
-    
+
     // Find and delete the like entry
     await LikedListing.findOneAndDelete({ userId, listingId });
 
@@ -171,30 +171,95 @@ const getLikedStatus = asyncHandler(async (req, res) => {
 const downloadImageFromURL = asyncHandler(async (req, res) => {
     try {
 
-        const { imageUrl } = req.body;
+        const { imageUrl } = req.query;
 
-      console.log(imageUrl);
+        // Fetch the image data from the URL
+        const response = await fetch(imageUrl);
 
-      // Fetch the image data from the URL
-      const response = await fetch(imageUrl);
-  
-      // Check if the response is successful
-      if (!response.ok) {
-        throw new Error(`Failed to fetch image: ${response.statusText}`);
-      }
-  
-      // Get the image data as a Blob
-      const imageBlob = await response.blob();
-  
-      // Set the appropriate headers and send the image data as the response
-      res.set('Content-Type', 'image/jpeg'); // Adjust the content type based on the image type
-      res.send(imageBlob);
+        // Check if the response is successful
+        if (!response.ok) {
+            throw new Error(`Failed to fetch image: ${response.statusText}`);
+        }
+        const imageBlob = await response.buffer();
+
+        res.setHeader('Content-Type', 'image/jpeg');
+        res.send(imageBlob);
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal server error' });
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
     }
-  }
-);
+});
+
+const editListing = asyncHandler(async (req, res) => {
+    const { ListingID } = req.body;
+
+    
+
+    //Manage Image Upload
+    let fileData = [];
+    if (req.files && req.files.length > 0) {
+        // Loop through each file in req.files array
+        for (let i = 0; i < req.files.length; i++) {
+            const uploadedFile = req.files[i];
+            const fileInfo = {
+                fileName: uploadedFile.originalname,
+                filePath: uploadedFile.path,
+                fileType: uploadedFile.mimetype,
+                fileSize: uploadedFile.size,
+            };
+            // Push fileInfo object into fileData array
+            fileData.push(fileInfo);
+        }
+    }
+    const images = fileData;
+
+    if (images.length === 0) {
+        res.status(500);
+        throw new Error('Something wrong with image upload')
+    }
+
+    const grams = (req.body.weight * 11.66).toString();
+
+    const listing = await Listing.findById(ListingID);
+    if(listing){
+        const { title, price, description, category, karats, weight, stones, address } = listing;
+        listing.title = req.body.title || title;
+        listing.price = req.body.price || price;
+        listing.description = req.body.description || description;
+        listing.category = req.body.category || category;
+        listing.karats = req.body.karats || karats;
+        listing.weights = { tola: req.body.weight || weight.tola, gram: grams || weight.gram };
+        listing.stones = req.body.stones || stones;
+        listing.images = images || listing.images;
+        listing.address = req.body.address || address;
+        listing.status = 'pending approval';
+        listing.updatedAt = Date.now();
+        await listing.save();
+
+    }
+    res.status(200).json(listing);
+});
+
+const SetListingSold = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const listing = await Listing.findById(id);
+
+        if (!listing) {
+            res.status(404);
+            throw new Error('Listing not found');
+        }
+
+        listing.status = 'sold';
+        await listing.save();
+        res.status(200).json({ message: 'Listing Sold Successfully!' });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
 
 module.exports = {
     createListing,
@@ -207,5 +272,7 @@ module.exports = {
     getFavoritelistings,
     getUserListings,
     deleteListing,
-    downloadImageFromURL
+    downloadImageFromURL,
+    editListing,
+    SetListingSold
 }

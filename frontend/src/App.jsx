@@ -12,7 +12,6 @@ import Header from './components/header/header';
 import Footer from './components/footer/footer';
 import Login from './components/login/login';
 import Forum from './components/forum/forum';
-import About from './components/about/about';
 import Landing from './components/landing/landing';
 import Signup from './components/signup/signup';
 import ForgotPassword from './components/forgotpassword/forgotpassword';
@@ -75,7 +74,6 @@ function App() {
               <Route path="/terms" element={<TermsConditions/>} />
               <Route path="/privacypolicy" element={<PrivacyPolicy/>} />
               <Route path="/forum" element={<Forum/>} />
-              <Route path="/about" element={<About/>} />
               <Route path="/signup" element={<Signup/>} />
               <Route path="/userprofile" element={<UserProfile/>} />
               <Route path="/favoritelistings" element={<Favoritelistings />} />

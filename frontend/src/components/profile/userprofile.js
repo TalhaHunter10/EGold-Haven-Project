@@ -136,6 +136,8 @@ const UserProfile = () => {
                 
                 setShowChangePasswordForm(false);
                 setShowEditProfileForm(false);
+
+                fetchdata();
                 
                 setIsLoading(false)
 

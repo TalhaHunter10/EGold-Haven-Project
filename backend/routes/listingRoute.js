@@ -1,6 +1,6 @@
 const express = require("express");
 const protect = require("../middlewares/authmiddleware");
-const { createListing, getLiveListings, getListingsById, getSimilarListings, likeListing, unlikeListing, getLikedStatus, getFavoritelistings, getUserListings, deleteListing, downloadImageFromURL } = require("../controllers/listingController");
+const { createListing, getLiveListings, getListingsById, getSimilarListings, likeListing, unlikeListing, getLikedStatus, getFavoritelistings, getUserListings, deleteListing, downloadImageFromURL, editListing, SetListingSold } = require("../controllers/listingController");
 const { upload } = require("../utils/fileUpload");
 
 const router =  express.Router();
@@ -16,6 +16,8 @@ router.post('/unlikelisting',protect, unlikeListing)
 router.get('/getlikedstatus',protect, getLikedStatus)
 router.get('/getuserlistings',protect, getUserListings)
 router.get('/getimagebyurl', downloadImageFromURL)
+router.patch('/editlisting',protect,upload.array('images', 8), editListing)
+router.patch('/setlistingsold/:id', SetListingSold)
 
 
 module.exports = router

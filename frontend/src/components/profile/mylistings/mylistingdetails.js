@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Carousel, Input, InputNumber, Select } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
-import { deleteListingById, getImageByUrl, getListingsById } from '../../../services/listingservice';
-import { FileAnimation } from '../../loader/loader';
+import { deleteListingById, editListing, getImageByUrl, getListingsById, setListingSold } from '../../../services/listingservice';
+import { FileAnimation, Loader } from '../../loader/loader';
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import { selectIsLoggedIn } from '../../../redux/features/auth/authSlice';
 import { useSelector } from 'react-redux';
@@ -11,7 +11,6 @@ import { toast } from 'react-toastify';
 import Modal from '../../Modal';
 import TextArea from 'antd/es/input/TextArea';
 import ImageUploading from 'react-images-uploading';
-import { set } from 'mongoose';
 
 const MyListingDetails = () => {
 
@@ -20,6 +19,7 @@ const MyListingDetails = () => {
     const isLoggedIn = useSelector(selectIsLoggedIn);
 
     const [open, setOpen] = useState(false)
+    const [confirmOpen, setConfirmOpen] = useState(false)
 
     const [isLoading, setIsLoading] = useState(false)
     const [showEdit, setShowEdit] = useState(false)
@@ -35,8 +35,7 @@ const MyListingDetails = () => {
     const [isWeight, setIsWeight] = useState('');
     const [isStones, setIsStones] = useState('');
     const [isLocation, setIsLocation] = useState('');
-    const [imageURLs, setImageURLs] = useState([]);
-
+    const [isWorking, setIsWorking] = React.useState(false);
     const [images, setImages] = React.useState([]);
 
 
@@ -67,7 +66,8 @@ const MyListingDetails = () => {
     }, [id]);
 
 
-    const loadEditListing =  async () => {
+    const loadEditListing = async () => {
+        setShowEdit(true);
         setIsLoading(true);
         setIsCategory(listing.category);
         setIsTitle(listing.title);
@@ -80,8 +80,6 @@ const MyListingDetails = () => {
 
         if (Array.isArray(listing.images)) {
             const imageUrls = listing.images.map(image => `${process.env.REACT_APP_BACKEND_URL}/${image.filePath}`);
-            setImageURLs(imageUrls);
-
             const downloadedImages = await downloadAllImages(imageUrls);
             setImages(downloadedImages);
         }
@@ -98,16 +96,32 @@ const MyListingDetails = () => {
                 if (!response) {
                     throw new Error(`Failed to fetch image: ${response.statusText}`);
                 }
-                const blob = await response.blob();
-                return blob
+
+                
+                const blob = response;
+                const fileName = 'image.jpg';
+                const file = new File([blob], fileName, { type: blob.type });
+                const dataUrl = await blobToDataURL(blob);
+                return { data_url: dataUrl, file: file };
             });
-    
+
             const images = await Promise.all(imageDownloadPromises);
             downloadedImages.push(...images);
         } catch (error) {
             console.error('Error downloading images:', error);
         }
         return downloadedImages;
+    };
+
+    const blobToDataURL = (blob) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                resolve(reader.result);
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+        });
     };
 
 
@@ -181,15 +195,15 @@ const MyListingDetails = () => {
             navigate('/login')
             return
         }
-        setIsLoading(true)
+        setIsWorking(true)
         try {
             await deleteListingById(id);
             navigate('/mylistings')
 
-            setIsLoading(false)
+            setIsWorking(false)
         } catch (error) {
             console.error(error);
-            setIsLoading(false)
+            setIsWorking(false)
         }
     }
 
@@ -239,6 +253,7 @@ const MyListingDetails = () => {
     const maxNumber = 8;
 
     const onChange = (imageList, addUpdateIndex) => {
+        console.log(imageList);
         setImages(imageList);
     };
 
@@ -249,6 +264,9 @@ const MyListingDetails = () => {
         setImages([]);
         setCloseOpen(false);
     };
+
+
+   
 
 
     const handleSubmit = async (e) => {
@@ -309,17 +327,18 @@ const MyListingDetails = () => {
             formData.append('address', isLocation);
             formData.append('stones', isStones);
             formData.append('status', 'pending approval');
+            formData.append('ListingID', id);
 
-            setIsLoading(true)
+            setIsWorking(true)
             try {
-                const data = await [];
+                const data = await editListing(formData);
                 if (data) {
                     navigate('/mylistings');
-                    setIsLoading(false)
                 }
+                setIsWorking(false)
 
             } catch (error) {
-                setIsLoading(false)
+                setIsWorking(false)
             }
 
         } else {
@@ -327,21 +346,40 @@ const MyListingDetails = () => {
         }
 
     };
-    
 
+    const handleSold = async () => {
+        if (!isLoggedIn) {
+            navigate('/login')
+            toast.error('Login first to mark listing as sold')
+            return;
+        }
+        setIsWorking(true)
+        try {
+            
+            const data = await setListingSold(id);
+            if (data) {
+                navigate('/mylistings');
+            }
+            setIsWorking(false)
+        } catch (error) {
+            console.error(error);
+            setIsWorking(false)
+        }
+    }
 
 
     return (
         <div className='p-12'>
             {isLoading && <FileAnimation />}
+            {isWorking && <Loader />}
 
-            <div className="flex flex-wrap justify-between mb-5">
-                <h1 className="alluse text-4xl text-stone-200 pb-8">My Listing Details</h1>
-                <div>
+            <div className="flex flex-wrap justify-between mb-5 text-center">
+                <h1 className="m-auto md:m-0 alluse text-4xl text-stone-200 pb-3">My Listing Details</h1>
+                <div className="m-auto md:m-0">
                     <button onClick={() => setShowEdit(false)} className="m-1 md:m-2 px-1 md:px-3 alluse inline-block rounded bg-warning-600 pb-2.5 pt-3 font-semibold text-xs md:text-sm uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600">
                         <p className="">View Listing</p>
                     </button>
-                    <button onClick={() => setShowEdit(true)} className="m-1 md:m-2 px-1 md:px-3 alluse inline-block rounded bg-warning-600 pb-2.5 pt-3 font-semibold text-xs md:text-sm uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600" >
+                    <button onClick={loadEditListing} className="m-1 md:m-2 px-1 md:px-3 alluse inline-block rounded bg-warning-600 pb-2.5 pt-3 font-semibold text-xs md:text-sm uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600" >
                         <p className="">Edit Listing</p>
                     </button>
                     <button onClick={() => setOpen(true)} className="m-1 md:m-2 px-1 md:px-3 alluse inline-block rounded bg-warning-600 pb-2.5 pt-3 font-semibold text-xs md:text-sm uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600">
@@ -349,13 +387,27 @@ const MyListingDetails = () => {
                     </button>
                 </div>
             </div>
+            <div className='md:text-right pb-5'>
+            <button  onClick={() => setConfirmOpen(true)} className="w-[100%] md:w-auto m-1 px-7 alluse inline-block rounded bg-warning-600 pb-2.5 pt-3 font-semibold text-sm md:text-base uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600">
+                        <p className="">MARK AS SOLD</p>
+                    </button>
+            </div>
 
-            <Modal isOpen={open} onClose={() => setOpen(false)} className='z-50'>
+            <Modal isOpen={open} onClose={() => setOpen(false)}>
                 <>
                     <h1 className='modal-heading text-stone-700 text-2xl font-bold p-2'>Confirm Deletion</h1>
                     <h3 className='modal-text p-3 text-justify font-semibold text-base text-stone-700 '>Are you sure you want to delete this listing ? </h3>
                     <button className='ml-3 modal-button-cancel font-semibold border-2 border-danger-600 text-danger-600 text-base transform duration:300 hover:border-yellow-600 hover:text-yellow-600 px-5 py-1 rounded-lg' onClick={handleDeleteListing}>Yes</button>
                     <button className='ml-3 modal-button-cancel font-semibold border-2 border-primary-600 text-primary-600 text-base transform duration:300 hover:border-yellow-600 hover:text-yellow-600 px-5 py-1 rounded-lg' onClick={() => setOpen(false)}>Cancel</button>
+                </>
+            </Modal>
+
+            <Modal isOpen={confirmOpen} onClose={() => setConfirmOpen(false)}>
+                <>
+                    <h1 className='modal-heading text-stone-700 text-2xl font-bold p-2'>Mark as Sold</h1>
+                    <h3 className='modal-text p-3 text-justify font-semibold text-base text-stone-700 '>Are you sure you want to mark this listing as Sold ? </h3>
+                    <button className='ml-3 modal-button-cancel font-semibold border-2 border-danger-600 text-danger-600 text-base transform duration:300 hover:border-yellow-600 hover:text-yellow-600 px-5 py-1 rounded-lg' onClick={handleSold}>Yes</button>
+                    <button className='ml-3 modal-button-cancel font-semibold border-2 border-primary-600 text-primary-600 text-base transform duration:300 hover:border-yellow-600 hover:text-yellow-600 px-5 py-1 rounded-lg' onClick={() => setConfirmOpen(false)}>Cancel</button>
                 </>
             </Modal>
 
@@ -932,7 +984,7 @@ const MyListingDetails = () => {
                                     onClick={handleSubmit}
                                     className="inline-block rounded bg-warning-600 px-16 pb-2.5 pt-3 text-lg text-semibold font-medium uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600"
                                 >
-                                    Sell
+                                    Confirm Changes
                                 </button>
                             </p>
 
