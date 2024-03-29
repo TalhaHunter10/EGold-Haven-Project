@@ -100,7 +100,7 @@ const loginUser = asyncHandler(async (req, res) => {
         //Generating Token
         const token = generateToken(user._id);
 
-        if(remember == 'true')
+        if(remember === true)
         {
             //Send HTTP-only cookie
             res.cookie("token", token, {

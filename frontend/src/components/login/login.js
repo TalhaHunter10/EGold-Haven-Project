@@ -20,7 +20,7 @@ const Login = () => {
   const [FormData, setFormData] = useState({
     name: '',
     password: '',
-    remember: ''
+    remember: false
   })
 
 
@@ -33,9 +33,9 @@ const Login = () => {
   
 
   const handleCheckboxChange = (e) => {
-    setIsChecked(e.target.checked);
+    setIsChecked(!isChecked);
     setFormData({
-      ...FormData, remember: isChecked
+      ...FormData, remember: !isChecked
     })
   };
 

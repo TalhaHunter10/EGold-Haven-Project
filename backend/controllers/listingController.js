@@ -56,7 +56,7 @@ const createListing = asyncHandler(async (req, res) => {
 });
 
 const getLiveListings = asyncHandler(async (req, res) => {
-    const liveListings = await Listing.find({ status: 'pending approval' }).sort({ createdAt: -1 });
+    const liveListings = await Listing.find({ status: 'live' }).sort({ createdAt: -1 });
     res.status(200).json(liveListings);
 });
 
@@ -124,7 +124,7 @@ const getFavoritelistings = asyncHandler(async (req, res) => {
 
     const listingIds = likedListings.map((listing) => listing.listingId);
 
-    const favoriteListings = await Listing.find({ _id: { $in: listingIds }, status: 'pending approval' });
+    const favoriteListings = await Listing.find({ _id: { $in: listingIds }, status: 'live' });
 
     res.status(200).json(favoriteListings);
 });

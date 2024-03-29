@@ -6,8 +6,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { SET_LOGIN, SET_USERID, selectStatus } from './redux/features/auth/authSlice';
-import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
+import { SET_LOGIN, SET_USERID, selectIsLoggedIn, selectStatus } from './redux/features/auth/authSlice';
+import { BrowserRouter as Router, Route, Routes, BrowserRouter, useNavigate } from 'react-router-dom';
 import Header from './components/header/header';
 import Footer from './components/footer/footer';
 import Login from './components/login/login';
@@ -30,6 +30,8 @@ import Favoritelistings from './components/profile/favoritelistings';
 import Mylistings from './components/profile/mylistings';
 import UserProfile from './components/profile/userprofile';
 import MyListingDetails from './components/profile/mylistings/mylistingdetails';
+import ListingRequests from './components/admindashboard/listingrequests';
+
 
 
 axios.defaults.withCredentials = true;
@@ -53,13 +55,17 @@ function App() {
   }, [dispatch]);
 
 
+
   const renderLayout = () => {
     if (isAdmin) {
       return (
+        <div className='bg-neutral-900'>
         <Routes>
           <Route path="/home" element={<AdminDashboard />} />
           <Route path="/jewelerrequests" element={<JewelerRequests/>} />
+          <Route path="/listingrequests" element={<ListingRequests/>} />
         </Routes>
+        </div>
       );
     } else {
       return (
@@ -103,11 +109,11 @@ function App() {
   };
 
   return (
-    <BrowserRouter>
+    <div>
     <ScrollToTop />
     <ToastContainer limit={3} bodyClassName={"customtoastbody"}/>
         {renderLayout()}
-    </BrowserRouter>
+    </div>
   );
 }
 

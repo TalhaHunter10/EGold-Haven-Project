@@ -1,85 +1,119 @@
 import { useNavigate } from "react-router-dom";
-import { getJewelerRequests } from "../../services/adminservice";
-import { useState } from "react";
+import { acceptJeweler, getJewelerRequests, rejectJeweler } from "../../services/adminservice";
+import { useEffect, useState } from "react";
+import { Image } from 'antd';
+import React from "react";
+import { useSelector } from "react-redux";
+import { selectIsLoggedIn } from "../../redux/features/auth/authSlice";
 
 
-const JewelerTable = ({ jewelers }) => {
+const JewelerTable = ({ jewelers, triggerRefresh}) => {
 
-    const handleAccept = (jewelerId, user) => {
-        // Implement accept logic here
-        console.log('Accepted jeweler with ID:', jewelerId, 'for user:', user);
+
+    const handleAccept = async (userId) => {
+        
+        try {
+            const response = await acceptJeweler(userId);
+            triggerRefresh();
+        }
+        catch (error) {
+            console.error('Error:', error);
+        }
       };
     
-      const handleReject = (jewelerId, user) => {
-        // Implement reject logic here
-        console.log('Rejected jeweler with ID:', jewelerId, 'for user:', user);
-      };
+      const handleReject = async (jewelerId, userId) => {
+        try {
+          const response = await rejectJeweler(jewelerId, userId);
+          triggerRefresh();
+      }
+      catch (error) {
+          console.error('Error:', error);
+      }
+    };
+      
 
     return (
         
-            <div className="overflow-x-auto">
-              <table className="min-w-full border border-danger-600">
-                <thead>
-                  <tr className="bg-stone-200 text-neutral-900">
-                    <th className="border border-danger-600 px-4 py-2">Serial No.</th>
-                    <th className="border border-danger-600 px-4 py-2">CNIC No.</th>
-                    <th className="border border-danger-600 px-4 py-2">Phone No.</th>
-                    <th className="border border-danger-600 px-4 py-2">Store Name</th>
-                    <th className="border border-danger-600 px-4 py-2">Commission Rate</th>
-                    <th className="border border-danger-600 px-4 py-2">Shop/Store No.</th>
-                    <th className="border border-danger-600 px-4 py-2">Address</th>
-                    <th className="border border-danger-600 px-4 py-2">City</th>
-                    <th className="border border-danger-600 px-4 py-2 w-32">CNIC Images</th>
-                    <th className="border border-danger-600 px-4 py-2">Cover Image</th>
-                    <th className="border border-danger-600 px-4 py-2">Store Images</th>
-                  </tr>
-                </thead>
+      <div className="overflow-x-auto h-screen alluser text-xl">
+     {jewelers.map((jeweler, index) => (<table  key={index} className="min-w-full border border-danger-600 border-2 border-stone-200 mt-10 mb-10 bg-zinc-700 rounded-lg">
+        <thead>
+            <tr className="text-stone-200">
+            <th className="border border-stone-200 px-4 py-2 bg-zinc-800">Request Time</th>
+                <th className="border border-stone-200 px-4 py-2 bg-zinc-800">CNIC No.</th>
+                <th className="border border-stone-200 px-4 py-2 bg-zinc-800">Phone No.</th>
+                <th className="border border-stone-200 px-4 py-2 bg-zinc-800">Store Name</th>
+                <th className="border border-stone-200 px-4 py-2 bg-zinc-800">Commission Rate</th>
+                <th className="border border-stone-200 px-4 py-2 bg-zinc-800">Shop/Store No.</th>
                 
-                  {jewelers.map((jeweler, index) => (
-                    <tbody>
-                    <tr key={jeweler._id} className="text-neutral-900">
-                      <td className="border border-danger-600 px-4 py-2">{index + 1}</td>
-                      <td className="border border-danger-600 px-4 py-2">{jeweler.cnicno}</td>
-                      <td className="border border-danger-600 px-4 py-2">{jeweler.phoneno}</td>
-                      <td className="border border-danger-600 px-4 py-2">{jeweler.storename}</td>
-                      <td className="border border-danger-600 px-4 py-2">{jeweler.commissionrate}</td>
-                      <td className="border border-danger-600 px-4 py-2">{jeweler.shopno}</td>
-                      <td className="border border-danger-600 px-4 py-2">{jeweler.address}</td>
-                      <td className="border border-danger-600 px-4 py-2">{jeweler.city}</td>
-                      <td className="border border-danger-600 px-4 py-2 w-32">
-                        <div className="flex flex-wrap">
-                          {jeweler.cnicimages.map((image, index) => (
-                            <img key={index} src={`http://localhost:5000/${image.filePath}`} alt={`CNIC Image ${index}`} className="w-24 h-auto mr-2 mb-2" />
-                          ))}
-                        </div>
-                      </td>
-                      <td className="border border-danger-600 px-4 py-2">
-                        <img src={`http://localhost:5000/${jeweler.coverimage[0].filePath}`} alt="Cover" className="max-w-full h-auto" />
-                      </td>
-                      <td className="border border-danger-600 px-4 py-2">
-                        <div className="flex flex-wrap">
-                          {jeweler.storeimages.map((image, index) => (
-                            <img key={index} src={`http://localhost:5000/${image.filePath}`} alt={`Store Image ${index}`} className="w-24 h-auto mr-2 mb-2" />
-                          ))}
-                        </div>
-                      </td>
+                
+                
+            </tr>
+        </thead>
+        <tbody>
+                
+                    <tr className="text-stone-200">
+                    <td className="border border-stone-200 px-4 py-2">{new Date(jeweler.createdAt).toLocaleString()}</td>
+                        <td className="border border-stone-200 px-4 py-2">{jeweler.cnicno}</td>
+                        <td className="border border-stone-200 px-4 py-2">{jeweler.phoneno}</td>
+                        <td className="border border-stone-200 px-4 py-2">{jeweler.storename}</td>
+                        <td className="border border-stone-200 px-4 py-2">{jeweler.commissionrate}</td>
+                        <td className="border border-stone-200 px-4 py-2">{jeweler.shopno}</td>
+                        
                     </tr>
-                    <tr className="">
-                        <td colSpan={12} className="text-center">
-                    <button onClick={() => handleAccept(jeweler._id, jeweler.user)} className="bg-green-500 text-lg text-white px-10 py-1 rounded m-5 transform duration-300 hover:scale-110" >Accept</button>
-                        <button onClick={() => handleReject(jeweler._id, jeweler.user)} className="bg-red-500 text-lg text-white px-10 py-1 rounded m-5 transform duration-300 hover:scale-110">Reject</button>
+                
+            
+        </tbody>
+        <thead>
+        <tr className="text-stone-200">
+        <th className="border border-stone-200 px-4 py-2 bg-zinc-800">Address</th>
+                <th className="border border-stone-200 px-4 py-2 bg-zinc-800">City</th>
+                <th className="border border-stone-200 px-4 py-2 w-32 bg-zinc-800">CNIC Images</th>
+                <th className="border border-stone-200 px-4 py-2 bg-zinc-800">Cover Image</th>
+                <th className="border border-stone-200 px-4 py-2 bg-zinc-800">Store Images</th>
+                <th className="border border-stone-200 px-4 py-2 bg-zinc-800">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+          <tr className="text-stone-200">
+          <td className="border border-stone-200 px-4 py-2">{jeweler.address}</td>
+          <td className="border border-stone-200 px-4 py-2">{jeweler.city}</td>
+                        <td className="border border-stone-200 px-4 py-2 w-32">
+                            <div className="flex flex-wrap">
+                                {jeweler.cnicimages.map((image, index) => (
+                                    <Image width={100} key={index} src={`http://localhost:5000/${image.filePath}`} alt={`CNIC Image ${index}`} className="p-2 border-2 border-yellow-600 rounded-lg m-1"  />
+                                ))}
+                            </div>
+                        </td>
+                        <td className="border border-stone-200 px-4 py-2">
+                            <Image width={100} src={`http://localhost:5000/${jeweler.coverimage[0].filePath}`} alt="Cover" className="p-2 border-2 border-yellow-600 rounded-lg m-1" />
+                        </td>
+                        <td className="border border-stone-200 px-4 py-2">
+                            <div className="flex flex-wrap">
+                                {jeweler.storeimages.map((image, index) => (
+                                    <Image width={100} key={index} src={`http://localhost:5000/${image.filePath}`} alt={`Store Image ${index}`} className="p-2 border-2 border-yellow-600 rounded-lg " />
+                                ))}
+                            </div>
+                        </td>
+                        <td rowSpan={2} className="border border-stone-200 px-4 py-2">
+                            <div className="text-center">
+                                <button onClick={() => handleAccept(jeweler.user)} className="bg-green-500 text-lg text-white px-6 py-1 rounded m-1 transform duration-300 hover:scale-110">Accept</button>
+                                <button onClick={() => handleReject(jeweler._id, jeweler.user)} className="bg-red-500 text-lg text-white px-6 py-1 rounded m-1 transform duration-300 hover:scale-110">Reject</button>
+                            </div>
                         </td>
                     </tr>
-                    </tbody>
-                  ))}
-              </table>
-            </div>
+        </tbody>
+    </table>))}
+</div>
     );
   };
 
 
 
 const JewelerRequests = () => {
+
+  const[trigger, setTrigger] = useState(false)
+  const[isFetched, setIsFetched] = useState(false)
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
     const navigate = useNavigate();
     const [jewelers, setJewelers] = useState([
@@ -105,15 +139,28 @@ const JewelerRequests = () => {
         },
       ]);
 
+      const triggerRefresh = () => {
+        setTrigger(!trigger); // Toggle refresh trigger
+    };
 
     const fetchdata = async () =>{
         try {
             const data = await getJewelerRequests();
+            if(data._id){
             setJewelers(data); 
+            setIsFetched(true);
+            }
         } catch (error) {
             
         }
     }
+
+    useEffect(() => {
+      if(!isLoggedIn){
+        navigate('/home')
+      }
+        fetchdata();
+    }, [trigger])
 
     const dashboard = () => {
 
@@ -121,7 +168,7 @@ const JewelerRequests = () => {
     }
 
     return(
-        <div>
+        <div className="bg-neutral-900 h-screen">
             <div className='p-10 flex flex-wrap justify-center md:justify-between '>
                     <h1 className='m-5 text-5xl font-medium text-yellow-600 text-center'>Jeweler Requests</h1>
                     <button
@@ -143,7 +190,9 @@ const JewelerRequests = () => {
 
 
                 <div className="table-container">
-                <JewelerTable jewelers={jewelers} />
+                  {isFetched ? <div><JewelerTable jewelers={jewelers} triggerRefresh={triggerRefresh}/></div> : <div className="text-center text-3xl text-stone-200">Refresh requests / No new Requests Found !!</div>}
+                
+                  
                 </div>
         </div>
     )

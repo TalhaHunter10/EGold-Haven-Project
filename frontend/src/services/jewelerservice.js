@@ -21,3 +21,4 @@ export const registerJeweler = async (formData) => {
             toast.error(message)
     }
 };
+
