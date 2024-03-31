@@ -8,6 +8,7 @@ import ContainerVertical from './containervertical';
 import Modal from '../Modal';
 import { useSelector } from 'react-redux';
 import { selectIsLoggedIn, selectUserID } from '../../redux/features/auth/authSlice';
+import { getloginStatus } from '../../services/authservice';
 
 const ListingDetails = () => {
 
@@ -17,6 +18,7 @@ const ListingDetails = () => {
     const [button, setButton] = useState(false)
 
     const [isLoading, setIsLoading] = useState('false')
+    const [isSimilarLoading, setIsSimilarLoading] = useState('false')
     const [isLiked, setIsLiked] = useState(false);
 
     const { id } = useParams();
@@ -48,12 +50,15 @@ const ListingDetails = () => {
     const [similarListing, setSimilarListing] = useState([])
 
     const fetchdata = async (userdata, excludeId) => {
+        setIsSimilarLoading(true)
         try {
             const data = await getSimilarListings(userdata, excludeId);
             setSimilarListing(data);
+            setIsSimilarLoading(false)
 
         } catch (error) {
             console.log(error);
+            setIsSimilarLoading(false)
         }
     }
 
@@ -93,13 +98,25 @@ const ListingDetails = () => {
     };
 
     useEffect(() => {
-        if (isLoggedIn && listing._id) {
-            fetchLikedStatus(listing._id);
-            if (userId === seller._id) {
-                setButton(true)
+        const checkLoginStatus = async () => {
+            try {
+                const status = await getloginStatus();
+                if (!status.verified) {
+                    navigate('/login');
+                }
+                else if(status.verified && listing._id){
+                    fetchLikedStatus(listing._id);
+                    if (userId === seller._id) {
+                        setButton(true)
+                    }
+                }
+            } catch (error) {
+                console.error('Error checking login status:', error);
             }
-        }
+        };
+        checkLoginStatus();
     }, [listing]);
+
 
 
     const SampleNextArrow = props => {
@@ -411,7 +428,11 @@ const ListingDetails = () => {
             <p className='buttontextlanding text-right mt-4 mr-8'><Link to="" className='text-stone-200 hover:text-yellow-600 text-xl'>View More</Link></p>
             <div className='categories flex flex-wrap lg:justify-center md:justify-start pt-5 pb-5  '>
                 {similarListing.length === 0 ? (
-                    <FileAnimationsmall />
+                    isSimilarLoading ? (
+                        <FileAnimationsmall />
+                    ) : (
+                        <p className='text-stone-200 text-center pl-8 text-2xl'>No similar listings found !</p>
+                    )
                 ) : (
                     <div className="">
                         <ContainerVertical listing={similarListing} />

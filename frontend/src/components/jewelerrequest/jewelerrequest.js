@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import { useNavigate } from 'react-router-dom';
 import { Select, Input } from 'antd';
@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import { Loader } from '../loader/loader';
 import { registerJeweler } from '../../services/jewelerservice';
 import Modal from '../Modal';
+import { getloginStatus } from '../../services/authservice';
 
 const JewelerRequest = () => {
 
@@ -21,6 +22,20 @@ const JewelerRequest = () => {
     if (!userstatus === 'user') {
         navigate('/')
     }
+
+    useEffect(() => {
+        const checkLoginStatus = async () => {
+            try {
+                const status = await getloginStatus();
+                if (!status.verified) {
+                    navigate('/login');
+                }
+            } catch (error) {
+                console.error('Error checking login status:', error);
+            }
+        };
+        checkLoginStatus();
+    }, []);
 
     const [cnicno, setCnicNo] = useState('');
     const [phoneno, setPhoneNo] = useState('');

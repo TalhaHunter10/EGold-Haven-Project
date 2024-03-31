@@ -6,6 +6,7 @@ import { acceptListing, getListingRequests, getUserDetailsForListingRequest, rej
 import { selectIsLoggedIn } from '../../redux/features/auth/authSlice';
 import ModalDynamic from '../modaldynamic';
 import { Loader } from '../loader/loader';
+import { getloginStatus } from '../../services/authservice';
 
 const ListingTable = ({ listings, triggerRefresh }) => {
 
@@ -172,7 +173,6 @@ const ListingRequests = () => {
     const [trigger, setTrigger] = useState(false);
     const [isFetched, setIsFetched] = useState(false);
     const [listings, setListings] = useState([]);
-    const isLoggedIn = useSelector(selectIsLoggedIn);
     const navigate = useNavigate();
 
     const triggerRefresh = () => {
@@ -189,12 +189,24 @@ const ListingRequests = () => {
         }
     };
 
+
     useEffect(() => {
-        if (!isLoggedIn) {
-            navigate('/home');
-        }
-        fetchdata();
+        const checkLoginStatus = async () => {
+            try {
+                const status = await getloginStatus();
+                if (!status.verified) {
+                    navigate('/home');
+                } else {
+                    fetchdata();
+                }
+            } catch (error) {
+                console.error('Error checking login status:', error);
+            }
+        };
+    
+        checkLoginStatus();
     }, [trigger]);
+
 
     const goToDashboard = () => {
         navigate('/home');

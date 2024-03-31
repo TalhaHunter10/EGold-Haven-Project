@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import { useNavigate } from 'react-router-dom';
 import { Select, Input, InputNumber } from 'antd';
@@ -9,12 +9,29 @@ import { selectIsLoggedIn } from '../../redux/features/auth/authSlice';
 import { toast } from 'react-toastify';
 import { Loader } from '../loader/loader';
 import Modal from '../Modal';
+import { getloginStatus } from '../../services/authservice';
 const { TextArea } = Input;
 
 
 const CreateListing = () => {
 
     const isLoggedIn = useSelector(selectIsLoggedIn);
+
+    useEffect(() => {
+        const checkLoginStatus = async () => {
+            try {
+                const status = await getloginStatus();
+                if (!status.verified) {
+                    navigate('/login');
+                }
+            } catch (error) {
+                console.error('Error checking login status:', error);
+            }
+        };
+        checkLoginStatus();
+    }, []);
+
+
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
 

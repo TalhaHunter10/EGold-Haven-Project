@@ -5,6 +5,7 @@ import { Image } from 'antd';
 import React from "react";
 import { useSelector } from "react-redux";
 import { selectIsLoggedIn } from "../../redux/features/auth/authSlice";
+import { getloginStatus } from "../../services/authservice";
 
 
 const JewelerTable = ({ jewelers, triggerRefresh}) => {
@@ -156,11 +157,21 @@ const JewelerRequests = () => {
     }
 
     useEffect(() => {
-      if(!isLoggedIn){
-        navigate('/home')
-      }
-        fetchdata();
-    }, [trigger])
+        const checkLoginStatus = async () => {
+            try {
+                const status = await getloginStatus();
+                if (!status.verified) {
+                    navigate('/home');
+                } else {
+                    fetchdata();
+                }
+            } catch (error) {
+                console.error('Error checking login status:', error);
+            }
+        };
+    
+        checkLoginStatus();
+    }, [trigger]);
 
     const dashboard = () => {
 
