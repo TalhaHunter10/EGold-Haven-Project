@@ -40,6 +40,9 @@ app.use('/api/jeweler' , jewelerRoutes);
 const adminRoutes = require("./routes/adminRoute");
 app.use('/api/admin' , adminRoutes);
 
+const productRoutes = require("./routes/productRoute");
+app.use('/api/product' , productRoutes);
+
 
 //ports
 const port = process.env.PORT || 8080;

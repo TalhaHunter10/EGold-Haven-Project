@@ -189,7 +189,7 @@ const JewelerRequest = () => {
 
             setIsLoading(true)
             try {
-                const data = registerJeweler(formData);
+                const data = await registerJeweler(formData);
                 if (data) {
                     navigate('/')
                     dispatch(SET_STATUS('requested'))
@@ -216,7 +216,7 @@ const JewelerRequest = () => {
                 Request for Jeweler Status
             </p>
 
-            <form className='p-10 m-5 border-2 border-yellow-600 rounded-lg'>
+            <form className='p-10 m-5 rounded-lg bg-neutral-900'>
 
                 <p className='formheading text-4xl pt-4 pb-4 text-stone-200 border-b-2 border-yellow-600 '>Fill The Store Details</p>
 

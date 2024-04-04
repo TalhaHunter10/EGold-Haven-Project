@@ -84,7 +84,7 @@ const Landing = () => {
           </Button>,
         ]}
       >
-        <p className='text-base'>Your request for Jeweler Status is Pending Approval which may take some time.. Kindly check after 24 hours.. Thank you for being patient !</p>
+        <p className='text-base alluse font-semibold'>Your request for Jeweler Status is Pending Approval which may take some time.. Kindly check after 24 hours.. Thank you for being patient !</p>
 
       </Modal>
 
@@ -120,11 +120,12 @@ const Landing = () => {
               <h1 className='headingtextlanding text-stone-200 text-center mb-6'>Manage Your <span className='text-yellow-600'>Store Page</span></h1>
               <p className='bodytextlanding text-stone-200 text-justify mb-6'>As a registered jeweler, you'll have the chance to curate your own store page on <span className='text-yellow-600'>EGold Haven</span> allowing you to showcase your unique designs and reach a wider audience. Handle certification requests and earn commissions. Click below to visit page!</p>
               <div className='text-center mt-8 buttontextlanding'>
-                <button
+                <Link
+                to = "/storepage"
                   type="button"
                   className=" inline-block rounded bg-warning-600 px-16 pb-2.5 pt-3 text-sm text-bold font-medium uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600">
                   Store Page
-                </button>
+                </Link>
               </div>
             </div>
           ) : (
@@ -236,7 +237,7 @@ const Landing = () => {
 
           <item className='categorycard'>
             <img className='cardicon' src='/images/coins&bars.png' alt="Coins and Bars" />
-            <p className='cardname'>Coins & Bars</p>
+            <p className='cardname'>Others</p>
           </item>
         </div>
       </div>

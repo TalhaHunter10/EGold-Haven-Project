@@ -13,7 +13,6 @@ import { getloginStatus } from '../../services/authservice';
 const ListingDetails = () => {
 
     const navigate = useNavigate();
-    const isLoggedIn = useSelector(selectIsLoggedIn)
     const userId = useSelector(selectUserID)
     const [button, setButton] = useState(false)
 
@@ -102,7 +101,7 @@ const ListingDetails = () => {
             try {
                 const status = await getloginStatus();
                 if (!status.verified) {
-                    navigate('/login');
+                    
                 }
                 else if(status.verified && listing._id){
                     fetchLikedStatus(listing._id);
@@ -365,7 +364,7 @@ const ListingDetails = () => {
 
                         <h1 className='alluse text-4xl text-center text-stone-200 pb-3'>Gold Certification</h1>
                         <div className='flex flex-wrap text-stone-200 p-3 alluse hover:text-yellow-600 cursor-pointer mb-3' onClick={() => setOpen(true)}>
-                            <img className='w-6 h-6' src='/images/information.png' alt='chat' />
+                            <img className='w-6 h-6' src='/images/information.png' alt='info' />
                             <p className='my-auto pl-3 text-base'>About this feature</p>
                         </div>
 
@@ -376,7 +375,7 @@ const ListingDetails = () => {
                             </button>
                         ) : (<Link to={``} className='flex justify-center w-[100%] alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600'>
 
-                            <img className='w-6 h-6' src='/images/request.png' alt='chat' />
+                            <img className='w-6 h-6' src='/images/request.png' alt='request' />
                             <p className='my-auto pl-3'>Request Certification</p>
 
                         </Link>

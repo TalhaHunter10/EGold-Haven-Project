@@ -66,47 +66,89 @@ const ListingTable = ({ listings, triggerRefresh }) => {
                         </div>
                     </div>
                     <h1 className='text-4xl text-center text-yellow-600 font-semibold'>User Listings</h1>
-                    <div className='flex flex-wrap justify-center overflow-y-auto max-h-[60vh] border-2 border-neutral-900 m-5 rounded-lg'>
-                    <div className='m-5'>
-                    {userListings.length === 0 ? (
-                    <p className="text-lg text-stone-200">No listings found for this user.</p>
-                ) : (
-    userListings.map((listing, index) => (
-        <div key={index} className='border border-yellow-600 p-5 m-5 rounded-lg'>
-            <div className="mb-4">
-                <h2 className="text-2xl text-yellow-600 font-semibold">Product Information</h2>
-                <p className='text-lg text-neutral-900'>Title: {listing.title}</p>
-                <p className='text-lg text-neutral-900'>Price: {listing.price}</p>
-                <p className='text-lg text-neutral-900'>Category: {listing.category}</p>
-                <p className='text-lg text-neutral-900'>Stones: {listing.stones}</p>
-                <p className='text-lg text-neutral-900'>Tola Weight: {listing.weights.tola}</p>
-            </div>
-            <div className="mb-4">
-                <h2 className="text-2xl text-yellow-600 font-semibold">Additional Details</h2>
-                <p className='text-lg text-neutral-900'>Description: {listing.description}</p>
-                <p className='text-lg text-neutral-900'>Address: {listing.address}</p>
-                <p className='text-lg text-neutral-900'>Karats: {listing.karats}</p>
-                <p className='text-lg text-neutral-900'>Status: {listing.status}</p>
-            </div>
-            <div className="mb-4">
-                <h2 className="text-2xl text-yellow-600 font-semibold">Images</h2>
-                <div className="flex flex-wrap">
-                    {listing.images.map((image, index) => (
-                        <div key={index} className='w-20 h-20 border-2 border-yellow-600 rounded-lg m-1'>
-                            <Image
-                                width={'auto'}
-                                src={`http://localhost:5000/${image.filePath}`}
-                                alt={`Image ${index}`}
-                                className="p-2 mx-auto my-auto"
-                            />
+                    <div className='flex flex-wrap justify-center overflow-y-auto max-h-[50vh] border-2 border-neutral-900 m-5 rounded-lg'>
+                        <div className='m-5'>
+                            {userListings.length === 0 ? (
+                                <p className="text-lg text-stone-200">No listings found for this user.</p>
+                            ) : (
+                                userListings.map((listing, index) => (
+                                    <div key={index} className='border border-yellow-600 p-5 m-5 rounded-lg'>
+                                        <p className='mb-3'><span className='text-xl text-stone-200 rounded-full bg-neutral-900 pl-3 pr-3 pt-1 pb-1'>{index + 1}</span></p>
+                                        <div className="mb-4">
+                                            <h2 className="text-2xl text-yellow-600 font-semibold">Listing Information</h2>
+
+                                            <div className="flex flex-wrap justify-center">
+                                                <table className="min-w-full border border-danger-600 border-2 border-stone-200 mt-3 mb-3 bg-zinc-700 rounded-lg text-center">
+                                                    <tbody>
+                                                        <tr className="text-stone-200">
+                                                            <td className="border border-stone-200 px-4 py-2 bg-zinc-800 font-semibold">Title</td>
+                                                            <td className="border border-stone-200 px-4 py-2  text-lg text-stone-200 md:w-96">{listing.title}</td>
+                                                        </tr>
+                                                        <tr className="text-stone-200">
+                                                            <td className="border border-stone-200 px-4 py-2 bg-zinc-800 font-semibold">Price</td>
+                                                            <td className="border border-stone-200 px-4 py-2  text-lg text-stone-200">{listing.price}</td>
+                                                        </tr>
+                                                        <tr className="text-stone-200">
+                                                            <td className="border border-stone-200 px-4 py-2 bg-zinc-800 font-semibold">Category:</td>
+                                                            <td className="border border-stone-200 px-4 py-2  text-lg text-stone-200">{listing.category}</td>
+                                                        </tr>
+                                                        <tr className="text-stone-200">
+                                                            <td className="border border-stone-200 px-4 py-2 bg-zinc-800 font-semibold">Stones</td>
+                                                            <td className="border border-stone-200 px-4 py-2  text-lg text-stone-200">{listing.stones}</td>
+                                                        </tr>
+                                                        <tr className="text-stone-200">
+                                                            <td className="border border-stone-200 px-4 py-2 bg-zinc-800 font-semibold">Tola Weight</td>
+                                                            <td className="border border-stone-200 px-4 py-2 text-lg text-stone-200">{listing.weights.tola}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                        <div className="mb-4">
+                                            <h2 className="text-2xl text-yellow-600 font-semibold">Additional Details</h2>
+                                            <div className="flex flex-wrap justify-center">
+                                                <table className="min-w-full border border-danger-600 border-2 border-stone-200 mt-3 mb-3 bg-zinc-700 rounded-lg text-center">
+                                                    <tbody>
+                                                        <tr className="text-stone-200">
+                                                            <td className="border border-stone-200 px-4 py-2 bg-zinc-800 font-semibold">Description</td>
+                                                            <td className="border border-stone-200 px-4 py-2  text-lg text-stone-200 md:w-96">{listing.description}</td>
+                                                        </tr>
+                                                        <tr className="text-stone-200">
+                                                            <td className="border border-stone-200 px-4 py-2 bg-zinc-800 font-semibold">Address</td>
+                                                            <td className="border border-stone-200 px-4 py-2  text-lg text-stone-200">{listing.address}</td>
+                                                        </tr>
+                                                        <tr className="text-stone-200">
+                                                            <td className="border border-stone-200 px-4 py-2 bg-zinc-800 font-semibold">Karats</td>
+                                                            <td className="border border-stone-200 px-4 py-2 text-lg text-stone-200">{listing.karats}</td>
+                                                        </tr>
+                                                        <tr className="text-stone-200">
+                                                            <td className="border border-stone-200 px-4 py-2 bg-zinc-800 font-semibold">Status</td>
+                                                            <td className="border border-stone-200 px-4 py-2 text-lg text-stone-200">{listing.status}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div className="mb-4">
+                                            <h2 className="text-2xl text-yellow-600 font-semibold">Images</h2>
+                                            <div className="flex flex-wrap">
+                                                {listing.images.map((image, index) => (
+                                                    <div key={index} className='w-20 h-20 border-2 border-yellow-600 rounded-lg m-1'>
+                                                        <Image
+                                                            width={'auto'}
+                                                            src={`http://localhost:5000/${image.filePath}`}
+                                                            alt={`Image ${index}`}
+                                                            className="p-2 mx-auto my-auto"
+                                                        />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            )}
                         </div>
-                    ))}
-                </div>
-            </div>
-        </div>
-    ))
-                )}
-</div>
                     </div>
 
 
@@ -203,7 +245,7 @@ const ListingRequests = () => {
                 console.error('Error checking login status:', error);
             }
         };
-    
+
         checkLoginStatus();
     }, [trigger]);
 

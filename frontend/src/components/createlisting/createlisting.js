@@ -182,7 +182,7 @@ const CreateListing = () => {
                 CREATE LISTING
             </p>
 
-            <form className='p-10 m-5 border-2 border-yellow-600 rounded-lg'>
+            <form className='p-10 m-5  rounded-lg bg-neutral-900'>
 
                 <p className='formheading text-4xl pt-4 pb-4 text-stone-200 border-b-2 border-yellow-600 '>Fill The Listing Details</p>
 
@@ -226,8 +226,8 @@ const CreateListing = () => {
                             label: 'Bridal Sets',
                         },
                         {
-                            value: 'Coins & Bars',
-                            label: 'Coins & Bars',
+                            value: 'Others',
+                            label: 'Others',
                         }
                     ]} />
                 {errors.category && <h1 className='text-danger mt-[-15px] mb-6'>{errors.category}</h1>}

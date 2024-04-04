@@ -575,8 +575,8 @@ const MyListingDetails = () => {
                                         label: 'Bridal Sets',
                                     },
                                     {
-                                        value: 'Coins & Bars',
-                                        label: 'Coins & Bars',
+                                        value: 'Others',
+                                        label: 'Others',
                                     }
                                 ]} />
                             {errors.category && <h1 className='text-danger mt-[-15px] mb-6'>{errors.category}</h1>}

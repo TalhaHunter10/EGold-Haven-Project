@@ -120,6 +120,16 @@ const editProduct = asyncHandler(async (req, res) => {
    
 });
 
+const getJewelerProducts = asyncHandler(async (req, res) => {
+
+    const jeweler = await Jeweler.findOne({ user: req.user.id });
+
+    const jewelerProducts = await Product.find({jeweler: jeweler._id}).sort({ createdAt: -1});
+    res.status(200).json(jewelerProducts);
+
+});
+    
+
 
 
 module.exports = { 
@@ -127,5 +137,7 @@ module.exports = {
     getLiveProducts,
     getSimilarProducts,
     getProductById,
-
+    deleteProduct,
+    editProduct,
+    getJewelerProducts
  };

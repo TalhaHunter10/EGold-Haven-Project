@@ -35,7 +35,7 @@ const JewelerTable = ({ jewelers, triggerRefresh}) => {
 
     return (
         
-      <div className="overflow-x-auto h-screen alluser text-xl">
+      <div className="overflow-x-auto h-screen alluser text-xl text-center">
      {jewelers.map((jeweler, index) => (<table  key={index} className="min-w-full border border-danger-600 border-2 border-stone-200 mt-10 mb-10 bg-zinc-700 rounded-lg">
         <thead>
             <tr className="text-stone-200">
@@ -78,7 +78,7 @@ const JewelerTable = ({ jewelers, triggerRefresh}) => {
           <tr className="text-stone-200">
           <td className="border border-stone-200 px-4 py-2">{jeweler.address}</td>
           <td className="border border-stone-200 px-4 py-2">{jeweler.city}</td>
-                        <td className="border border-stone-200 px-4 py-2 w-32">
+                        <td className="border border-stone-200 px-4 py-2">
                             <div className="flex flex-wrap">
                                 {jeweler.cnicimages.map((image, index) => (
                                     <Image width={100} key={index} src={`http://localhost:5000/${image.filePath}`} alt={`CNIC Image ${index}`} className="p-2 border-2 border-yellow-600 rounded-lg m-1"  />
@@ -147,8 +147,8 @@ const JewelerRequests = () => {
     const fetchdata = async () =>{
         try {
             const data = await getJewelerRequests();
-            if(data._id){
-            setJewelers(data); 
+            if(data.result){
+            setJewelers(data.data); 
             setIsFetched(true);
             }
         } catch (error) {
@@ -172,6 +172,7 @@ const JewelerRequests = () => {
     
         checkLoginStatus();
     }, [trigger]);
+
 
     const dashboard = () => {
 
@@ -201,7 +202,8 @@ const JewelerRequests = () => {
 
 
                 <div className="table-container">
-                  {isFetched ? <div><JewelerTable jewelers={jewelers} triggerRefresh={triggerRefresh}/></div> : <div className="text-center text-3xl text-stone-200">Refresh requests / No new Requests Found !!</div>}
+
+                  {isFetched && jewelers.length != 0 ? <div><JewelerTable jewelers={jewelers} triggerRefresh={triggerRefresh}/></div> : <div className="text-center text-3xl text-stone-200">Refresh requests / No new Requests Found !!</div>}
                 
                   
                 </div>

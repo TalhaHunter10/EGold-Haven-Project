@@ -27,7 +27,7 @@ export const getJewelerRequests = async () => {
         if(response.status === 200){
             toast.success("Data Fetched and Updated Successfully !!!")
         }
-        return response.data;
+        return {data : response.data , result: true};
     }catch(error){
         const message = (
             error.response && error.response.data && error.response.data.message) || error.message || error.toString();

@@ -16,6 +16,10 @@
   src: url('/public/fonts/Montserrat-SemiBold.ttf')
 }
 
+.custom-shadow {
+ 
+  box-shadow: 0 1px 10px 3px rgba(209, 213, 219, 0.5);
+}
 
 .upperbody {
   background-color: #060606;

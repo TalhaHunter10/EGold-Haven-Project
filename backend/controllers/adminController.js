@@ -30,9 +30,10 @@ const getStats = asyncHandler(async (req, res) => {
 });
 
 const getJewelerRequests = asyncHandler(async (req, res) => {
-    const allJewelers = await Jeweler.find();
 
-    res.status(200).json(allJewelers);
+const jewelers = await Jeweler.find({ user: { $in: await User.find({ status: 'requested' }).distinct('_id') } });
+res.status(200).json(jewelers);
+
 });
 
 const acceptJeweler = asyncHandler(async (req, res) => {

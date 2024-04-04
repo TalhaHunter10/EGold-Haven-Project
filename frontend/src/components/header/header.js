@@ -39,7 +39,7 @@ export function BadgeDefault() {
 
 function NavList() {
     return (
-        <ul className="my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+        <ul className="my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6 alluse">
             <Typography
                 as="li"
                 variant="small"
@@ -142,8 +142,8 @@ const Header = () => {
 
 
             <Link to='/'><img src='/images/EGHLogo.png' alt='logo' className='weblogo  md:h-22.5 md:w-64 cursor-pointer' ></img></Link>
-
-            <Navbar className="ml-auto max-w-screen-xl px-6 py-3 bg-transparent border-0 w-32 text-stone-200 nb">
+            
+            <Navbar className="ml-auto max-w-screen-xl px-6 py-3 bg-transparent border-0 w-32 text-stone-200 nb z-50">
                 <div className="flex justify-between text-blue-gray-900 bg-transparent">
                     <IconButton
                         variant="text"
