@@ -14,17 +14,9 @@ code {
     monospace;
 }
 
-@tailwind base;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
-@layer base {
-  html {
-    @apply text-neutral-800;
-  }
-  html.dark {
-    @apply text-neutral-50;
-    @apply bg-neutral-800;
-  }
-}
 
-@tailwind components;
-@tailwind utilities;
+

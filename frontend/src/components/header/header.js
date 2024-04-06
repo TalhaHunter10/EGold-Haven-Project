@@ -19,11 +19,12 @@ import ListIcon from '@mui/icons-material/List';
 import Logout from '@mui/icons-material/Logout';
 import ChatIcon from '@mui/icons-material/Chat';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { logoutUser } from '../../services/authservice';
+import { getUserData, getloginStatus, logoutUser } from '../../services/authservice';
 import { useDispatch } from 'react-redux';
-import { SET_LOGIN, SET_NAME, SET_STATUS, selectName } from '../../redux/features/auth/authSlice';
+import { SET_LOGIN, SET_NAME, SET_STATUS, selectName, selectStatus } from '../../redux/features/auth/authSlice';
 import { useSelector } from 'react-redux';
 import { selectIsLoggedIn } from '../../redux/features/auth/authSlice';
+import { useEffect } from 'react';
 
 
 
@@ -135,6 +136,27 @@ const Header = () => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+
+    const [userstatus, setUserStatus] = React.useState(useSelector(selectStatus));
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+        try {
+            const status = await getloginStatus();
+            if (status.verified) {
+                const user = await getUserData();
+                if(user.status === 'jeweler'){
+                setUserStatus(user.status);
+                }
+            }
+        } catch (error) {
+            console.error('Error checking login status:', error);
+        }
+    };
+
+    checkLoginStatus();
+}, [dispatch, navigate]);
 
 
     return (
@@ -283,6 +305,12 @@ const Header = () => {
                         backgroundColor: '#4b4e49'
                     }} /> <span className='headerbodytext'> Chat </span>
                 </MenuItem>
+                {userstatus === 'jeweler' ? <Link to="/storepage"><MenuItem onClick={handleClose}>
+                
+                    <img className="h-6 w-6 mr-3" src='/images/shop.png' alt='user' />
+                    <span className='headerbodytext'>Manage Store</span>
+                </MenuItem></Link> : null}
+
                 <Divider />
                 <MenuItem onClick={logout}>
                     <ListItemIcon>

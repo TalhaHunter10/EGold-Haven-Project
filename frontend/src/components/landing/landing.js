@@ -9,12 +9,31 @@ import { Button, Modal } from 'antd';
 import { getLiveListings } from '../../services/listingservice';
 import { FileAnimationsmall } from '../loader/loader';
 import ContainerVertical2 from '../listingcontainers/containervertical2';
+import { getloginStatus } from '../../services/authservice';
 
 const Landing = () => {
 
+  const [isLoggedIn, setIsLoggedIn] = useState(useSelector(selectIsLoggedIn));
+
   useEffect(() => {
-    fetchdata();
-  }, []);
+    const checkLoginStatus = async () => {
+        try {
+            const status = await getloginStatus();
+            if (!status.verified) {
+             
+              selectIsLoggedIn(false);
+                navigate('/login');
+            } else {
+                fetchdata();
+                
+            }
+        } catch (error) {
+            console.error('Error checking login status:', error);
+        }
+    };
+
+    checkLoginStatus();
+}, []);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -26,7 +45,7 @@ const Landing = () => {
     setIsModalOpen(false);
   };
 
-  const isLoggedIn = useSelector(selectIsLoggedIn);
+  
   const navigate = useNavigate();
 
   const userstatus = useSelector(selectStatus)
