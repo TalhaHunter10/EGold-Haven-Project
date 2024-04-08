@@ -217,7 +217,8 @@ const loginStatus = asyncHandler(async (req, res) => {
     }
     const verified = jwt.verify(token, process.env.JWT_SECRET)
     if (verified) {
-        res.json({ verified: true , id: verified.id });
+        const user = await User.findById(verified.id).select("-password");
+        res.json({ verified: true , id: verified.id , status: user.status});
     }
     return res.json(false);
 });

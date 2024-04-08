@@ -147,7 +147,11 @@ const Header = () => {
             if (status.verified) {
                 const user = await getUserData();
                 if(user.status === 'jeweler'){
+                    
                 setUserStatus(user.status);
+                }
+                else{
+                    setUserStatus('user')
                 }
             }
         } catch (error) {

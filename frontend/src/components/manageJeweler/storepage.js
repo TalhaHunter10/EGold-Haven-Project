@@ -64,8 +64,13 @@ const StorePage = () => {
                 if (!status.verified) {
                     navigate('/login');
                 } else {
+                    if(status.status != "jeweler"){
+                        navigate('/')
+                    }
+                    else{
                     fetchdata();
                     fetchProducts();
+                    }
                 }
             } catch (error) {
                 console.error('Error checking login status:', error);
@@ -89,7 +94,7 @@ const StorePage = () => {
     return (
         <div className="pt-10 pb-10">
             {isLoading && <Loader />}
-            <div className="alluse alluse text-stone-200 lg:flex lg:flex-wrap justify-center">
+            <div className="alluse text-stone-200 lg:flex lg:flex-wrap justify-center">
 
                 <div className="lg:w-2/6 p-6 bg-neutral-900 rounded-lg order-2 md:order-1 mb-8 ">
 
@@ -102,7 +107,7 @@ const StorePage = () => {
                     </div>
 
                     <h1 className='alluse pt-8 text-3xl  text-center text-stone-200 pb-6'>Commission Rate</h1>
-                    <div className='flex justify-start'>
+                    <div className='flex justify-start allusebody'>
 
                         <img className='w-8 h-8 ml-2' src='/images/value.png' alt='seller' />
 
@@ -123,7 +128,7 @@ const StorePage = () => {
                     </div>
 
                     <h1 className='alluse pt-8 text-3xl text-center text-stone-200 pb-6'>Phone No.</h1>
-                    <div className='flex justify-start text-left'>
+                    <div className='flex justify-start text-left allusebody'>
                         <img className='w-6 h-6 ml-2' src='/images/phone.png' alt='seller' />
 
 
@@ -137,7 +142,7 @@ const StorePage = () => {
                     <div className='border-b-2 border-yellow-600 pt-10'>
                     </div>
                     <h1 className='alluse pt-8 text-3xl text-center text-stone-200 pb-6'>Store Address</h1>
-                    <div className='flex justify-start text-left'>
+                    <div className='flex justify-start text-left allusebody'>
                         <img className='w-8 h-8 ml-2' src='/images/location.png' alt='seller' />
                         <div className="my-auto">
                             <p className='pl-5 alluse lg:text-xl text-stone-200'>
@@ -181,22 +186,26 @@ const StorePage = () => {
                 </div>
 
                 <div className="lg:w-4/6 pl-5 pr-5 pt-3 pb-5  text-center md:text-left order-1 md:order-2">
-                    <div className="flex justify-between align-start">
-                        <p className="text-4xl alluse text-left">{jeweler.storename}</p>
-                        {!anchorEl ? (
+                    <div className="flex justify-between align-start ">
+                        <p className="text-[40px] alluse text-left my-auto">{jeweler.storename}</p>
+                        <p className="my-auto" >{!anchorEl ? (
 
-                            <span onClick={handleClick}><Bars3Icon className="h-10 w-10 cursor-pointer" strokeWidth={2} /></span>
+                            <span onClick={handleClick}><Bars3Icon className="h-10 w-10 cursor-pointer my-auto" strokeWidth={2} /></span>
                         ) : (
-                            <span onClick={handleClose}><XMarkIcon className="h-10 w-10 cursor-pointer" strokeWidth={2} /></span>
-                        )}
+                            <span onClick={handleClose}><XMarkIcon className="h-10 w-10 cursor-pointer my-auto" strokeWidth={2} /></span>
+                        )}</p>
                     </div>
-                    <p className=" text-2xl alluse pt-4">Welcome to your personalised <span className="text-yellow-600">Jeweler Store</span></p>
+                    <div className='border-b-2 border-yellow-600'>
+            </div>
+                    <p className=" text-2xl allusebody pt-6">Welcome to your personalised <span className="text-yellow-600">Jeweler Store</span></p>
 
-                    <div className="rounded-lg mt-8 alluse">
-                        <p className="text-2xl "></p>
+                    
+
+                    <div className="rounded-lg mt-4 alluse">
+                        
                         <div className="md:grid md:grid-flow-col justify-stretch align-center text-xl text-stone font-semibold">
 
-                            <div className="custom-shadow cursor-pointer bg-neutral-900 rounded-lg mt-3 m-3 p-3 hover:bg-yellow-600 hover:scale-105 duration-300">
+                            <div className="custom-shadow cursor-pointer bg-zinc-800 rounded-lg mt-5 m-3 p-3 hover:bg-yellow-600 hover:scale-105 duration-300">
                                 <div className="flex">
                                     <img className="w-6 h-6" src="/images/notification.png" alt="notification" />
                                     <p className="text-left pl-1">Notifications</p>
@@ -204,12 +213,12 @@ const StorePage = () => {
                                 <p className="text-right pt-2">{notificationno > 0 ? (
                                     <span className="text-stone-200 text-xs border-b">New Notifications</span>
                                 ) : (
-                                    <span className="text-stone-200 text-xs border-b">No New Notifications</span>
+                                    <span className="text-stone-200 text-xs border-b allusebody">No New Notifications</span>
                                 )}</p>
                                 <p className="text-right m-1">{notificationno}</p>
                             </div>
 
-                            <div className="custom-shadow cursor-pointer bg-neutral-900 rounded-lg mt-3 m-3 p-3 hover:bg-yellow-600 hover:scale-105 duration-300">
+                            <div className="custom-shadow cursor-pointer bg-zinc-800 rounded-lg mt-5 m-3 p-3 hover:bg-yellow-600 hover:scale-105 duration-300">
                                 <div className="flex">
                                     <img className="w-6 h-7" src="/images/chat.png" alt="chat" />
                                     <p className="text-left pl-1"> Chats </p>
@@ -217,12 +226,12 @@ const StorePage = () => {
                                 <p className="text-right pt-2">{chatno > 0 ? (
                                     <span className="text-stone-200 text-xs border-b">Active Chats</span>
                                 ) : (
-                                    <span className="text-stone-200 text-xs border-b">No Active Chats</span>
+                                    <span className="text-stone-200 text-xs border-b allusebody">No Active Chats</span>
                                 )}</p>
                                 <p className="text-right m-1">{notificationno}</p>
                             </div>
 
-                            <div className="custom-shadow cursor-pointer bg-neutral-900 rounded-lg mt-3 m-3 p-3 hover:bg-yellow-600 hover:scale-105 duration-300">
+                            <div className="custom-shadow cursor-pointer bg-zinc-800 rounded-lg mt-5 m-3 p-3 hover:bg-yellow-600 hover:scale-105 duration-300">
                                 <div className="flex">
                                     <img className="w-6 h-7" src="/images/request.png" alt="certification" />
                                     <p className="text-left pl-1"> Certification Requests </p>
@@ -230,7 +239,7 @@ const StorePage = () => {
                                 <p className="text-right pt-2">{certificationno > 0 ? (
                                     <span className="text-stone-200 text-xs border-b">Pending Requests</span>
                                 ) : (
-                                    <span className="text-stone-200 text-xs border-b">No Pending Requests</span>
+                                    <span className="text-stone-200 text-xs border-b allusebody">No Pending Requests</span>
                                 )}</p>
                                 <p className="text-right m-1">{notificationno}</p>
                             </div>
@@ -239,14 +248,35 @@ const StorePage = () => {
 
                     </div>
 
-                </div>
+                    <div className="bg-neutral-900 m-2 p-3 rounded-lg duration-300 mt-8" >
+                        <p className="alluse text-3xl">Products Overview</p>
+                        <p className="allusebody pt-3 text-lg text-justify">Discover your virtual storefront at <span className="text-yellow-600">EGold Haven</span>, where you can effortlessly manage your gold jewelry collection. Easily add new products, update existing listings, and showcase your craftsmanship to a global audience.</p>
+                        
+                        <div className="grid grid-flow-col justify-stretch pt-5">
+                                <div className="text-center pr-5 pl-5">
+                                <p className="text-stone-200 text-lg border-b allusebody pb-1">Pending Approval</p>
+                                <p className="text-center text-xl m-1">0</p>
 
-            </div>
+                                </div>
+                                <div className="text-center pl-5 pr-5">
+                                <p className="text-stone-200 text-lg border-b allusebody pb-1">Active / Live</p>
+                                <p className="text-center text-xl m-1">0</p>
+                                </div>
+                            </div>
 
-            <div className='border-b-2 border-yellow-600 pt-10'>
-            </div>
+                        <div className="text-center">
+                        
+                        <Link to={``} className=' mx-auto mt-4 mb-4 flex justify-center md:w-2/4 alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-lg font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600'>
 
-            <div className='categoriesarea mt-10 text-stone-200 overflow-auto mb-20'>
+                        <img className='w-7 h-7' src='/images/addwhite.png' alt='request' />
+                        <p className='my-auto pl-3'>Add Product</p>
+
+                    </Link>
+
+                        </div>
+                    </div>
+
+                    <div className='categoriesarea mt-5 text-stone-200 overflow-auto mb-20'>
                 <h1 className='headingtextlanding pl-8'>Store Products</h1>
                 <div className='categories flex flex-wrap lg:justify-center md:justify-start pt-5 pb-5  '>
                     {product.length === 0 && !isFetched ? (
@@ -260,6 +290,15 @@ const StorePage = () => {
                     )}
                 </div>
             </div>
+
+                </div>
+
+            </div>
+
+            <div className='border-b-2 border-yellow-600 pt-10'>
+            </div>
+
+            
 
             <Menu
                 anchorEl={anchorEl}
