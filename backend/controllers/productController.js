@@ -5,9 +5,9 @@ const Jeweler = require("../models/jewelerModel");
 const fetch = require('node-fetch');
 
 const createProduct = asyncHandler(async (req, res) => {
-    const { title, price, description, status, category, karats, weight, address } = req.body;
+    const { title, price, description, status, category, karats, weight } = req.body;
 
-    if (!title || !price || !description || !status || !category || !karats || !weight || !address) {
+    if (!title || !price || !description || !status || !category || !karats || !weight) {
         res.status(400)
         throw new Error("Please fill in all fields !")
     }
@@ -49,7 +49,6 @@ const createProduct = asyncHandler(async (req, res) => {
         karats,
         weights: { tola: weight, gram: grams },
         images,
-        address,
     })
 
     res.status(201).json(product);

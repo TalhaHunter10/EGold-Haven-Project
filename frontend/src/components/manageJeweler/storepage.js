@@ -27,6 +27,8 @@ const StorePage = () => {
     const [notificationno, setNotificationno] = useState(0);
     const [chatno, setChatno] = useState(0);
     const [certificationno, setCertificationno] = useState(0);
+    const [activeno, setActiveno] = useState(0);
+    const [pendingno, setPendingno] = useState(0);
 
     const fetchdata = async () => {
         setIsLoading(true);
@@ -48,6 +50,21 @@ const StorePage = () => {
             const data = await getJewelerProducts();
             if (data.result) {
                 setProduct(data.data);
+
+                let pending = 0;
+                let active = 0;
+                data.data.map((product) => {
+                    if (product.status === 'pending approval') {
+                        pending += 1;
+                    }
+                    if (product.status === 'active') {
+                        active += 1;
+                    }
+                });
+
+                setPendingno(pending);
+                setActiveno(active);
+
                 setIsLoading(false);
                 setIsFetched(true);
             }
@@ -161,7 +178,7 @@ const StorePage = () => {
                     <div className='border-b-2 border-yellow-600 pt-10'>
                     </div>
 
-                    <Link to={``} className='mt-8 flex justify-center w-[100%] alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600'>
+                    <Link to={`/editjewelerprofile`} className='mt-8 flex justify-center w-[100%] alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600'>
 
                         <img className='w-6 h-6' src='/images/edit.png' alt='request' />
                         <p className='my-auto pl-3'>Edit Profile</p>
@@ -255,18 +272,18 @@ const StorePage = () => {
                         <div className="grid grid-flow-col justify-stretch pt-5">
                                 <div className="text-center pr-5 pl-5">
                                 <p className="text-stone-200 text-lg border-b allusebody pb-1">Pending Approval</p>
-                                <p className="text-center text-xl m-1">0</p>
+                                <p className="text-center text-xl m-1">{pendingno}</p>
 
                                 </div>
                                 <div className="text-center pl-5 pr-5">
                                 <p className="text-stone-200 text-lg border-b allusebody pb-1">Active / Live</p>
-                                <p className="text-center text-xl m-1">0</p>
+                                <p className="text-center text-xl m-1">{activeno}</p>
                                 </div>
                             </div>
 
                         <div className="text-center">
                         
-                        <Link to={``} className=' mx-auto mt-4 mb-4 flex justify-center md:w-2/4 alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-lg font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600'>
+                        <Link to={`/addproduct`} className=' mx-auto mt-4 mb-4 flex justify-center md:w-2/4 alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-lg font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600'>
 
                         <img className='w-7 h-7' src='/images/addwhite.png' alt='request' />
                         <p className='my-auto pl-3'>Add Product</p>
@@ -354,12 +371,12 @@ const StorePage = () => {
                     <img className="h-6 w-8 pr-2" src='/images/request.png' alt='user' />
                     <span className='headerbodytext'>Certification Requests</span>
                 </MenuItem></Link>
-                <Link to=""><MenuItem onClick={handleClose}>
+                <Link to="/addproduct"><MenuItem onClick={handleClose}>
                     <img className="h-6 w-8 pr-2" src='/images/addwhite.png' alt='user' />
                     <span className='headerbodytext'>Add Products</span>
                 </MenuItem></Link>
                 <Divider />
-                <Link to=""><MenuItem onClick={handleClose}>
+                <Link to="/editjewelerprofile"><MenuItem onClick={handleClose}>
                     <img className="h-5 w-8 pr-2" src='/images/edit.png' alt='user' />
                     <span className='headerbodytext'>Edit Profile</span>
                 </MenuItem></Link>

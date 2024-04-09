@@ -32,6 +32,8 @@ import UserProfile from './components/profile/userprofile';
 import MyListingDetails from './components/profile/mylistings/mylistingdetails';
 import ListingRequests from './components/admindashboard/listingrequests';
 import StorePage from './components/manageJeweler/storepage';
+import EditJewelerProfile from './components/manageJeweler/editjewelerprofile';
+import AddProduct from './components/manageJeweler/addproduct';
 
 
 
@@ -85,15 +87,17 @@ function App() {
               <Route path="/userprofile" element={<UserProfile/>} />
               <Route path="/favoritelistings" element={<Favoritelistings />} />
               <Route path="/mylistings" element={<Mylistings/>} />
-              <Route path="/jewelerrequest" element={<JewelerRequest/>} />
-              <Route path="/storepage" element={<StorePage/>} />
               <Route path="/forgotpassword" element={<ForgotPassword/>} />
               <Route path="/resetpassword/:resetToken" element={<ResetPassword/>} />
               <Route path="/createlisting" element={<CreateListing/>} />
               <Route path="/listingdetails/:id" element={<ListingDetails/>} />
               <Route path="/mylistingdetails/:id" element={<MyListingDetails/>} />
-             
 
+
+              <Route path="/jewelerrequest" element={<JewelerRequest/>} />
+              <Route path="/storepage" element={<StorePage/>} />
+              <Route path="/editjewelerprofile" element={<EditJewelerProfile/>} />
+              <Route path="/addproduct" element={<AddProduct/>} />
 
               <Route path="*" element={<PageNotFound/>} />
             </Routes>

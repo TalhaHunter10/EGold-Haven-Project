@@ -53,3 +53,40 @@ export const getJewelerProducts = async () => {
             toast.error(message)
     }
 };
+
+//Get Image by URL
+export const getCoverImagebyUrl = async (imageUrl) => {
+    try{
+        const response = await axios.get(`${BACKEND_URL}/api/jeweler/getcoverimagebyurl`, {
+            params: {
+                imageUrl: imageUrl
+            },
+            responseType: 'blob'
+        })
+        return response.data;
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+};
+
+//Edit Jeweler Details
+export const editJewelerDetails = async (formData) => {
+    try{
+        const response = await axios.patch(`${BACKEND_URL}/api/jeweler/updatejeweler`,formData , {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+             }})
+            
+        if(response.statusText === 'OK'){
+            toast.success("Jeweler Details Updated Successfully !!!")
+            return true;
+        }
+        return true
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+};

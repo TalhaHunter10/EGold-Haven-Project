@@ -1,7 +1,7 @@
 const express = require("express");
 const protect = require("../middlewares/authmiddleware");
 const { upload } = require("../utils/fileUpload");
-const { registerJeweler, getJewelerDetails } = require("../controllers/jewelerController");
+const { registerJeweler, getJewelerDetails, getCoverImagebyUrl, editJewelerDetails } = require("../controllers/jewelerController");
 
 const router =  express.Router();
 
@@ -9,6 +9,8 @@ const Uploads = upload.fields([{name: 'coverimage', maxCount: 1}, {name: 'cnicim
 
 router.post('/registerjeweler',protect,Uploads, registerJeweler)
 router.get('/getjewelerdetails',protect, getJewelerDetails)
+router.get('/getcoverimagebyurl', getCoverImagebyUrl)
+router.patch('/updatejeweler',protect,Uploads, editJewelerDetails)
 
 
 module.exports = router

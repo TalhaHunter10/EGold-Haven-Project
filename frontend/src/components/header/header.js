@@ -24,7 +24,7 @@ import { useDispatch } from 'react-redux';
 import { SET_LOGIN, SET_NAME, SET_STATUS, selectName, selectStatus } from '../../redux/features/auth/authSlice';
 import { useSelector } from 'react-redux';
 import { selectIsLoggedIn } from '../../redux/features/auth/authSlice';
-import { useEffect } from 'react';
+import { useEffect , useState } from 'react';
 
 
 
@@ -103,7 +103,7 @@ const Header = () => {
     const navigate = useNavigate();
 
     const userName = useSelector(selectName)
-    const isLoggedIn = useSelector(selectIsLoggedIn);
+    const [isLoggedIn , setIsLoggedIn] = useState(useSelector(selectIsLoggedIn));
 
     const [openNav, setOpenNav] = React.useState(false);
 
@@ -145,6 +145,7 @@ const Header = () => {
         try {
             const status = await getloginStatus();
             if (status.verified) {
+                setIsLoggedIn(true);
                 const user = await getUserData();
                 if(user.status === 'jeweler'){
                     
@@ -153,6 +154,12 @@ const Header = () => {
                 else{
                     setUserStatus('user')
                 }
+            }
+            else{
+                dispatch(SET_LOGIN(false))
+                dispatch(SET_NAME(""))
+                dispatch(SET_STATUS("user"))
+                setIsLoggedIn(false)
             }
         } catch (error) {
             console.error('Error checking login status:', error);
@@ -190,27 +197,27 @@ const Header = () => {
             </Navbar>
             <div className="nav-container">
                 <Link to='/'>
-                    <button className="nav-button ml-5 hidden lg:block">
+                    <button className="nav-button text-lg ml-5 hidden lg:block">
                         Home
                     </button>
                 </Link>
                 <Link to='/searchlistings'>
-                    <button className="nav-button ml-5 hidden lg:block">
+                    <button className="nav-button text-lg ml-5 hidden lg:block">
                         Listings
                     </button>
                 </Link>
                 <Link to='/products'>
-                    <button className="nav-button ml-5 hidden lg:block">
+                    <button className="nav-button text-lg ml-5 hidden lg:block">
                         Products
                     </button>
                 </Link>
                 <Link to='/forum'>
-                    <button className="nav-button ml-5 hidden lg:block">
+                    <button className="nav-button text-lg ml-5 hidden lg:block">
                         Forum
                     </button>
                 </Link>
                 <Link to='/faq'>
-                    <button className="nav-button ml-5 hidden lg:block">
+                    <button className="nav-button text-lg ml-5 hidden lg:block">
                         FAQ's
                     </button>
                 </Link>

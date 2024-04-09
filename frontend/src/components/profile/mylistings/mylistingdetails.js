@@ -253,7 +253,6 @@ const MyListingDetails = () => {
     const maxNumber = 8;
 
     const onChange = (imageList, addUpdateIndex) => {
-        console.log(imageList);
         setImages(imageList);
     };
 

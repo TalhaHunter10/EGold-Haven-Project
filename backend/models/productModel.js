@@ -45,21 +45,6 @@ const productSchema = mongoose.Schema({
         type:Object,
         required: [true,"Please add images !"]
     },
-    address:{
-        type: String,
-        required: [true,"Please add an address !"]
-    },
-    location:{
-        type:{
-            type:String,
-            enum: ['Point']
-        },
-        coordinates:{
-            type: [Number],
-            index: '2dsphere'
-        },
-        formattedAddress: String   
-    },
     createdAt: {
         type: Date,
         default:Date.now
@@ -69,19 +54,6 @@ const productSchema = mongoose.Schema({
     timestamps: true
 })
 
-//Geocode and creating location
-
-productSchema.pre('save', async function(next){
-    const loc = await geocoder.geocode({
-        address: this.address,
-    });
-    this.location = {
-        type: 'Point',
-        coordinates: [loc[0].longitude, loc[0].latitude],
-        formattedAddress: loc[0].formattedAddress
-    }
-    next();
-});
 
 
 const Product = mongoose.model("Product", productSchema)

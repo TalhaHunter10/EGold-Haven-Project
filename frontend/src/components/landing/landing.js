@@ -108,7 +108,7 @@ const Landing = () => {
       </Modal>
 
       <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between mt-5">
-        <div className='  mb-12 basis-auto md:mb-0 md:w-9/12 md:shrink-0 lg:w-6/12 xl:w-6/12 p-10'>
+        <div className='  mb-12 basis-auto md:mb-0 md:w-9/12 md:shrink-0 lg:w-6/12 xl:w-6/12 p-8 '>
           <h1 className='alluse text-4xl text-stone-200 text-center mb-6'>Have something to <span className='text-yellow-600'>SELL</span>?</h1>
           <p className='allusebody text-lg text-stone-200 text-justify mb-6'>Got something special to sell? <span className='text-yellow-600'>EGold Haven</span> makes it easy! Sell your gold items at EGold Haven. List your treasures, set prices, and connect with eager buyers effortlessly. Join now and turn your gold into cash with simplicity and convenience.</p>
           <div className='text-center mt-8 buttontextlanding'>
@@ -120,7 +120,7 @@ const Landing = () => {
           </div>
         </div>
 
-        <div className='mb-12 md:mb-0 md:w-9/12 lg:w-6/12 xl:w-6/12 p-10'>
+        <div className='mb-12 md:mb-0 md:w-9/12 lg:w-6/12 xl:w-6/12 p-8 '>
           {userstatus === 'user' || userstatus === 'requested' ? (
             <div>
               <h1 className='alluse text-4xl text-stone-200 text-center mb-6'>Professional Jewelers, <span className='text-yellow-600'>Join Us</span></h1>
