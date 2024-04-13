@@ -90,6 +90,8 @@ const getProductById = asyncHandler(async (req, res) => {
 
         const jeweler = await Jeweler.findById(jewelerId)
 
+       
+
         if (!product) {
             return res.status(404).json({ message: 'Product not found' });
         }
@@ -204,8 +206,15 @@ const downloadImageFromURL = asyncHandler(async (req, res) => {
     }
 });
 
+const getJewelerProductsInformation = asyncHandler(async (req, res) => {
 
+    const { id } = req.params;
 
+    const products = await Product.find({ jeweler: id , status: 'live' }).sort({ createdAt: -1 });
+
+    res.status(200).json({products : products});
+
+});
 
 module.exports = { 
     createProduct,
@@ -215,5 +224,6 @@ module.exports = {
     deleteProduct,
     editProduct,
     getJewelerProducts,
-    downloadImageFromURL
+    downloadImageFromURL,
+    getJewelerProductsInformation
  };

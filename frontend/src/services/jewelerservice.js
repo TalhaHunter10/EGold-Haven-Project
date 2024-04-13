@@ -90,3 +90,23 @@ export const editJewelerDetails = async (formData) => {
             toast.error(message)
     }
 };
+
+//Get Jeweler Information
+export const getJewelerInformation = async (id) => {
+    try{
+        const response = await axios.get(`${BACKEND_URL}/api/jeweler/getjewelerinfo/${id}`)
+
+        if(response.status === 200){
+            return {data : response.data , result: true};
+        }
+        else{
+            return false;
+        }
+       
+    }
+    catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+};

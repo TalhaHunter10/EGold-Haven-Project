@@ -117,3 +117,16 @@ export const getSimilarProducts = async (userdata, excludeId) => {
             toast.error(message)
     }
 };
+
+
+//Get Jeweler Products Information
+export const getJewelerProductsInformation = async (id) => {
+    try{
+        const response = await axios.get(`${BACKEND_URL}/api/product/getjewelerproducts/${id}`,)
+        return response.data;
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+};

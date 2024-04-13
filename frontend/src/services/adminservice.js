@@ -8,9 +8,6 @@ export const getStats = async () => {
     try{
         const response = await axios.get(`${BACKEND_URL}/api/admin/getstats`)
             
-        if(response.status === 200){
-            toast.success("Data Fetched and Updated Successfully !!!")
-        }
         return response.data;
     }catch(error){
         const message = (
@@ -24,9 +21,6 @@ export const getJewelerRequests = async () => {
     try{
         const response = await axios.get(`${BACKEND_URL}/api/admin/getjewelerrequests`)
             
-        if(response.status === 200){
-            toast.success("Data Fetched and Updated Successfully !!!")
-        }
         return {data : response.data , result: true};
     }catch(error){
         const message = (
@@ -70,10 +64,6 @@ export const rejectJeweler = async (jewelerId, userId) => {
 export const getListingRequests = async () => {
     try{
         const response = await axios.get(`${BACKEND_URL}/api/admin/getlistingrequests`)
-            
-        if(response.status === 200){
-            toast.success("Data Fetched and Updated Successfully !!!")
-        }
         return response.data;
     }catch(error){
         const message = (
@@ -130,9 +120,6 @@ export const getProductRequests = async () => {
     try{
         const response = await axios.get(`${BACKEND_URL}/api/admin/getproductrequests`)
             
-        if(response.status === 200){
-            toast.success("Data Fetched and Updated Successfully !!!")
-        }
         return response.data;
     }catch(error){
         const message = (

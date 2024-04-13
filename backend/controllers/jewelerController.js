@@ -157,10 +157,24 @@ const editJewelerDetails = asyncHandler(async (req, res) => {
 
 });
 
+const getJewelerInformation = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    const jeweler = await Jeweler.findById(id);
+    
+    if (!jeweler) {
+        res.status(404);
+        throw new Error('Jeweler not found');
+    }
+
+    res.status(200).json(jeweler);
+});
+
 
 module.exports = {
     registerJeweler,
     getJewelerDetails,
     getCoverImagebyUrl,
-    editJewelerDetails
+    editJewelerDetails,
+    getJewelerInformation
 }

@@ -36,11 +36,13 @@ const ProductDetails = () => {
                         navigate('/')
                     }
                     
+                    if(status.id === data.jeweler.user){
+                        setButton(true)
+                    }
+
                     setproduct(data.product);
                     setjeweler(data.jeweler);
-                    if (product.category !== undefined && product._id) {
-                        fetchdata(product.category, product._id);
-                    }
+                    
                     setIsLoading(false)
                 }
             } catch (error) {
@@ -51,6 +53,11 @@ const ProductDetails = () => {
         checkLoginStatus();
     }, []);
 
+    useEffect(() => {
+        if (product.category !== undefined && product._id) {
+            fetchdata(product.category, product._id);
+        }
+    }, [product])
 
     const [similarproduct, setSimilarproduct] = useState([])
 
@@ -293,12 +300,54 @@ const ProductDetails = () => {
                             )}
                         </p>
 
+                        <p className='text-center pt-4'>
+                            {button ? (
+                                <button disabled='true' className='disabled-button flex justify-center w-[100%] alluse inline-block rounded bg-stone-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white '>
+                                    <p className='my-auto pl-3'>View Jeweler Page</p>
+                                </button>
+                            ) : (
+                                <Link to={`/jewelerpage/${jeweler._id}`} className='flex justify-center w-[100%] alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600'>
+
+                                    <p className='my-auto pl-3'>View Jeweler Page</p>
+
+                                </Link>
+                            )}
+                        </p>
+
+                        <div className='border-b border-yellow-700 mt-6 mb-6'></div>
 
 
+                        <h1 className='alluse text-4xl text-center text-stone-200 pb-6'>Location</h1>
+                        <div className='flex justify-start'>
+                            <img className='w-8 h-8 ml-2' src='/images/location.png' alt='seller' />
+                            <div className='pl-5 text-lg'>
+                            <p className=' alluse text-stone-200 my-auto'>
+                                Store No. {jeweler.shopno}
+                            </p>
+                            <p className=' alluse text-stone-200 my-auto'>
+                                {jeweler.address}
+                            </p>
+                            <p className=' alluse text-stone-200 my-auto'>
+                               {jeweler.city}
+                            </p>
+                            </div>
+
+                        </div>
+
+                        <div className='border-b-2 border-yellow-600 pt-10'>
+                    </div>
+
+                    <h1 className='alluse pt-8 text-3xl text-center text-stone-200 pb-6'>Phone No.</h1>
+                    <div className='flex justify-start text-left allusebody'>
+                        <img className='w-6 h-6 ml-2' src='/images/phone.png' alt='seller' />
 
 
+                        <p className='pl-5 alluse lg:text-xl text-stone-200 tracking-widest'>
+                            {jeweler.phoneno && jeweler.phoneno.slice(0, 4) + '-' + jeweler.phoneno.slice(4)}
+                        </p>
 
 
+                    </div>
 
                         <div className='border-b border-yellow-700 mt-10 mb-6'></div>
 

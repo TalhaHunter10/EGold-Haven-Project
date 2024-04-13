@@ -1,6 +1,6 @@
 const express = require("express");
 const protect = require("../middlewares/authmiddleware");
-const { createProduct, getLiveProducts, getSimilarProducts, getProductById, getJewelerProducts, deleteProduct, editProduct, downloadImageFromURL } = require("../controllers/productController");
+const { createProduct, getLiveProducts, getSimilarProducts, getProductById, getJewelerProducts, deleteProduct, editProduct, downloadImageFromURL, getJewelerProductsInformation } = require("../controllers/productController");
 const { upload } = require("../utils/fileUpload");
 
 
@@ -14,5 +14,6 @@ router.delete('/deleteproduct/:id', protect, deleteProduct)
 router.patch('/editproduct',protect,upload.array('images', 8), editProduct)
 router.get('/getjewelerproducts',protect, getJewelerProducts)
 router.get('/getimagebyurl', downloadImageFromURL)
+router.get('/getjewelerproducts/:id',protect, getJewelerProductsInformation)
 
 module.exports = router;

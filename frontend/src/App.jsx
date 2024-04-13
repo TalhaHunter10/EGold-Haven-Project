@@ -37,6 +37,7 @@ import AddProduct from './components/manageJeweler/addproduct';
 import JewelerProductDetails from './components/manageJeweler/jewelerproductdetails';
 import ProductRequests from './components/admindashboard/productrequests';
 import ProductDetails from './components/productcontainers/productdetails';
+import PublicStorePage from './components/manageJeweler/publicstorepage';
 
 
 
@@ -104,6 +105,7 @@ function App() {
               <Route path="/addproduct" element={<AddProduct/>} />
               <Route path="/myproductdetails/:id" element={<JewelerProductDetails/>} />
               <Route path="/productdetails/:id" element={<ProductDetails/>} />
+              <Route path="/jewelerpage/:id" element={<PublicStorePage/>} />
 
               <Route path="*" element={<PageNotFound/>} />
             </Routes>

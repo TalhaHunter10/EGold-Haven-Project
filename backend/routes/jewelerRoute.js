@@ -1,7 +1,7 @@
 const express = require("express");
 const protect = require("../middlewares/authmiddleware");
 const { upload } = require("../utils/fileUpload");
-const { registerJeweler, getJewelerDetails, getCoverImagebyUrl, editJewelerDetails } = require("../controllers/jewelerController");
+const { registerJeweler, getJewelerDetails, getCoverImagebyUrl, editJewelerDetails, getJewelerInformation } = require("../controllers/jewelerController");
 
 const router =  express.Router();
 
@@ -11,6 +11,7 @@ router.post('/registerjeweler',protect,Uploads, registerJeweler)
 router.get('/getjewelerdetails',protect, getJewelerDetails)
 router.get('/getcoverimagebyurl', getCoverImagebyUrl)
 router.patch('/updatejeweler',protect,Uploads, editJewelerDetails)
+router.get('/getjewelerinfo/:id',protect, getJewelerInformation)
 
 
 module.exports = router
