@@ -10,6 +10,9 @@ import { getLiveListings } from '../../services/listingservice';
 import { FileAnimationsmall } from '../loader/loader';
 import ContainerVertical2 from '../listingcontainers/containervertical2';
 import { getloginStatus } from '../../services/authservice';
+import { getLiveProducts } from '../../services/productservice';
+import ContainerVerticalProduct from '../productcontainers/containerverticalproduct';
+import ContainerVerticalProduct2 from '../productcontainers/containerverticalproduct2';
 
 const Landing = () => {
 
@@ -24,8 +27,8 @@ const Landing = () => {
               selectIsLoggedIn(false);
                 navigate('/login');
             } else {
-                fetchdata();
-                
+              fetchlistings();
+              fetchproducts();
             }
         } catch (error) {
             console.error('Error checking login status:', error);
@@ -77,7 +80,7 @@ const Landing = () => {
 
   const [listing, setListing] = useState([])
 
-  const fetchdata = async () => {
+  const fetchlistings = async () => {
     try {
       const data = await getLiveListings();
       setListing(data);
@@ -86,9 +89,18 @@ const Landing = () => {
     }
   }
 
-  useEffect(() => {
-    fetchdata();
-  }, []);
+  const [products, setProducts] = useState([])
+
+  const fetchproducts = async () => {
+    try {
+      const data = await getLiveProducts();
+      setProducts(data.liveProducts);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
 
   return (
@@ -264,8 +276,8 @@ const Landing = () => {
       <div className='border-b-2 border-yellow-600 pt-10'>
       </div>
 
-      <div className='categoriesarea mt-10 text-stone-200 overflow-auto mb-20'>
-        <h1 className='headingtextlanding pl-8'>Browse Listings</h1>
+      <div className='categoriesarea mt-10 text-stone-200 overflow-auto mb-5'>
+        <h1 className='headingtextlanding pl-4'>Browse Listings</h1>
         <p className='buttontextlanding text-right mt-4 mr-8'><Link to="" className='text-stone-200 hover:text-yellow-600 text-xl'>View More</Link></p>
         <div className='categories flex flex-wrap lg:justify-center md:justify-start pt-5 pb-5  '>
           {listing.length === 0 ? (
@@ -276,6 +288,28 @@ const Landing = () => {
                 <ContainerVertical listing={listing} />
               
                 <ContainerVertical2 listing={listing} />
+              
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className='border-b-2 border-yellow-600'>
+      </div>
+
+
+      <div className='categoriesarea mt-10 text-stone-200 overflow-auto mb-20'>
+        <h1 className='headingtextlanding pl-4'>Browse Jeweler Products</h1>
+        <p className='buttontextlanding text-right mt-4 mr-8'><Link to="" className='text-stone-200 hover:text-yellow-600 text-xl'>View More</Link></p>
+        <div className='categories flex flex-wrap lg:justify-center md:justify-start pt-5 pb-5  '>
+          {products.length === 0 ? (
+            <FileAnimationsmall />
+          ) : (
+            <div className="">
+             
+                <ContainerVerticalProduct product={products} />
+              
+                <ContainerVerticalProduct2 product={products} />
               
             </div>
           )}

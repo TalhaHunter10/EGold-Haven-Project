@@ -26,7 +26,6 @@ const AdminDashboard = () => {
         listingRequests: 'reload',
         livep: 'reload',
         rejectedp: 'reload',
-        soldp: 'reload',
         productsRequests: 'reload'
     })
 
@@ -53,6 +52,9 @@ const AdminDashboard = () => {
                 expired: getdata.expiredListings,
                 rejected: getdata.rejectedListings,
                 listingRequests: getdata.pendingApproval,
+                livep: getdata.liveProducts,
+                rejectedp: getdata.rejectedProducts,
+                productsRequests: getdata.pendingProductsApproval
             }));
         } catch (error) {
             console.error('Error fetching stats:', error);
@@ -184,10 +186,6 @@ const AdminDashboard = () => {
                                 <td className="p-3 text-xl font-medium text-semibold">{data.livep}</td>
                             </tr>
                             <tr>
-                                <td className="p-3 text-xl font-medium text-semibold">Sold Products:</td>
-                                <td className="p-3 text-xl font-medium text-semibold">{data.soldp}</td>
-                            </tr>
-                            <tr>
                                 <td className="p-3 text-xl font-medium text-semibold">Rejected Products:</td>
                                 <td className="p-3 text-xl font-medium text-semibold">{data.rejectedp}</td>
                             </tr>
@@ -197,7 +195,7 @@ const AdminDashboard = () => {
                             </tr>
                             <tr>
                                 <td colSpan="2" className="flex flex-wrap justify-left m-5">
-                                    <Link className="m-3 text-base font-semibold bg-transparent border border border-danger-600  rounded-lg px-8 py-2 hover:bg-danger-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-danger-500">Inspect Product Requests</Link>
+                                    <Link to='/productrequests' className="m-3 text-base font-semibold bg-transparent border border border-danger-600  rounded-lg px-8 py-2 hover:bg-danger-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-danger-500">Inspect Product Requests</Link>
                                     <button className="m-3 text-base font-semibold bg-transparent border border border-danger-600  rounded-lg px-8 py-2 hover:bg-danger-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-danger-500">Inspect All Products</button>
                                 </td>
                             </tr>

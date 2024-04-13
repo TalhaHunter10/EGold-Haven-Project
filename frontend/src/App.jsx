@@ -34,6 +34,9 @@ import ListingRequests from './components/admindashboard/listingrequests';
 import StorePage from './components/manageJeweler/storepage';
 import EditJewelerProfile from './components/manageJeweler/editjewelerprofile';
 import AddProduct from './components/manageJeweler/addproduct';
+import JewelerProductDetails from './components/manageJeweler/jewelerproductdetails';
+import ProductRequests from './components/admindashboard/productrequests';
+import ProductDetails from './components/productcontainers/productdetails';
 
 
 
@@ -67,6 +70,7 @@ function App() {
           <Route path="/home" element={<AdminDashboard />} />
           <Route path="/jewelerrequests" element={<JewelerRequests/>} />
           <Route path="/listingrequests" element={<ListingRequests/>} />
+          <Route path="/productrequests" element={<ProductRequests/>} />
         </Routes>
         </div>
       );
@@ -98,6 +102,8 @@ function App() {
               <Route path="/storepage" element={<StorePage/>} />
               <Route path="/editjewelerprofile" element={<EditJewelerProfile/>} />
               <Route path="/addproduct" element={<AddProduct/>} />
+              <Route path="/myproductdetails/:id" element={<JewelerProductDetails/>} />
+              <Route path="/productdetails/:id" element={<ProductDetails/>} />
 
               <Route path="*" element={<PageNotFound/>} />
             </Routes>

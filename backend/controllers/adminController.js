@@ -2,11 +2,12 @@ const asyncHandler = require("express-async-handler");
 const Listing = require("../models/listingModel");
 const User = require("../models/userModel");
 const Jeweler = require("../models/jewelerModel");
+const Product = require("../models/productModel");
 const { response } = require("express");
 
 const getStats = asyncHandler(async (req, res) => {
 
-    const [registeredUsersCount, registeredJewelersCount, pendingJewelerRequestsCount, liveListingsCount, soldListingsCount, expiredListingsCount, rejectedListingsCount, pendingApprovalCount] = await Promise.all([
+    const [registeredUsersCount, registeredJewelersCount, pendingJewelerRequestsCount, liveListingsCount, soldListingsCount, expiredListingsCount, rejectedListingsCount, pendingApprovalCount , liveProducts, rejectedProducts , pendingProductsApproval] = await Promise.all([
         User.countDocuments({ status: 'user' }),
         User.countDocuments({ status: 'jeweler' }),
         User.countDocuments({ status: 'requested' }),
@@ -15,6 +16,9 @@ const getStats = asyncHandler(async (req, res) => {
         Listing.countDocuments({status: 'expired'}),
         Listing.countDocuments({status: 'rejected'}),
         Listing.countDocuments({status: 'pending approval'}),
+        Product.countDocuments({status: 'live'}),
+        Product.countDocuments({status: 'rejected'}),
+        Product.countDocuments({status: 'pending approval'})
     ]);
 
     res.status(200).json({
@@ -25,7 +29,10 @@ const getStats = asyncHandler(async (req, res) => {
         soldListings: soldListingsCount,
         expiredListings: expiredListingsCount,
         rejectedListings: rejectedListingsCount,
-        pendingApproval: pendingApprovalCount
+        pendingApproval: pendingApprovalCount,
+        liveProducts: liveProducts,
+        rejectedProducts: rejectedProducts,
+        pendingProductsApproval: pendingProductsApproval
     });
 });
 
@@ -130,6 +137,74 @@ const getUserDetailsForListingRequest = asyncHandler(async (req, res) => {
 });
 
 
+const getProductRequests = asyncHandler(async (req, res) => {
+    const products = await Product.find({status: 'pending approval'});
+
+    res.status(200).json(products);
+});
+
+
+const acceptProduct = asyncHandler(async (req, res) => {
+
+    const { productId } = req.params;
+
+    const product = await Product.findById(productId);
+
+    if(product){
+        product.status = 'live';
+        await product.save();
+        res.status(200).json({message: 'Product Status Accepted Successfully !!!'});
+    }
+    else{
+        res.status(404);
+        throw new Error('Product not found');
+    }
+});
+
+const rejectProduct = asyncHandler(async (req, res) => {
+    const { productId } = req.params;
+
+    const product = await Product.findById(productId);
+
+    if(product){
+        product.status = 'rejected';
+        await product.save();
+        res.status(200).json({message: 'Product Status Rejected Successfully !!!'});
+    }
+    else{
+        res.status(404);
+        throw new Error('Product not found');
+    }
+});
+
+
+const getJewelerDetailsForProductRequest = asyncHandler(async (req, res) => {
+    const { jewelerId } = req.params;
+
+    const status = { $ne: "pending approval" };
+
+    const jeweler = await Jeweler.findById(jewelerId);
+
+    const Products = await Product.find({jeweler: jewelerId, status});
+    if(jeweler){
+        res.status(200).json({
+            storename: jeweler.storename,
+            shopno: jeweler.shopno,
+            address: jeweler.address,
+            city: jeweler.city,
+            commissionrate: jeweler.commissionrate,
+            image : jeweler.coverimage,
+            phoneno : jeweler.phoneno,
+            products: Products
+        });
+    }
+    else{
+        res.status(404);
+        throw new Error('Jeweler not found');
+    }
+});
+
+
 module.exports = {
     getStats,
     getJewelerRequests,
@@ -138,6 +213,10 @@ module.exports = {
     getListingRequests,
     acceptListing,
     rejectListing,
-    getUserDetailsForListingRequest
+    getUserDetailsForListingRequest,
+    getProductRequests,
+    acceptProduct,
+    rejectProduct,
+    getJewelerDetailsForProductRequest
 }
 

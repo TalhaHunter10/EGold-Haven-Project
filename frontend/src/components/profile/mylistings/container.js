@@ -62,9 +62,13 @@ const Container = ({ listing }) => {
                                     <div className=" text-xs">
                                         <p>{getTimeSinceCreation(item.createdAt)}</p>
                                     </div>
-                                    <div className='text-xl text-center mt-8 border-2 border-yellow-600 rounded-lg p-2'>
-                                        Status : {item.status}
-                                    </div>
+                                    {item.status === 'live' ? <div className='text-xl text-center mt-8 border-2 border-green-600 rounded-lg p-2'> Status : {item.status}</div>
+                            : (
+                                item.status === 'rejected' ? <div className='text-xl text-center mt-8 border-2 border-red-600 rounded-lg p-2'> Status : {item.status}</div>
+                                    : 
+                                        item.status === 'pending approval' ? <div className='text-xl text-center mt-8 border-2 border-primary-600 rounded-lg p-2'> Status : {item.status}</div>
+                                     :<div className='text-xl text-center mt-8 border-2 border-yellow-600 rounded-lg p-2'> Status : {item.status}</div>
+                            )}
                                 </div>
                             </div>
                         </Link>

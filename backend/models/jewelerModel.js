@@ -17,7 +17,7 @@ const jewelerSchema = mongoose.Schema({
     },
     phoneno: {
         type: String,
-        required: [true,"Please add some description !"]
+        required: [true,"Please add contact information !"]
     },
     coverimage:{
         type:Object,

@@ -3,18 +3,14 @@ import { getloginStatus } from "../../services/authservice";
 import { getJewelerDetails, getJewelerProducts } from "../../services/jewelerservice";
 import { Link, useNavigate } from "react-router-dom";
 import { FileAnimationsmall, Loader } from "../loader/loader";
-import { Image } from "antd";
+import { Image, Select } from "antd";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import React from "react";
-import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
-import ListIcon from '@mui/icons-material/List';
-import Logout from '@mui/icons-material/Logout';
-import ChatIcon from '@mui/icons-material/Chat';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import ProductContainerVertical from "./productcontainervertical";
+
 
 const StorePage = () => {
 
@@ -29,6 +25,11 @@ const StorePage = () => {
     const [certificationno, setCertificationno] = useState(0);
     const [activeno, setActiveno] = useState(0);
     const [pendingno, setPendingno] = useState(0);
+    const [isCategory, setIsCategory] = useState('');
+
+    const handleCategoryChange = (value) => {
+        setIsCategory(value);
+    };
 
     const fetchdata = async () => {
         setIsLoading(true);
@@ -81,12 +82,12 @@ const StorePage = () => {
                 if (!status.verified) {
                     navigate('/login');
                 } else {
-                    if(status.status != "jeweler"){
+                    if (status.status != "jeweler") {
                         navigate('/')
                     }
-                    else{
-                    fetchdata();
-                    fetchProducts();
+                    else {
+                        fetchdata();
+                        fetchProducts();
                     }
                 }
             } catch (error) {
@@ -162,13 +163,13 @@ const StorePage = () => {
                     <div className='flex justify-start text-left allusebody'>
                         <img className='w-8 h-8 ml-2' src='/images/location.png' alt='seller' />
                         <div className="my-auto">
-                            <p className='pl-5 alluse lg:text-xl text-stone-200'>
+                            <p className='pl-5 lg:text-xl text-stone-200'>
                                 Store No. {jeweler.shopno}
                             </p>
-                            <p className='pl-5 alluse lg:text-xl text-stone-200'>
+                            <p className='pl-5 lg:text-xl text-stone-200'>
                                 {jeweler.address}
                             </p>
-                            <p className='pl-5 alluse lg:text-xl text-stone-200 '>
+                            <p className='pl-5 lg:text-xl text-stone-200 '>
                                 {jeweler.city}
                             </p>
                         </div>
@@ -177,6 +178,11 @@ const StorePage = () => {
 
                     <div className='border-b-2 border-yellow-600 pt-10'>
                     </div>
+
+                    <h1 className='alluse pt-8 text-3xl text-center text-stone-200 pb-4'>Jeweler Profile</h1>
+                    <p className='pl-5 allusebody lg:text-lg text-stone-200'>
+                        You can edit your profile details here.
+                    </p>
 
                     <Link to={`/editjewelerprofile`} className='mt-8 flex justify-center w-[100%] alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600'>
 
@@ -213,13 +219,13 @@ const StorePage = () => {
                         )}</p>
                     </div>
                     <div className='border-b-2 border-yellow-600'>
-            </div>
+                    </div>
                     <p className=" text-2xl allusebody pt-6">Welcome to your personalised <span className="text-yellow-600">Jeweler Store</span></p>
 
-                    
+
 
                     <div className="rounded-lg mt-4 alluse">
-                        
+
                         <div className="md:grid md:grid-flow-col justify-stretch align-center text-xl text-stone font-semibold">
 
                             <div className="custom-shadow cursor-pointer bg-zinc-800 rounded-lg mt-5 m-3 p-3 hover:bg-yellow-600 hover:scale-105 duration-300">
@@ -268,45 +274,45 @@ const StorePage = () => {
                     <div className="bg-neutral-900 m-2 p-3 rounded-lg duration-300 mt-8" >
                         <p className="alluse text-3xl">Products Overview</p>
                         <p className="allusebody pt-3 text-lg text-justify">Discover your virtual storefront at <span className="text-yellow-600">EGold Haven</span>, where you can effortlessly manage your gold jewelry collection. Easily add new products, update existing listings, and showcase your craftsmanship to a global audience.</p>
-                        
+
                         <div className="grid grid-flow-col justify-stretch pt-5">
-                                <div className="text-center pr-5 pl-5">
+                            <div className="text-center pr-5 pl-5">
                                 <p className="text-stone-200 text-lg border-b allusebody pb-1">Pending Approval</p>
                                 <p className="text-center text-xl m-1">{pendingno}</p>
 
-                                </div>
-                                <div className="text-center pl-5 pr-5">
+                            </div>
+                            <div className="text-center pl-5 pr-5">
                                 <p className="text-stone-200 text-lg border-b allusebody pb-1">Active / Live</p>
                                 <p className="text-center text-xl m-1">{activeno}</p>
-                                </div>
                             </div>
+                        </div>
 
                         <div className="text-center">
-                        
-                        <Link to={`/addproduct`} className=' mx-auto mt-4 mb-4 flex justify-center md:w-2/4 alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-lg font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600'>
 
-                        <img className='w-7 h-7' src='/images/addwhite.png' alt='request' />
-                        <p className='my-auto pl-3'>Add Product</p>
+                            <Link to={`/addproduct`} className=' mx-auto mt-4 mb-4 flex justify-center md:w-2/4 alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-lg font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600'>
 
-                    </Link>
+                                <img className='w-7 h-7' src='/images/addwhite.png' alt='request' />
+                                <p className='my-auto pl-3'>Add Product</p>
+
+                            </Link>
 
                         </div>
                     </div>
 
-                    <div className='categoriesarea mt-5 text-stone-200 overflow-auto mb-20'>
-                <h1 className='headingtextlanding pl-8'>Store Products</h1>
-                <div className='categories flex flex-wrap lg:justify-center md:justify-start pt-5 pb-5  '>
-                    {product.length === 0 && !isFetched ? (
-                        <FileAnimationsmall />
-                    ) : (
-                        <div className="">
+                    <h1 className='headingtextlanding pl-8 mt-5'>Store Products</h1>
+                    <div className='categoriesarea text-stone-200 overflow-auto mb-5'>
+                        <div className='categories flex flex-wrap lg:justify-center md:justify-start pt-5 pb-5  '>
+                            {product.length === 0 && !isFetched ? (
+                                <FileAnimationsmall />
+                            ) : (
+                                <div className="">
 
+                                    <ProductContainerVertical Product={product} />
 
-
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
-            </div>
+                    </div>
 
                 </div>
 
@@ -315,7 +321,79 @@ const StorePage = () => {
             <div className='border-b-2 border-yellow-600 pt-10'>
             </div>
 
+            <h1 className="text-stone-200 text-4xl text-center alluse pt-8">Products (All Categories)</h1>
             
+            <p className='field-heading pt-6 pb-2 text-stone-200'>Category</p>
+                <Select className="" style={{ width: '100%', height: 40, marginBottom: 20 }} onChange={handleCategoryChange}
+                    options={[
+                        {
+                            value: 'Rings',
+                            label: 'Rings',
+                        },
+                        {
+                            value: 'Earrings',
+                            label: 'Earrings',
+                        },
+                        {
+                            value: 'Necklaces',
+                            label: 'Necklaces',
+                        },
+                        {
+                            value: 'Chains',
+                            label: 'Chains',
+                        },
+                        {
+                            value: 'Bracelets',
+                            label: 'Bracelets',
+                        },
+                        {
+                            value: 'Bangles',
+                            label: 'Bangles',
+                        },
+                        {
+                            value: 'Anklets',
+                            label: 'Anklets',
+                        },
+                        {
+                            value: 'Pendants',
+                            label: 'Pendants',
+                        },
+                        {
+                            value: 'Bridal Sets',
+                            label: 'Bridal Sets',
+                        },
+                        {
+                            value: 'Others',
+                            label: 'Others',
+                        }
+                    ]} />
+            <div className="p-5">
+                {product.length === 0 && !isFetched ? (
+                    <FileAnimationsmall />
+                ) : product.length === 0 && isFetched ? (
+                    <p className="text-stone-200 text-2xl text-center allusebody pt-8">No Products Found</p>
+                ) : product.length > 0 && isFetched ? (
+                    <div>
+                        {product.filter(item => item.category === isCategory).length === 0 ? (
+                            <div className="allusebody text-center pt-5 text-3xl text-danger-600">
+                                No Products Found in this Category
+                                </div>
+                        ):(
+                            <div>
+                            <div className="allusebody text-center pt-2 text-4xl text-stone-200">
+                                {isCategory}
+                                </div>
+                        <ProductContainerVertical Product={product.filter(item => item.category === isCategory)} />
+                        </div>
+                        )}
+                    </div>
+                ) : (
+                    <div>
+
+                    </div>
+                )}
+
+            </div>
 
             <Menu
                 anchorEl={anchorEl}

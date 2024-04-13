@@ -123,3 +123,63 @@ export const getUserDetailsForListingRequest = async (userId) => {
             toast.error(message)
     }
 };
+
+
+//Get Product Requests
+export const getProductRequests = async () => {
+    try{
+        const response = await axios.get(`${BACKEND_URL}/api/admin/getproductrequests`)
+            
+        if(response.status === 200){
+            toast.success("Data Fetched and Updated Successfully !!!")
+        }
+        return response.data;
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+};
+
+//accept Product
+export const acceptProduct = async (productId) => {
+    try{
+        const response = await axios.patch(`${BACKEND_URL}/api/admin/acceptproduct/${productId}`)
+        if(response.statusText === 'OK'){
+            toast.success("Product Status Accepted Successfully !!!")
+        }
+        return true
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+}
+
+//reject Product
+export const rejectProduct = async (productId) => {
+    try{
+        const response = await axios.patch(`${BACKEND_URL}/api/admin/rejectproduct/${productId}`)
+        if(response.statusText === 'OK'){
+            toast.success("Product Status Request Rejected Successfully !!!")
+        }
+        return true
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+}
+
+
+//Get Jewe;er Details for Product Request
+export const getJewelerDetailsForProductRequest = async (jewelerId) => {
+    try{
+        const response = await axios.get(`${BACKEND_URL}/api/admin/getjewelerdetailsforproductrequest/${jewelerId}`)
+        return response;
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+};
