@@ -233,7 +233,7 @@ const Header = () => {
                     </div>
                 ) : (
                     <Link to='/login'>
-                        <button className="nav-button ml-5">
+                        <button className="nav-button ml-5 text-lg">
                             Login
                         </button>
                     </Link>

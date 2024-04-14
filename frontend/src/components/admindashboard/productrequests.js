@@ -144,7 +144,7 @@ const ProductTable = ({ products, triggerRefresh }) => {
                                             <h2 className="text-2xl text-yellow-600 font-semibold">Images</h2>
                                             <div className="flex flex-wrap text-center">
                                                 {product.images.map((image, index) => (
-                                                    <div key={index} className='w-20 h-20 border-2 border-yellow-600 rounded-lg m-1'>
+                                                    <div key={index} className='w-20 border-2 border-yellow-600 rounded-lg m-1'>
                                                         <Image
                                                             width={'auto'}
                                                             src={`http://localhost:5000/${image.filePath}`}

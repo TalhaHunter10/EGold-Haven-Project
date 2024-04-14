@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getLikedStatus, getListingsById, getSimilarListings, likeListing, unlikeListing } from '../../services/listingservice';
 import { FileAnimation, FileAnimationsmall } from '../loader/loader';
-import { Carousel } from 'antd';
+import { Carousel, Image } from 'antd';
 import { LeftOutlined, RightOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons'
 import ContainerVertical from './containervertical';
 import Modal from '../Modal';
@@ -197,7 +197,7 @@ const ListingDetails = () => {
                     <Carousel className='m-8 mt-2 p-8' arrows {...settings} dots>
                         {listing.images && listing.images.map((image, index) => (
                             <div key={index} className=''>
-                                <img className='aspect-video w-[100%]  object-contain' src={`${process.env.REACT_APP_BACKEND_URL}/${image.filePath}`} alt={`Image ${index + 1}`} />
+                                <Image className='aspect-video w-[100%]  object-contain' src={`${process.env.REACT_APP_BACKEND_URL}/${image.filePath}`} alt={`Image ${index + 1}`} />
                             </div>
                         ))}
                     </Carousel>

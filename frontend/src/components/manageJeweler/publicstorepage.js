@@ -9,6 +9,7 @@ import React from "react";
 
 import { getJewelerProductsInformation } from "../../services/productservice";
 import ContainerVerticalProductAll from "../productcontainers/containerverticalproductall.js";
+import ContainerVerticalProductAll2 from "../productcontainers/containerverticalproductall2.js";
 
 
 const PublicStorePage = () => {
@@ -162,17 +163,17 @@ const PublicStorePage = () => {
 
                 </div>
 
-                <div className="lg:w-4/6 pl-5 pr-5 pt-3 pb-5  text-center md:text-left order-1 md:order-2">
+                <div className="lg:w-4/6 pl-5 pr-5 pt-3 pb-5 order-1 md:order-2">
 
-                    <p className="text-[40px] alluse text-left my-auto">{jeweler.storename}</p>
+                    <p className="text-[40px] alluse min-[200px]:text-center sm:text-left my-auto">{jeweler.storename}</p>
 
                     <div className='border-b-2 border-yellow-600'>
                     </div>
 
 
-                    <h1 className='headingtextlanding pl-8 mt-5'>Store Products</h1>
+                    <h1 className='headingtextlanding text-center sm:pl-8 mt-10'>Store Products</h1>
                     <div className='categoriesarea text-stone-200 overflow-auto mb-5'>
-                        <div className='categories flex flex-wrap lg:justify-center md:justify-start pt-5 pb-5  '>
+                        <div className='categories flex flex-wrap justify-center pt-5 pb-5  '>
                             {product.length === 0 && !isFetched ? (
                                 <FileAnimationsmall />
                             ) : product.length === 0 && isFetched ? (
@@ -259,7 +260,7 @@ const PublicStorePage = () => {
                                 <div className="allusebody text-center pt-2 text-4xl text-stone-200">
                                     {isCategory}
                                 </div>
-                                <ContainerVerticalProductAll product={product.filter(item => item.category === isCategory)} />
+                                <ContainerVerticalProductAll2 product={product.filter(item => item.category === isCategory)} />
                             </div>
                         )}
                     </div>

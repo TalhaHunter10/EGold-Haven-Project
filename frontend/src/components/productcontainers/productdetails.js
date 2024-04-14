@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { FileAnimation, FileAnimationsmall } from '../loader/loader';
-import { Carousel } from 'antd';
+import { Carousel, Image } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 
 import { getloginStatus } from '../../services/authservice';
@@ -157,7 +157,7 @@ const ProductDetails = () => {
                     <Carousel className='m-8 mt-2 p-8' arrows {...settings} dots>
                         {product.images && product.images.map((image, index) => (
                             <div key={index} className=''>
-                                <img className='aspect-video w-[100%]  object-contain' src={`${process.env.REACT_APP_BACKEND_URL}/${image.filePath}`} alt={`Image ${index + 1}`} />
+                                <Image className='aspect-video w-[100%]  object-contain' src={`${process.env.REACT_APP_BACKEND_URL}/${image.filePath}`} alt={`Image ${index + 1}`} />
                             </div>
                         ))}
                     </Carousel>

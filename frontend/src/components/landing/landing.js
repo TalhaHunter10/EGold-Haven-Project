@@ -18,14 +18,38 @@ const Landing = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(useSelector(selectIsLoggedIn));
 
+  const [listing, setListing] = useState([])
+
+  const fetchlistings = async () => {
+    try {
+      const data = await getLiveListings();
+      setListing(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const [products, setProducts] = useState([])
+
+  const fetchproducts = async () => {
+    try {
+      const data = await getLiveProducts();
+      setProducts(data.liveProducts);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     const checkLoginStatus = async () => {
         try {
             const status = await getloginStatus();
             if (!status.verified) {
-             
-              selectIsLoggedIn(false);
-                navigate('/login');
+              setIsLoggedIn(false);
+              fetchlistings();
+              fetchproducts();
+                
             } else {
               fetchlistings();
               fetchproducts();
@@ -78,28 +102,7 @@ const Landing = () => {
   }
 
 
-  const [listing, setListing] = useState([])
-
-  const fetchlistings = async () => {
-    try {
-      const data = await getLiveListings();
-      setListing(data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  const [products, setProducts] = useState([])
-
-  const fetchproducts = async () => {
-    try {
-      const data = await getLiveProducts();
-      setProducts(data.liveProducts);
-
-    } catch (error) {
-      console.log(error);
-    }
-  }
+ 
 
 
 

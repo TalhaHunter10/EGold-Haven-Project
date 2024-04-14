@@ -12,6 +12,13 @@ const registerJeweler = asyncHandler(async (req, res) => {
         throw new Error("Please fill in all fields !")
     }
 
+    const J = await Jeweler.findOne({ user: req.user.id });
+
+    if (J) {
+        res.status(400)
+        throw new Error("Jeweler already registered")
+    }
+
     const status = 'requested';
 
     //Manage Image Upload

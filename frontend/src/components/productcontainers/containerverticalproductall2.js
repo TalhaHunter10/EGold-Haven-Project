@@ -39,14 +39,14 @@ const formatPriceWithCommas = (price) => {
 
 
 
-const ContainerVerticalProductAll = ({ product }) => {
+const ContainerVerticalProductAll2 = ({ product }) => {
 
 
 
     return (
-        <div className="pl-2 pr-2 containertext cursor-pointer mt-1 pb-5 pt-5 flex flex-wrap overflow-y-auto max-h-[90vh]">
+        <div className="pl-2 pr-2 containertext cursor-pointer mt-1 pb-5 pt-5 flex ">
             {product.map((item) => (
-                <Link to={`/productdetails/${item._id}`} key={item._id} className=" min-[200px]:w-80 md:w-96 min-[200px]:m-auto min-[200px]:mb-5   transform overflow-hidden rounded-lg bg-stone-600/30 text-stone-200 duration-300 hover:scale-105 md:m-auto md:mb-5">
+                <Link to={`/productdetails/${item._id}`} key={item._id} className="w-80 transform overflow-hidden rounded-lg bg-stone-600/30 text-stone-200 duration-300 hover:scale-105 m-2">
                     <img className="h-48 w-full object-cover object-center md:h-48 bg-stone-200" src={item.images && item.images.length > 0 ? `http://localhost:5000/${item.images[0].filePath}` : ''} alt="Item" />
                     <div className="p-4">
                         <p className="mr-2 text-base font-extrabold text-right"><span className="text-yellow-500 tracking-widest">Rs. </span>{formatPriceWithCommas(parseInt(item.price))}</p>
@@ -71,4 +71,4 @@ const ContainerVerticalProductAll = ({ product }) => {
     );
 }
 
-export default ContainerVerticalProductAll;
+export default ContainerVerticalProductAll2;
