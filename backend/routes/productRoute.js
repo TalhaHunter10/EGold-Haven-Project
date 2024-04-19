@@ -14,6 +14,6 @@ router.delete('/deleteproduct/:id', protect, deleteProduct)
 router.patch('/editproduct',protect,upload.array('images', 8), editProduct)
 router.get('/getjewelerproducts',protect, getJewelerProducts)
 router.get('/getimagebyurl', downloadImageFromURL)
-router.get('/getjewelerproducts/:id',protect, getJewelerProductsInformation)
+router.get('/getjewelerproducts/:id', getJewelerProductsInformation)
 
 module.exports = router;

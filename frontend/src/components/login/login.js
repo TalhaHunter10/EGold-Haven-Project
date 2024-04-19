@@ -133,7 +133,8 @@ const Login = () => {
           <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
 
             <div className="shrink-1 mb-12 grow-0 basis-auto md:mb-0 md:w-9/12 md:shrink-0 lg:w-6/12 xl:w-6/12 ">
-              <h1 className='text-stone-200 text-left mt-0 headingtext'>Welcome Back!</h1> <h2 className='text-stone-200 text-left headingtext2'>Log in to Your <span className='text-yellow-600'>EGold Haven</span> Account and Explore a World of Exquisite Gold Jewelry.</h2>
+              <h1 className='text-stone-200 text-left mt-0 headingtext'>Welcome Back!</h1> 
+              <h2 className='text-stone-200 text-left allusebody text-xl'>Log in to Your <span className='text-yellow-600'>EGold Haven</span> Account and Explore a World of Exquisite Gold Jewelry.</h2>
               <img
                 src="/images/loginillu.png"
                 className="w-full p-20"

@@ -38,6 +38,7 @@ import JewelerProductDetails from './components/manageJeweler/jewelerproductdeta
 import ProductRequests from './components/admindashboard/productrequests';
 import ProductDetails from './components/productcontainers/productdetails';
 import PublicStorePage from './components/manageJeweler/publicstorepage';
+import Chatpage from './components/chat/Chatpage';
 
 
 
@@ -107,6 +108,9 @@ function App() {
               <Route path="/productdetails/:id" element={<ProductDetails/>} />
               <Route path="/jewelerpage/:id" element={<PublicStorePage/>} />
 
+
+              <Route path="/chat" element={<Chatpage/>} />
+
               <Route path="*" element={<PageNotFound/>} />
             </Routes>
           </div>
@@ -125,7 +129,7 @@ function App() {
   return (
     <div>
     <ScrollToTop />
-    <ToastContainer limit={3} bodyClassName={"customtoastbody"}/>
+    <ToastContainer limit={3} bodyClassName={"customtoastbody"} position="top-left"/>
         {renderLayout()}
     </div>
   );

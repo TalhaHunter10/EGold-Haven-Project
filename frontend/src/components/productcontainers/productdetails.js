@@ -21,43 +21,53 @@ const ProductDetails = () => {
     const [jeweler, setjeweler] = useState({});
 
 
-
     useEffect(() => {
-        const checkLoginStatus = async () => {
-            setIsLoading(true)
+        setIsLoading(true)
+        const fetchListing = async () => {
             try {
-                const status = await getloginStatus();
-                if (!status.verified) {
-                    navigate('/login')
+                const data = await getProductsById(id);
+                if (!data) {
+                    navigate('/')
                 }
-                else if (status.verified) {
-                    const data = await getProductsById(id);
-                    if (!data) {
-                        navigate('/')
-                    }
-                    
-                    if(status.id === data.jeweler.user){
-                        setButton(true)
-                    }
-
-                    setproduct(data.product);
-                    setjeweler(data.jeweler);
-                    
-                    setIsLoading(false)
-                }
+                setproduct(data.product);
+                setjeweler(data.jeweler);
+                setIsLoading(false)
             } catch (error) {
-                console.error('Error checking login status:', error);
+                console.error(error);
                 setIsLoading(false)
             }
         };
-        checkLoginStatus();
-    }, []);
+        fetchListing();
+    }, [id]);
+
 
     useEffect(() => {
-        if (product.category !== undefined && product._id) {
-            fetchdata(product.category, product._id);
-        }
-    }, [product])
+        const checkLoginStatus = async () => {
+
+            try {
+                const status = await getloginStatus();
+                if (!status.verified) {
+
+                }
+                else if (status.verified) {
+
+                    if (status.id === jeweler.user) {
+                        setButton(true)
+                    }
+
+
+
+
+                }
+            } catch (error) {
+                console.error('Error checking login status:', error);
+
+            }
+        };
+        checkLoginStatus();
+    }, [jeweler]);
+
+
 
     const [similarproduct, setSimilarproduct] = useState([])
 
@@ -74,7 +84,11 @@ const ProductDetails = () => {
         }
     }
 
-
+    useEffect(() => {
+        if (product.category !== undefined && product._id) {
+            fetchdata(product.category, product._id);
+        }
+    }, [product])
 
 
 
@@ -140,7 +154,6 @@ const ProductDetails = () => {
     };
 
 
-
     return (
         <div className='p-5'>
             {isLoading && <FileAnimation />}
@@ -156,19 +169,22 @@ const ProductDetails = () => {
 
                     <Carousel className='m-8 mt-2 p-8' arrows {...settings} dots>
                         {product.images && product.images.map((image, index) => (
-                            <div key={index} className=''>
-                                <Image className='aspect-video w-[100%]  object-contain' src={`${process.env.REACT_APP_BACKEND_URL}/${image.filePath}`} alt={`Image ${index + 1}`} />
+                            <div key={index} className=' bg-stone-200/90 text-center rounded-medium'>
+                                <img className='aspect-video w-[100%] m-auto object-contain' src={`${process.env.REACT_APP_BACKEND_URL}/${image.filePath}`} alt={`Image ${index + 1}`}
+                                />
+
                             </div>
                         ))}
                     </Carousel>
 
 
+
                     <div className=' p-8 rounded-md bg-neutral-900'>
 
-                        
-                            <p className='alluse font-semibold text-right text-4xl text-stone-200 tracking-wider'>
-                                Rs. {formatPriceWithCommas(parseInt(product.price))}
-                            </p>
+
+                        <p className='alluse font-semibold text-right text-4xl text-stone-200 tracking-wider'>
+                            Rs. {formatPriceWithCommas(parseInt(product.price))}
+                        </p>
 
                         {product && product.title && (<p className='pt-2 alluse text-3xl text-stone-200'>
                             {product.title.split(' ')
@@ -177,11 +193,11 @@ const ProductDetails = () => {
                         </p>
                         )}
 
-                        
 
-                            <p className='alluse text-base text-stone-200 pt-5'>{getTimeSinceCreation(product.createdAt)}</p>
 
-                         
+                        <p className='alluse text-base text-stone-200 pt-5'>{getTimeSinceCreation(product.createdAt)}</p>
+
+
 
 
                     </div>
@@ -321,33 +337,33 @@ const ProductDetails = () => {
                         <div className='flex justify-start'>
                             <img className='w-8 h-8 ml-2' src='/images/location.png' alt='seller' />
                             <div className='pl-5 text-lg'>
-                            <p className=' alluse text-stone-200 my-auto'>
-                                Store No. {jeweler.shopno}
-                            </p>
-                            <p className=' alluse text-stone-200 my-auto'>
-                                {jeweler.address}
-                            </p>
-                            <p className=' alluse text-stone-200 my-auto'>
-                               {jeweler.city}
-                            </p>
+                                <p className=' alluse text-stone-200 my-auto'>
+                                    Store No. {jeweler.shopno}
+                                </p>
+                                <p className=' alluse text-stone-200 my-auto'>
+                                    {jeweler.address}
+                                </p>
+                                <p className=' alluse text-stone-200 my-auto'>
+                                    {jeweler.city}
+                                </p>
                             </div>
 
                         </div>
 
                         <div className='border-b-2 border-yellow-600 pt-10'>
-                    </div>
+                        </div>
 
-                    <h1 className='alluse pt-8 text-3xl text-center text-stone-200 pb-6'>Phone No.</h1>
-                    <div className='flex justify-start text-left allusebody'>
-                        <img className='w-6 h-6 ml-2' src='/images/phone.png' alt='seller' />
-
-
-                        <p className='pl-5 alluse lg:text-xl text-stone-200 tracking-widest'>
-                            {jeweler.phoneno && jeweler.phoneno.slice(0, 4) + '-' + jeweler.phoneno.slice(4)}
-                        </p>
+                        <h1 className='alluse pt-8 text-3xl text-center text-stone-200 pb-6'>Phone No.</h1>
+                        <div className='flex justify-start text-left allusebody'>
+                            <img className='w-6 h-6 ml-2' src='/images/phone.png' alt='seller' />
 
 
-                    </div>
+                            <p className='pl-5 alluse lg:text-xl text-stone-200 tracking-widest'>
+                                {jeweler.phoneno && jeweler.phoneno.slice(0, 4) + '-' + jeweler.phoneno.slice(4)}
+                            </p>
+
+
+                        </div>
 
                         <div className='border-b border-yellow-700 mt-10 mb-6'></div>
 
@@ -365,6 +381,7 @@ const ProductDetails = () => {
                     </div>
                 </div>
             </div>
+
 
             <div className='border-b border-yellow-700 mt-6 mb-6'></div>
 

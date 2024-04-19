@@ -9,6 +9,8 @@ import Modal from '../Modal';
 import { useSelector } from 'react-redux';
 import { selectIsLoggedIn, selectUserID } from '../../redux/features/auth/authSlice';
 import { getloginStatus } from '../../services/authservice';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 const ListingDetails = () => {
 
@@ -179,6 +181,28 @@ const ListingDetails = () => {
         }
     };
 
+    const HandleChat = async () => {
+        try {
+            const status = await getloginStatus();
+            if (!status.verified) {
+                toast.error('Please login to chat');
+                navigate('/login');
+            }
+            else if(status.verified){
+
+                try {
+                    const data = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/chat`, {userId : seller._id},);
+                    if(data)
+                    navigate(`/chat`);
+                } catch (error) {
+                    console.error('Error creating chat or fetching chat:', error);
+                }
+            }
+        } catch (error) {
+            console.error('Error checking login status:', error);
+        }
+    }
+
 
 
     return (
@@ -196,8 +220,8 @@ const ListingDetails = () => {
 
                     <Carousel className='m-8 mt-2 p-8' arrows {...settings} dots>
                         {listing.images && listing.images.map((image, index) => (
-                            <div key={index} className=''>
-                                <Image className='aspect-video w-[100%]  object-contain' src={`${process.env.REACT_APP_BACKEND_URL}/${image.filePath}`} alt={`Image ${index + 1}`} />
+                            <div key={index} className='bg-stone-200/90 rounded-medium'>
+                                <img className='aspect-video w-[100%]  object-contain' src={`${process.env.REACT_APP_BACKEND_URL}/${image.filePath}`} alt={`Image ${index + 1}`} />
                             </div>
                         ))}
                     </Carousel>
@@ -350,7 +374,7 @@ const ListingDetails = () => {
                                     <p className='my-auto pl-3'>Chat with seller</p>
                                 </button>
                             ) : (
-                                <Link to={``} className='flex justify-center w-[100%] alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600'>
+                                <Link onClick={HandleChat} to={``} className='flex justify-center w-[100%] alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600'>
 
                                     <img className='w-6 h-6' src='/images/chat.png' alt='chat' />
                                     <p className='my-auto pl-3'>Chat with seller</p>

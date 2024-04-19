@@ -59,19 +59,8 @@ const PublicStorePage = () => {
 
     useEffect(() => {
         const checkLoginStatus = async () => {
-            try {
-                const status = await getloginStatus();
-                if (!status.verified) {
-                    navigate('/login');
-                } else {
-
                     fetchdata();
                     fetchProducts();
-
-                }
-            } catch (error) {
-                console.error('Error checking login status:', error);
-            }
         };
 
         checkLoginStatus();

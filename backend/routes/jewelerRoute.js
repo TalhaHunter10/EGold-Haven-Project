@@ -11,7 +11,7 @@ router.post('/registerjeweler',protect,Uploads, registerJeweler)
 router.get('/getjewelerdetails',protect, getJewelerDetails)
 router.get('/getcoverimagebyurl', getCoverImagebyUrl)
 router.patch('/updatejeweler',protect,Uploads, editJewelerDetails)
-router.get('/getjewelerinfo/:id',protect, getJewelerInformation)
+router.get('/getjewelerinfo/:id', getJewelerInformation)
 
 
 module.exports = router

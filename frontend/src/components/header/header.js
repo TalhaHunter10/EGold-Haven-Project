@@ -306,7 +306,7 @@ const Header = () => {
                         backgroundColor: '#4b4e49'
                     }} /> <span className='headerbodytext'>My Favorites </span>
                 </MenuItem></Link>
-                <MenuItem onClick={handleClose}>
+               <Link to="/chat"><MenuItem onClick={handleClose}>
                     <ChatIcon style={{
                         width: 20,
                         height: 20,
@@ -315,7 +315,7 @@ const Header = () => {
                         color: '#d2ac47',
                         backgroundColor: '#4b4e49'
                     }} /> <span className='headerbodytext'> Chat </span>
-                </MenuItem>
+                </MenuItem></Link>
                 {userstatus === 'jeweler' ? <Link to="/storepage"><MenuItem onClick={handleClose}>
                 
                     <img className="h-6 w-6 mr-3" src='/images/shop.png' alt='user' />

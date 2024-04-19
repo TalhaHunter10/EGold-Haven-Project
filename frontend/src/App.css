@@ -276,3 +276,11 @@ body {
   background: #ca8a04; /* You can change the color */
 }
 
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+

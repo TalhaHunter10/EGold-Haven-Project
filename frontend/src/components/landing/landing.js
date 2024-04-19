@@ -13,8 +13,11 @@ import { getloginStatus } from '../../services/authservice';
 import { getLiveProducts } from '../../services/productservice';
 import ContainerVerticalProduct from '../productcontainers/containerverticalproduct';
 import ContainerVerticalProduct2 from '../productcontainers/containerverticalproduct2';
+import { ChatState } from '../chat/ChatProvider';
 
 const Landing = () => {
+
+  const {user} = ChatState();
 
   const [isLoggedIn, setIsLoggedIn] = useState(useSelector(selectIsLoggedIn));
 

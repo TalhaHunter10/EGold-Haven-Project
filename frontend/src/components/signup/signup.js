@@ -93,7 +93,7 @@ const Signup = () => {
       {isLoading && <Loader />}
       <section className="">
         <h1 className='text-stone-200 text-left md:mt-5 headingtextsignup text-center'>Are you a <span className='text-yellow-600'>Jeweler</span>?</h1>
-        <h2 className='text-stone-200 text-left headingtext2signup text-center mb-5'>Join <span className='text-yellow-600'>EGold Haven</span> as a certified jeweler to showcase your craft to a broader audience. Enjoy the perks of earning commissions for certifying gold items, managing your own store page, and becoming a trusted name in the world of gold elegance.</h2>
+        <h2 className='text-stone-200 text-left allusebody text-xl text-center mb-5'>Join <span className='text-yellow-600'>EGold Haven</span> as a certified jeweler to showcase your craft to a broader audience. Enjoy the perks of earning commissions for certifying gold items, managing your own store page, and becoming a trusted name in the world of gold elegance.</h2>
         <div className="h-full md:mb-32 ">
 
           <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
