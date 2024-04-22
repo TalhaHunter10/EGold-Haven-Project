@@ -7,6 +7,8 @@ import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import { getloginStatus } from '../../services/authservice';
 import { getProductsById, getSimilarProducts } from '../../services/productservice';
 import ContainerVerticalProduct from './containerverticalproduct';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const ProductDetails = () => {
 
@@ -66,6 +68,8 @@ const ProductDetails = () => {
         };
         checkLoginStatus();
     }, [jeweler]);
+
+
 
 
 
@@ -152,6 +156,32 @@ const ProductDetails = () => {
             return `${hoursDiff} hour${hoursDiff > 1 ? 's' : ''} ago`;
         }
     };
+
+
+
+    const HandleChat = async () => {
+        try {
+            const status = await getloginStatus();
+            if (!status.verified) {
+                toast.error('Please login to chat');
+                navigate('/login');
+            }
+            else if(status.verified){
+
+                try {
+                    const data = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/chat`, {userId : jeweler.user, chattype : 'jeweler'},);
+                    if(data)
+                    {
+                    navigate(`/chat`);
+                    }
+                } catch (error) {
+                    console.error('Error creating chat or fetching chat:', error);
+                }
+            }
+        } catch (error) {
+            console.error('Error checking login status:', error);
+        }
+    }
 
 
     return (

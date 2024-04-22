@@ -2,15 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getLikedStatus, getListingsById, getSimilarListings, likeListing, unlikeListing } from '../../services/listingservice';
 import { FileAnimation, FileAnimationsmall } from '../loader/loader';
-import { Carousel, Image } from 'antd';
+import { Carousel } from 'antd';
 import { LeftOutlined, RightOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons'
 import ContainerVertical from './containervertical';
 import Modal from '../Modal';
 import { useSelector } from 'react-redux';
-import { selectIsLoggedIn, selectUserID } from '../../redux/features/auth/authSlice';
+import { selectUserID } from '../../redux/features/auth/authSlice';
 import { getloginStatus } from '../../services/authservice';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { ChatState } from '../chat/ChatProvider';
 
 const ListingDetails = () => {
 
@@ -27,6 +28,8 @@ const ListingDetails = () => {
     const [seller, setSeller] = useState({});
 
     const [open, setOpen] = useState(false);
+
+    const {setChatType} = ChatState();
 
     useEffect(() => {
         setIsLoading(true)
@@ -191,9 +194,11 @@ const ListingDetails = () => {
             else if(status.verified){
 
                 try {
-                    const data = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/chat`, {userId : seller._id},);
+                    const data = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/chat`, {userId : seller._id, chattype : 'user'},);
                     if(data)
+                    {
                     navigate(`/chat`);
+                    }
                 } catch (error) {
                     console.error('Error creating chat or fetching chat:', error);
                 }

@@ -6,7 +6,7 @@ const User = require("../models/userModel");
 //@route           POST /api/chat/
 //@access          Protected
 const accessChat = asyncHandler(async (req, res) => {
-  const { userId } = req.body;
+  const { userId , chattype } = req.body;
 
   if (!userId) {
     console.log("UserId param not sent with request");
@@ -26,8 +26,9 @@ const accessChat = asyncHandler(async (req, res) => {
     res.send(isChat[0]);
   } else {
     var chatData = {
-      chatName: "sender",
+      chatName: "One to One Chat",
       users: [req.user._id, userId],
+        chattype: chattype
     };
 
     try {

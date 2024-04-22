@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const Chatpage = () => {
   const [fetchAgain, setFetchAgain] = useState(false);
-  const { user, setUser } = ChatState();
+  const { user, setUser, setSelectedChat } = ChatState();
 
   const navigate = useNavigate();
 
@@ -18,7 +18,8 @@ const Chatpage = () => {
             const status = await getloginStatus();
             if (status.verified) {
                 setUser(status.user);
-                setUser(...user, { token : status.token})
+                setUser(prevUser => ({ ...prevUser, token: status.token }));
+                setSelectedChat(null);
             }
             else{
                 navigate('/login');
@@ -29,7 +30,8 @@ const Chatpage = () => {
     };
 
     checkLoginStatus();
-}, [user]);
+}, []);
+
 
   return (
     <div style={{ width: "100%" }}>

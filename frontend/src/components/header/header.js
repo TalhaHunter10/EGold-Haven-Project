@@ -25,6 +25,7 @@ import { SET_LOGIN, SET_NAME, SET_STATUS, selectName, selectStatus } from '../..
 import { useSelector } from 'react-redux';
 import { selectIsLoggedIn } from '../../redux/features/auth/authSlice';
 import { useEffect , useState } from 'react';
+import { ChatState } from '../chat/ChatProvider';
 
 
 
@@ -169,6 +170,13 @@ const Header = () => {
     checkLoginStatus();
 }, [dispatch, navigate]);
 
+const {setChatType} = ChatState();
+
+    const goToChat = () => {
+        setChatType('user')
+        navigate('/chat')
+    }
+
 
     return (
         <header className="header">
@@ -306,7 +314,7 @@ const Header = () => {
                         backgroundColor: '#4b4e49'
                     }} /> <span className='headerbodytext'>My Favorites </span>
                 </MenuItem></Link>
-               <Link to="/chat"><MenuItem onClick={handleClose}>
+               <span onClick={goToChat}><MenuItem onClick={handleClose}>
                     <ChatIcon style={{
                         width: 20,
                         height: 20,
@@ -315,7 +323,7 @@ const Header = () => {
                         color: '#d2ac47',
                         backgroundColor: '#4b4e49'
                     }} /> <span className='headerbodytext'> Chat </span>
-                </MenuItem></Link>
+                </MenuItem></span>
                 {userstatus === 'jeweler' ? <Link to="/storepage"><MenuItem onClick={handleClose}>
                 
                     <img className="h-6 w-6 mr-3" src='/images/shop.png' alt='user' />

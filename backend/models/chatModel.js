@@ -4,6 +4,11 @@ const chatModel = mongoose.Schema(
   {
     chatName: { type: String, trim: true },
     users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    type: { type: String, trim: true },
+    seen: {
+        receiver: { type: mongoose.Schema.Types.ObjectId },
+        status : { type: Boolean, default: false }
+    }
   },
   { timestamps: true }
 );

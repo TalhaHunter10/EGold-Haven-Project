@@ -16,7 +16,6 @@ const MyChats = ({ fetchAgain }) => {
   const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
   const fetchChats = async () => {
-    // console.log(user._id);
     try {
       const config = {
         headers: {
@@ -53,7 +52,7 @@ const MyChats = ({ fetchAgain }) => {
 
   return (
     
-    <div className={`flex flex-col items-center p-3 bg-zinc-800 rounded-lg ${selectedChat ? 'hidden]' : 'flex'} min-[200px]:w-full md:w-2/4`}>
+    <div className={`flex flex-col items-center p-3 bg-zinc-800 rounded-lg ${selectedChat ? 'hidden' : 'flex'} min-[200px]:w-full md:w-2/4`}>
         <div className="md:py-6 px-3 min-[200px]:text-2xl md:text-4xl alluse flex w-full justify-center text-stone-200">
         My Chats
         </div>
@@ -65,7 +64,7 @@ const MyChats = ({ fetchAgain }) => {
           <Stack overflowY="scroll" className="max-h-[90%]">
             {chats.map((chat) => (
               
-                <div className={`mt-4 cursor-pointer alluse ${selectedChat === chat ? 'bg-yellow-600 text-stone-200' : 'bg-zinc-700 text-stone-200'} px-4 py-3 rounded-lg md:mr-4 md:ml-4 md:text-2xl duration-300 hover:scale-105`} key={chat._id}  onClick={() => setSelectedChat(chat)}>
+                <div className={`mt-4 cursor-pointer alluse ${selectedChat === chat ? 'bg-yellow-600 text-stone-200' : 'bg-zinc-700 text-stone-200'} ${chat.seen.status === false ? 'bg-primary-600' : ''} px-4 py-3 rounded-lg md:mr-4 md:ml-4 md:text-2xl duration-300 hover:scale-105`} key={chat._id}  onClick={() => setSelectedChat(chat)}>
 
                 <div className="flex">
                 <img src="/images/usericon.png" alt="user" className="min-[150px]:h-6 min-[150px]:w-6 md:h-8 md:w-8 mr-2" />

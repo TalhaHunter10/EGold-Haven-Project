@@ -35,8 +35,30 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             preserveAspectRatio: "xMidYMid slice",
         },
     };
-    const { selectedChat, setSelectedChat, user } =
+    const { selectedChat, setSelectedChat, user , setChats } =
         ChatState();
+
+        const fetchChats = async () => {
+            try {
+              const config = {
+                headers: {
+                  Authorization: `Bearer ${user.token}`,
+                },
+              };
+        
+              const { data } = await axios.get( `${REACT_APP_BACKEND_URL}/api/chat` , config);
+              setChats(data);
+            } catch (error) {
+              toast({
+                title: "Error Occured!",
+                description: "Failed to Load the chats",
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom-left",
+              });
+            }
+          };
 
     const fetchMessages = async () => {
 
@@ -66,6 +88,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             );
             setMessages(data);
             setLoading(false);
+
+            fetchChats();
+            
 
             socket.emit("join chat", selectedChat._id);
         } catch (error) {
@@ -141,10 +166,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                     },
                 };
                 setNewMessage("");
+                const receiver = String(selectedChat.users[0]._id) === String(user._id) ? selectedChat.users[1]._id : selectedChat.users[0]._id; 
                 const { data } = await axios.post(`${REACT_APP_BACKEND_URL}/api/message/send`,
                     {
                         content: newMessage,
                         chatId: selectedChat,
+                        receiver: receiver,
                     },
                     config
                 );
@@ -235,6 +262,22 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     };
 
 
+    const handlePageLeave = () => {
+        console.log("Page is being left");
+        setSelectedChat(null);
+    };
+    
+    useEffect(() => {
+        // Add event listener for beforeunload event
+        window.addEventListener("beforeunload", handlePageLeave);
+    
+        // Cleanup function to remove the event listener when component unmounts
+        return () => {
+            window.removeEventListener("beforeunload", handlePageLeave);
+        };
+    }, []);
+
+
 
 
     return (
@@ -246,7 +289,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                             <img src="/images/usericon.png" alt="user" className="min-[150px]:h-8 min-[150px]:w-8 md:h-12 md:w-12" />
                             <p className="min-[150px]:text-lg md:text-4xl pb-3 px-2 text-stone-200 alluse pt-1"> {getInitials(getSender(user, selectedChat.users))}</p>
                         </div>
-                        <p className="text-3xl pb-3 px-2 text-stone-200 alluse " onClick={() => setSelectedChat('')}>
+                        <p className="text-3xl pb-3 px-2 text-stone-200 alluse " onClick={() =>{
+                            setSelectedChat('');
+                            fetchChats();
+                        }}>
                             <span className="cursor-pointer"><XMarkIcon className="min-[150px]:h-6 min-[150px]:w-6 md:h-8 md:w-8" strokeWidth={2} /></span>
                         </p>
                     </div>
@@ -274,13 +320,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                             className="mt-3"
                         >
                             {istyping ? (
-                                <div>
+                                <div className="flex justify-start" >
+                                    <div className="w-20 h-12">
                                     <Lottie
                                         options={defaultOptions}
                                         height={50}
-                                        width={70}
-                                        style={{ marginBottom: 0, marginLeft: 0 }}
+                                        width={70} 
                                     />
+                                    </div>
                                 </div>
                             ) : (
                                 <></>

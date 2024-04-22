@@ -8,7 +8,7 @@ const ChatContext = createContext();
 const ChatProvider = ({ children }) => {
   const [selectedChat, setSelectedChat] = useState();
   const [user, setUser] = useState();
-  const [notification, setNotification] = useState([]);
+  const [chatType, setChatType] = useState();
   const [chats, setChats] = useState();
 
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ const ChatProvider = ({ children }) => {
             }
             else if (status.verified) {
                 setUser(status.user);
-                setUser(...user, { token : status.token})
+                setUser(prevUser => ({ ...prevUser, token: status.token }));
 
             }
         } catch (error) {
@@ -42,8 +42,8 @@ const ChatProvider = ({ children }) => {
         setSelectedChat,
         user,
         setUser,
-        notification,
-        setNotification,
+        chatType,
+        setChatType,
         chats,
         setChats,
       }}
