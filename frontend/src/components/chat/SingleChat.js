@@ -39,6 +39,17 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         ChatState();
 
     const fetchMessages = async () => {
+
+        try {
+            const status = await getloginStatus();
+            if (!status.verified) {
+                navigate('/login');
+            }
+        } catch (error) {
+            console.error('Error checking login status:', error);
+
+        }
+
         if (!selectedChat) return;
 
         try {
@@ -71,6 +82,17 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
 
     const fetchMessagesagain = async () => {
+
+        try {
+            const status = await getloginStatus();
+            if (!status.verified) {
+                navigate('/login');
+            }
+        } catch (error) {
+            console.error('Error checking login status:', error);
+
+        }
+
         if (!selectedChat) return;
 
         try {
@@ -211,6 +233,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
             .join(" ");
     };
+
+
 
 
     return (

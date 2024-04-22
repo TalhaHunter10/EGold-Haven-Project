@@ -1,6 +1,7 @@
 
 import ScrollableFeed from "react-scrollable-feed";
 import { ChatState } from "./ChatProvider";
+import { useEffect, useRef } from "react";
 
 const ScrollableChat = ({ messages }) => {
     const { user } = ChatState();
@@ -17,7 +18,6 @@ const ScrollableChat = ({ messages }) => {
         return new Date(date).toLocaleDateString(undefined, options);
     };
 
-
     return (
         <ScrollableFeed>
             {messages &&
@@ -29,7 +29,7 @@ const ScrollableChat = ({ messages }) => {
                                 <div className="date-divider text-center text-stone-200 alluse text-lg border-b mr-[20%] ml-[20%] border-yellow-600 my-5">{formatDate(m.createdAt)}</div>
                             )}
                         <div style={{ display: "flex" }}  >
-                            <p className="text-stone-200 content-end ml-1 mr-1">{m.sender._id != user._id ? getTimeString(m.createdAt) : <span></span>}</p>
+                            <p className="text-stone-200 content-end ml-1 mr-1">{m.sender._id !== user._id ? getTimeString(m.createdAt) : <span></span>}</p>
                             <p
                                 className={`rounded-lg p-3 allusebody font-semibold ${m.sender._id === user._id ? 'bg-yellow-200' : 'bg-stone-200'} ${m.sender._id === user._id ? 'ml-auto' : 'mr-auto'} mt-2 mr-2  ml-2 }`}
                                 style={{ maxWidth: "75%" }}
@@ -40,6 +40,7 @@ const ScrollableChat = ({ messages }) => {
                         </div>
                     </div>
                 ))}
+                
         </ScrollableFeed>
     );
 };

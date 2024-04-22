@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const Chatpage = () => {
   const [fetchAgain, setFetchAgain] = useState(false);
-  const { user } = ChatState();
+  const { user, setUser } = ChatState();
 
   const navigate = useNavigate();
 
@@ -17,7 +17,8 @@ const Chatpage = () => {
         try {
             const status = await getloginStatus();
             if (status.verified) {
-               
+                setUser(status.user);
+                setUser(...user, { token : status.token})
             }
             else{
                 navigate('/login');

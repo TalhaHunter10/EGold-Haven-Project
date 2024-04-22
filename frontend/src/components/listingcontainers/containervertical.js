@@ -36,6 +36,7 @@ const formatPriceWithCommas = (price) => {
     return price.toLocaleString();
 };
 
+const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 
 
@@ -47,7 +48,7 @@ const ContainerVertical = ({ listing }) => {
         <div className="pl-2 pr-2 containertext cursor-pointer mt-1 pb-10 pt-5 flex">
             {listing.slice(0, 4).map((item) => (
                 <Link to={`/listingdetails/${item._id}`} key={item._id} className="w-80 transform overflow-hidden rounded-lg bg-stone-600/30 text-stone-200 duration-300 hover:scale-105 m-2">
-                    <img className="h-48 w-full object-cover object-center md:h-48 bg-stone-200" src={item.images && item.images.length > 0 ? `http://localhost:5000/${item.images[0].filePath}` : ''} alt="Item" />
+                    <img className="h-48 w-full object-cover object-center md:h-48 bg-stone-200" src={item.images && item.images.length > 0 ? `${REACT_APP_BACKEND_URL}/${item.images[0].filePath}` : ''} alt="Item" />
                     <div className="p-4">
                         <p className="mr-2 text-base font-extrabold text-right"><span className="text-yellow-500 tracking-widest">Rs. </span>{formatPriceWithCommas(parseInt(item.price))}</p>
                         <h2 className="container-title mb-4 text-2xl mt-1">{capitalizeFirstLetter(shortenTitle(item.title, 20))}</h2>
