@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const Jeweler = require("../models/jewelerModel");
 const User = require("../models/userModel");
 const Product = require("../models/productModel");
+const CommissionRequest = require("../models/CommissionRequestModel");
 const fetch = require('node-fetch');
 
 const registerJeweler = asyncHandler(async (req, res) => {
@@ -191,6 +192,77 @@ const getUserJeweler = asyncHandler(async (req, res) => {
     res.status(200).json(jeweler);
 });
 
+const commissionChangeRequest = asyncHandler(async (req, res) => {
+    const { newcommission, reason  } = req.body;
+
+    const jeweler = await Jeweler.findOne({ user: req.user.id });
+
+    const status = 'pending';
+
+    if (!jeweler) {
+        res.status(404);
+        throw new Error('Jeweler not found');
+    }
+
+    const request = await CommissionRequest.findOne({ jeweler: jeweler._id, status: 'pending' });
+
+    if (request) {
+        res.status(400);
+        throw new Error('Request already pending');
+    }
+
+    const request2 = await CommissionRequest.findOne({ jeweler: jeweler._id, status: 'approved' });
+
+    if (request2) {
+        res.status(400);
+        throw new Error('Your Request has already approved');
+    }
+
+    const request3 = await CommissionRequest.findOne({ jeweler: jeweler._id, status: 'rejected' });
+
+    if (request3) {
+        res.status(400);
+        throw new Error('Your Request was rejected, you can not request again !');
+    }
+
+
+    const commissionrequest = await CommissionRequest.create({
+        jeweler: jeweler._id,
+        reason,
+        newcommission,
+        status
+    });
+
+        res.status(200).json(commissionrequest);
+
+});
+
+const commissionRequestStatus = asyncHandler(async (req, res) => {
+   
+    const id = req.user.id;
+
+    const jeweler = await Jeweler.findOne({ user: id });
+
+    const request = await CommissionRequest.findOne({ jeweler: jeweler._id });
+
+    if (!request) {
+        res.status(404);
+        throw new Error('You have not requested for commission change yet');
+    }
+
+    if(request.status === 'pending'){
+        res.status(200).json({message : 'Your request is pending for approval'});
+    }
+    else if(request.status === 'approved'){
+        res.status(200).json({message : 'Your request has been approved'});
+    }
+    else if(request.status === 'rejected'){
+        res.status(200).json({message : 'Your request has been rejected'});
+    }
+
+    res.status(200).json(request);
+    
+});
 
 module.exports = {
     registerJeweler,
@@ -198,5 +270,7 @@ module.exports = {
     getCoverImagebyUrl,
     editJewelerDetails,
     getJewelerInformation,
-    getUserJeweler
+    getUserJeweler,
+    commissionChangeRequest,
+    commissionRequestStatus
 }

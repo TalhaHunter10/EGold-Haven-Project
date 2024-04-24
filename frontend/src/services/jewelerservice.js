@@ -110,3 +110,44 @@ export const getJewelerInformation = async (id) => {
             toast.error(message)
     }
 };
+
+//Get Commission Change Request Status
+export const commissionRequestStatus = async () => {
+    try{
+        const response = await axios.get(`${BACKEND_URL}/api/jeweler/commissionchangerequeststatus`)
+
+        if(response.status === 200){
+            toast.success(response.data.message);
+        }
+        return;
+
+    }
+    catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+}
+
+//Commission Change Request
+export const commissionChangeRequest = async (commission, reason) => {
+    try{
+        const response = await axios.post(`${BACKEND_URL}/api/jeweler/commissionchangerequest`,{
+            newcommission: commission,
+            reason: reason,
+        } , {
+            headers: {
+              'Content-Type': 'application/json',
+             }})
+            
+        if(response.status === 200){
+            toast.success("Commission Change Request sent Successfully... Pending Approval !!!")
+            return true;
+        }
+        return true
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+};

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getloginStatus } from "../../services/authservice";
-import { getJewelerDetails, getJewelerProducts } from "../../services/jewelerservice";
+import { commissionChangeRequest, commissionRequestStatus, getJewelerDetails, getJewelerProducts } from "../../services/jewelerservice";
 import { Link, useNavigate } from "react-router-dom";
 import { FileAnimationsmall, Loader } from "../loader/loader";
 import { Image, Select } from "antd";
@@ -11,6 +11,10 @@ import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
 import ProductContainerVertical from "./productcontainervertical";
 import { ChatState } from "../chat/ChatProvider";
+import ModalDynamic from "../modaldynamic";
+import { Input, InputNumber } from 'antd';
+import { toast } from "react-toastify";
+const { TextArea } = Input;
 
 
 const StorePage = () => {
@@ -109,7 +113,7 @@ const StorePage = () => {
         setAnchorEl(false);
     };
 
-    const {setChatType} = ChatState();
+    const { setChatType } = ChatState();
 
     const handleChat = () => {
         localStorage.setItem('chatType', 'jeweler');
@@ -117,6 +121,64 @@ const StorePage = () => {
         navigate('/chat');
     }
 
+    const ViewRequestStatus = async () => {
+
+        try {
+            await commissionRequestStatus();
+
+        } catch (error) {
+            console.error('Error getting status:', error);
+        }
+    }
+
+    const [openModal, setOpenModal] = useState(false);
+
+    const [newcommission, setNewcommission] = useState('');
+    const [reason, setReason] = useState('');
+    const [errors, setErrors] = useState({})
+
+    const onRateChange = (value) => {
+        setNewcommission(value);
+    }
+
+    const onReasonChange = (e) => {
+        setReason(e.target.value);
+    }
+
+
+    const handleSubmit = async (e) => {
+
+        e.preventDefault();
+
+        const validationErrors = {}
+
+    
+        if (!reason.trim() || reason === '' || reason === null) {
+            validationErrors.reason = 'Reason is required !';
+        }
+        if (newcommission === '') {
+            validationErrors.newcommission = 'Commission Rate is required !';
+        }
+
+        console.log(newcommission, reason)
+
+        setErrors(validationErrors)
+
+        if (Object.keys(validationErrors).length === 0) {
+            
+            try {
+                const data = await commissionChangeRequest(newcommission, reason);
+                setOpenModal(false);
+
+            } catch (error) {
+                console.error('Error submitting request:', error);
+            }
+
+        } else {
+            toast.error('Please remove the field error !!')
+        }
+
+    };
 
     return (
         <div className="pt-10 pb-10">
@@ -144,14 +206,44 @@ const StorePage = () => {
 
                     </div>
 
-                    <Link to={``} className='mt-8 flex justify-center w-[100%] alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600'>
+                    <div onClick={() => setOpenModal(true)} className='cursor-pointer mt-8 flex justify-center w-[100%] alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600'>
 
                         <img className='w-6 h-6' src='/images/request.png' alt='request' />
                         <p className='my-auto pl-3'>Request Commission Change</p>
 
-                    </Link>
+                    </div>
 
-                    <div className='border-b-2 border-yellow-600 pt-10'>
+                    <ModalDynamic isOpen={openModal} className="overflow-auto " >
+                        <div className="flex justify-end">
+                            <div className="cursor-pointer" onClick={() => setOpenModal(false)}>
+                                <XMarkIcon className="text-neutral-900 h-5 w-5 cursor-pointer my-auto" strokeWidth={2} />
+                            </div>
+                        </div>
+                        <div className=" text-neutral-900">
+                            <p className="text-center alluse text-3xl md:px-20">Commission Change Request</p>
+
+                            <p className='field-heading pb-2 pt-10'>New Commission Rate</p>
+                            <InputNumber style={{ width: '100%', height: 40, fontSize: '18px', marginBottom: 20 }} onChange={onRateChange} />
+                            {errors.newcommission && <h1 className='text-danger mt-[-15px] mb-6 font-semibold'>{errors.newcommission}</h1>}
+
+                            <p className='field-heading pb-2 pt-5'>Reason</p>
+                            <TextArea placeholder='Write reason here...' allowClear style={{ width: '100%', height: 120, fontSize: '18px', marginBottom: 20 }} onChange={onReasonChange} />
+                            {errors.reason && <h1 className='text-danger mt-[-15px] mb-6 font-semibold'>{errors.reason}</h1>}
+
+                            <div className="text-center">
+                                <div onClick={handleSubmit} className='w-auto cursor-pointer mt-4 text-center px-10 alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600'>
+
+                                    <p className='my-auto pl-3'>Submit Request</p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </ModalDynamic>
+
+
+                    <p className="text-stone-200 pt-5 text-center allusebody cursor-pointer duration-300 hover:text-yellow-600 hover:scale-110" onClick={ViewRequestStatus}>View Request Status</p>
+
+                    <div className='border-b-2 border-yellow-600 pt-5'>
                     </div>
 
                     <h1 className='alluse pt-8 text-3xl text-center text-stone-200 pb-6'>Phone No.</h1>
@@ -331,51 +423,51 @@ const StorePage = () => {
             </div>
 
             <h1 className="text-stone-200 text-4xl text-center alluse pt-8">Products (All Categories)</h1>
-            
+
             <p className='field-heading pt-6 pb-2 text-stone-200'>Category</p>
-                <Select className="" style={{ width: '100%', height: 40, marginBottom: 20 }} onChange={handleCategoryChange}
-                    options={[
-                        {
-                            value: 'Rings',
-                            label: 'Rings',
-                        },
-                        {
-                            value: 'Earrings',
-                            label: 'Earrings',
-                        },
-                        {
-                            value: 'Necklaces',
-                            label: 'Necklaces',
-                        },
-                        {
-                            value: 'Chains',
-                            label: 'Chains',
-                        },
-                        {
-                            value: 'Bracelets',
-                            label: 'Bracelets',
-                        },
-                        {
-                            value: 'Bangles',
-                            label: 'Bangles',
-                        },
-                        {
-                            value: 'Anklets',
-                            label: 'Anklets',
-                        },
-                        {
-                            value: 'Pendants',
-                            label: 'Pendants',
-                        },
-                        {
-                            value: 'Bridal Sets',
-                            label: 'Bridal Sets',
-                        },
-                        {
-                            value: 'Others',
-                            label: 'Others',
-                        }
-                    ]} />
+            <Select className="" style={{ width: '100%', height: 40, marginBottom: 20 }} onChange={handleCategoryChange}
+                options={[
+                    {
+                        value: 'Rings',
+                        label: 'Rings',
+                    },
+                    {
+                        value: 'Earrings',
+                        label: 'Earrings',
+                    },
+                    {
+                        value: 'Necklaces',
+                        label: 'Necklaces',
+                    },
+                    {
+                        value: 'Chains',
+                        label: 'Chains',
+                    },
+                    {
+                        value: 'Bracelets',
+                        label: 'Bracelets',
+                    },
+                    {
+                        value: 'Bangles',
+                        label: 'Bangles',
+                    },
+                    {
+                        value: 'Anklets',
+                        label: 'Anklets',
+                    },
+                    {
+                        value: 'Pendants',
+                        label: 'Pendants',
+                    },
+                    {
+                        value: 'Bridal Sets',
+                        label: 'Bridal Sets',
+                    },
+                    {
+                        value: 'Others',
+                        label: 'Others',
+                    }
+                ]} />
             <div className="p-5">
                 {product.length === 0 && !isFetched ? (
                     <FileAnimationsmall />
@@ -386,14 +478,14 @@ const StorePage = () => {
                         {product.filter(item => item.category === isCategory).length === 0 ? (
                             <div className="allusebody text-center pt-5 text-3xl text-danger-600">
                                 No Products Found in this Category
-                                </div>
-                        ):(
+                            </div>
+                        ) : (
                             <div>
-                            <div className="allusebody text-center pt-2 text-4xl text-stone-200">
-                                {isCategory}
+                                <div className="allusebody text-center pt-2 text-4xl text-stone-200">
+                                    {isCategory}
                                 </div>
-                        <ProductContainerVertical Product={product.filter(item => item.category === isCategory)} />
-                        </div>
+                                <ProductContainerVertical Product={product.filter(item => item.category === isCategory)} />
+                            </div>
                         )}
                     </div>
                 ) : (
