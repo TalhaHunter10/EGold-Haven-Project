@@ -9,9 +9,9 @@ import animationData from "./typinganimation.json";
 import io from "socket.io-client";
 import { ChatState } from "./ChatProvider";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { getSender } from "./ChatLogics";
+import { getSender, getSenderFull } from "./ChatLogics";
 import { getloginStatus } from "../../services/authservice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
@@ -35,7 +35,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             preserveAspectRatio: "xMidYMid slice",
         },
     };
-    const { selectedChat, setSelectedChat, user , setChats } =
+    const { selectedChat, setSelectedChat, user , setChats, chatType } =
         ChatState();
 
         const fetchChats = async () => {
@@ -47,7 +47,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               };
         
               const { data } = await axios.get( `${REACT_APP_BACKEND_URL}/api/chat` , config);
-              setChats(data);
+              const jewelerChats = data.filter(chat => (chat.chattype === 'jeweler' && chat.users[0]._id === user._id) || (chat.chattype === 'user'));
+                setChats(jewelerChats);
             } catch (error) {
               toast({
                 title: "Error Occured!",
@@ -59,6 +60,29 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               });
             }
           };
+
+          const fetchJewelerChats = async () => {
+            try {
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${user.token}`,
+                    },
+                };
+    
+                const { data } = await axios.get(`${REACT_APP_BACKEND_URL}/api/chat`, config);
+                const jewelerChats = data.filter(chat => chat.chattype === 'jeweler');
+                setChats(jewelerChats);
+            } catch (error) {
+                toast({
+                    title: "Error Occured!",
+                    description: "Failed to Load the chats",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "bottom-left",
+                });
+            }
+        };
 
     const fetchMessages = async () => {
 
@@ -89,8 +113,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             setMessages(data);
             setLoading(false);
 
-            fetchChats();
-            
+            if (chatType === 'jeweler') {
+                fetchJewelerChats();
+            }
+            else {
+                fetchChats();
+            }
 
             socket.emit("join chat", selectedChat._id);
         } catch (error) {
@@ -262,21 +290,23 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     };
 
 
-    const handlePageLeave = () => {
-        console.log("Page is being left");
-        setSelectedChat(null);
-    };
-    
-    useEffect(() => {
-        // Add event listener for beforeunload event
-        window.addEventListener("beforeunload", handlePageLeave);
-    
-        // Cleanup function to remove the event listener when component unmounts
-        return () => {
-            window.removeEventListener("beforeunload", handlePageLeave);
-        };
-    }, []);
+    const [name , setName] = useState('loading..');
+    const [jeweler, setJeweler] = useState('');
 
+    const getJewelerDetails = async (id) => {
+        try {
+            const data = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/jeweler/getuserjeweler/${id}`);
+            const jeweler = data;
+            if (jeweler) {
+                setName(String(jeweler.data.storename));
+                setJeweler(jeweler.data._id);
+            } else {
+                
+            }
+        } catch (error) {
+            console.error('Error fetching jeweler details:', error);
+        }
+    }
 
 
 
@@ -286,8 +316,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 <>
                     <div className="flex justify-between md:p-5">
                         <div className="flex">
-                            <img src="/images/usericon.png" alt="user" className="min-[150px]:h-8 min-[150px]:w-8 md:h-12 md:w-12" />
-                            <p className="min-[150px]:text-lg md:text-4xl pb-3 px-2 text-stone-200 alluse pt-1"> {getInitials(getSender(user, selectedChat.users))}</p>
+                        {selectedChat.chattype === 'jeweler' && user.status === 'user' ? <Link to={`/jewelerpage/${jeweler}`}><img src="/images/shopwhite.png" alt="user" className=" cursor-pointer min-[150px]:h-8 min-[150px]:w-8 md:h-11 md:w-11 md:mr-3" /></Link>
+                           : <img src="/images/usericon.png" alt="user" className="min-[150px]:h-8 min-[150px]:w-8 md:h-12 md:w-12 mr-1" /> }
+                            <p className="min-[150px]:text-lg md:text-4xl pb-3 px-2 text-stone-200 alluse pt-1">
+                                {selectedChat.chattype === 'jeweler' && user.status === 'user' ? <Link to={`/jewelerpage/${jeweler}`}><span className="cursor-pointer" onLoad={getJewelerDetails((getSenderFull(user, selectedChat.users))._id)}> {getInitials(name)}</span></Link> : getInitials(getSender(user, selectedChat.users))}
+                                 
+                                 </p>
                         </div>
                         <p className="text-3xl pb-3 px-2 text-stone-200 alluse " onClick={() =>{
                             setSelectedChat('');

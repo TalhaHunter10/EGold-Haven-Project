@@ -178,10 +178,25 @@ const getJewelerInformation = asyncHandler(async (req, res) => {
 });
 
 
+const getUserJeweler = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    const jeweler = await Jeweler.findOne({ user: id });
+    
+    if (!jeweler) {
+        res.status(404);
+        throw new Error('Jeweler not found');
+    }
+
+    res.status(200).json(jeweler);
+});
+
+
 module.exports = {
     registerJeweler,
     getJewelerDetails,
     getCoverImagebyUrl,
     editJewelerDetails,
-    getJewelerInformation
+    getJewelerInformation,
+    getUserJeweler
 }

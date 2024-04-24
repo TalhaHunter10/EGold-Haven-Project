@@ -10,6 +10,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
 import ProductContainerVertical from "./productcontainervertical";
+import { ChatState } from "../chat/ChatProvider";
 
 
 const StorePage = () => {
@@ -107,6 +108,14 @@ const StorePage = () => {
     const handleClose = () => {
         setAnchorEl(false);
     };
+
+    const {setChatType} = ChatState();
+
+    const handleChat = () => {
+        localStorage.setItem('chatType', 'jeweler');
+        setChatType('jeweler');
+        navigate('/chat');
+    }
 
 
     return (
@@ -241,7 +250,7 @@ const StorePage = () => {
                                 <p className="text-right m-1">{notificationno}</p>
                             </div>
 
-                            <div className="custom-shadow cursor-pointer bg-zinc-800 rounded-lg mt-5 m-3 p-3 hover:bg-yellow-600 hover:scale-105 duration-300">
+                            <div className="custom-shadow cursor-pointer bg-zinc-800 rounded-lg mt-5 m-3 p-3 hover:bg-yellow-600 hover:scale-105 duration-300" onClick={handleChat}>
                                 <div className="flex">
                                     <img className="w-6 h-7" src="/images/chat.png" alt="chat" />
                                     <p className="text-left pl-1"> Chats </p>
@@ -441,10 +450,10 @@ const StorePage = () => {
                     <img className="h-6 w-8 pr-2" src='/images/notification.png' alt='user' />
                     <span className='headerbodytext'>Notifications</span>
                 </MenuItem></Link>
-                <Link to=""><MenuItem onClick={handleClose}>
+                <span onClick={handleChat}><MenuItem onClick={handleClose}>
                     <img className="h-6 w-8 pr-2" src='/images/chat.png' alt='user' />
                     <span className='headerbodytext'>Chats</span>
-                </MenuItem></Link>
+                </MenuItem></span>
                 <Link to=""><MenuItem onClick={handleClose}>
                     <img className="h-6 w-8 pr-2" src='/images/request.png' alt='user' />
                     <span className='headerbodytext'>Certification Requests</span>

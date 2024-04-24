@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const Chatpage = () => {
   const [fetchAgain, setFetchAgain] = useState(false);
-  const { user, setUser, setSelectedChat } = ChatState();
+  const { user, setUser, setSelectedChat , setChatType } = ChatState();
 
   const navigate = useNavigate();
 
@@ -18,8 +18,9 @@ const Chatpage = () => {
             const status = await getloginStatus();
             if (status.verified) {
                 setUser(status.user);
-                setUser(prevUser => ({ ...prevUser, token: status.token }));
+                setUser(prevUser => ({ ...prevUser, token: status.token, status: status.status}));
                 setSelectedChat(null);
+                setChatType(localStorage.getItem('chatType'));
             }
             else{
                 navigate('/login');

@@ -10,6 +10,7 @@ const ChatProvider = ({ children }) => {
   const [user, setUser] = useState();
   const [chatType, setChatType] = useState();
   const [chats, setChats] = useState();
+  const [jeweler, setJeweler] = useState();
 
   const navigate = useNavigate();
 
@@ -23,7 +24,7 @@ const ChatProvider = ({ children }) => {
             }
             else if (status.verified) {
                 setUser(status.user);
-                setUser(prevUser => ({ ...prevUser, token: status.token }));
+                setUser(prevUser => ({ ...prevUser, token: status.token, status: status.status }));
 
             }
         } catch (error) {
@@ -46,6 +47,8 @@ const ChatProvider = ({ children }) => {
         setChatType,
         chats,
         setChats,
+        jeweler,
+        setJeweler
       }}
     >
       {children}

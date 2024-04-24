@@ -9,6 +9,7 @@ import { getProductsById, getSimilarProducts } from '../../services/productservi
 import ContainerVerticalProduct from './containerverticalproduct';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { ChatState } from '../chat/ChatProvider';
 
 const ProductDetails = () => {
 
@@ -157,9 +158,7 @@ const ProductDetails = () => {
         }
     };
 
-
-
-    const HandleChat = async () => {
+    const HandleChatPD = async () => {
         try {
             const status = await getloginStatus();
             if (!status.verified) {
@@ -167,7 +166,6 @@ const ProductDetails = () => {
                 navigate('/login');
             }
             else if(status.verified){
-
                 try {
                     const data = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/chat`, {userId : jeweler.user, chattype : 'jeweler'},);
                     if(data)
@@ -332,17 +330,17 @@ const ProductDetails = () => {
 
                         <p className='text-center pt-8'>
                             {button ? (
-                                <button disabled='true' className='disabled-button flex justify-center w-[100%] alluse inline-block rounded bg-stone-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white '>
+                                <button className='disabled-button flex justify-center w-[100%] alluse inline-block rounded bg-stone-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white '>
                                     <img className='w-6 h-6' src='/images/chat.png' alt='chat' />
                                     <p className='my-auto pl-3'>Chat with jeweler</p>
                                 </button>
                             ) : (
-                                <Link to={``} className='flex justify-center w-[100%] alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600'>
+                                <div onClick={HandleChatPD} className='cursor-pointer flex justify-center w-[100%] alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600'>
 
                                     <img className='w-6 h-6' src='/images/chat.png' alt='chat' />
                                     <p className='my-auto pl-3'>Chat with jeweler</p>
 
-                                </Link>
+                                </div>
                             )}
                         </p>
 

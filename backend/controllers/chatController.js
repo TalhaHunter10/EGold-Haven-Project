@@ -18,6 +18,7 @@ const accessChat = asyncHandler(async (req, res) => {
       { users: { $elemMatch: { $eq: req.user._id } } },
       { users: { $elemMatch: { $eq: userId } } },
     ],
+    chattype: chattype
   })
     .populate("users", "-password")
     
@@ -28,7 +29,7 @@ const accessChat = asyncHandler(async (req, res) => {
     var chatData = {
       chatName: "One to One Chat",
       users: [req.user._id, userId],
-        chattype: chattype
+    chattype: chattype
     };
 
     try {

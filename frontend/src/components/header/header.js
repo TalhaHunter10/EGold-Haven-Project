@@ -173,6 +173,7 @@ const Header = () => {
 const {setChatType} = ChatState();
 
     const goToChat = () => {
+        localStorage.setItem('chatType', 'user');
         setChatType('user')
         navigate('/chat')
     }
@@ -234,7 +235,7 @@ const {setChatType} = ChatState();
                     <div className="user-icons">
                         <BadgeDefault />
 
-                        <span className='user-icon flex items-center'>
+                        <span className='user-icon flex items-center ml-5 md:ml-0'>
                             <img src="/images/usericon.png" alt="User" className="ml-5 w-10 cursor-pointer" onClick={handleClick} />
                             <img src="/images/arrowdownicon.png" alt="arrowdown" className="arrowdown-icon w-2 cursor-pointer" onClick={handleClick} />
                         </span>
