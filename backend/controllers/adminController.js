@@ -4,6 +4,7 @@ const User = require("../models/userModel");
 const Jeweler = require("../models/jewelerModel");
 const Product = require("../models/productModel");
 const { response } = require("express");
+const CommissionRequest = require("../models/CommissionRequestModel");
 
 const getStats = asyncHandler(async (req, res) => {
 
@@ -204,6 +205,57 @@ const getJewelerDetailsForProductRequest = asyncHandler(async (req, res) => {
     }
 });
 
+const getCommissionChangeRequests = asyncHandler(async (req, res) => {
+    const commissionRequests = await CommissionRequest.find({status: 'pending'});
+
+    res.status(200).json(commissionRequests);
+});
+
+const acceptCommissionChangeRequest = asyncHandler(async (req, res) => {
+    const { requestId, reason } = req.body;
+
+    const commissionRequest = await CommissionRequest.findById (requestId);
+
+    if(commissionRequest){
+
+        const jeweler = await Jeweler.findById(commissionRequest.jeweler);
+
+        if(jeweler){
+            jeweler.commissionrate = commissionRequest.newcommission;
+            await jeweler.save();
+            commissionRequest.status = 'approved';
+            commissionRequest.response = reason;
+            await commissionRequest.save();
+            res.status(200).json({message: 'Commission Change Request Accepted Successfully !!!'});
+        }
+        else{
+            res.status(404);
+            throw new Error('Jeweler not found');
+        }
+    }
+    else{
+        res.status(404);
+        throw new Error('Commission Request not found');
+    }
+});
+
+const rejectCommissionChangeRequest = asyncHandler(async (req, res) => {
+    const { requestId, reason } = req.body;
+
+    const commissionRequest = await CommissionRequest.findById (requestId);
+
+    if(commissionRequest){
+        commissionRequest.status = 'rejected';
+        commissionRequest.response = reason;
+        await commissionRequest.save();
+        res.status(200).json({message: 'Commission Change Request Rejected Successfully !!!'});
+    }
+    else{
+        res.status(404);
+        throw new Error('Commission Request not found');
+    }
+});
+
 
 module.exports = {
     getStats,
@@ -217,6 +269,10 @@ module.exports = {
     getProductRequests,
     acceptProduct,
     rejectProduct,
-    getJewelerDetailsForProductRequest
+    getJewelerDetailsForProductRequest,
+    getCommissionChangeRequests,
+    acceptCommissionChangeRequest,
+    rejectCommissionChangeRequest
+    
 }
 

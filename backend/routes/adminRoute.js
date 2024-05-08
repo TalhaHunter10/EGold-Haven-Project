@@ -1,6 +1,6 @@
 const express = require("express");
 const protect = require("../middlewares/authmiddleware");
-const { getStats, getJewelerRequests, acceptJeweler, rejectJeweler, acceptListing, rejectListing, getListingRequests, getUserDetailsForListingRequest, getProductRequests, getJewelerDetailsForProductRequest, acceptProduct, rejectProduct } = require("../controllers/adminController");
+const { getStats, getJewelerRequests, acceptJeweler, rejectJeweler, acceptListing, rejectListing, getListingRequests, getUserDetailsForListingRequest, getProductRequests, getJewelerDetailsForProductRequest, acceptProduct, rejectProduct, getCommissionChangeRequests, acceptCommissionChangeRequest, rejectCommissionChangeRequest } = require("../controllers/adminController");
 
 const router =  express.Router();
 
@@ -23,5 +23,11 @@ router.get('/getproductrequests',protect, getProductRequests)
 router.get('/getjewelerdetailsforproductrequest/:jewelerId',protect, getJewelerDetailsForProductRequest)
 router.patch('/acceptproduct/:productId',protect, acceptProduct)
 router.patch('/rejectproduct/:productId',protect, rejectProduct)
+
+
+router.get('/getcommissionchangerequests',protect, getCommissionChangeRequests)
+router.patch('/acceptcommissionchangerequest',protect, acceptCommissionChangeRequest)
+router.patch('/rejectcommissionchangerequest',protect, rejectCommissionChangeRequest)
+
 
 module.exports = router

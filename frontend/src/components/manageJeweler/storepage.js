@@ -160,8 +160,6 @@ const StorePage = () => {
             validationErrors.newcommission = 'Commission Rate is required !';
         }
 
-        console.log(newcommission, reason)
-
         setErrors(validationErrors)
 
         if (Object.keys(validationErrors).length === 0) {

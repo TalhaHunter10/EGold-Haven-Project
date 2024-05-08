@@ -210,7 +210,7 @@ const {setChatType} = ChatState();
                         Home
                     </button>
                 </Link>
-                <Link to='/searchlistings'>
+                <Link to='/listings'>
                     <button className="nav-button text-lg ml-5 hidden lg:block">
                         Listings
                     </button>

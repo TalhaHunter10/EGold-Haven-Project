@@ -127,7 +127,7 @@ const Footer = () => {
                         </p>
                         <p className="mb-5 ftext">
                             <Link className="text-stone-200 dark:text-neutral-200 active"
-                                to='/searchlistings'>Listings</Link>
+                                to='/listings'>Listings</Link>
                         </p>
                         <p className="mb-5 ftext">
                             <Link className="text-stone-200 dark:text-neutral-200 active"

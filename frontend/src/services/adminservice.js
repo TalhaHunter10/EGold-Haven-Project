@@ -170,3 +170,47 @@ export const getJewelerDetailsForProductRequest = async (jewelerId) => {
             toast.error(message)
     }
 };
+
+
+//Get Commission Change Requests
+export const getCommissionChangeRequests = async () => {
+    try{
+        const response = await axios.get(`${BACKEND_URL}/api/admin/getcommissionchangerequests`)
+        return response.data;
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+};
+
+
+//accept Commission Change Request
+export const acceptCommissionChangeRequest = async (requestId , reason) => {
+    try{
+        const response = await axios.patch(`${BACKEND_URL}/api/admin/acceptcommissionchangerequest`, {requestId , reason})
+        if(response.statusText === 'OK'){
+            toast.success("Commission Change Request Accepted Successfully !!!")
+        }
+        return true
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+}
+
+//reject Commission Change Request
+export const rejectCommissionChangeRequest = async (requestId , reason) => {
+    try{
+        const response = await axios.patch(`${BACKEND_URL}/api/admin/rejectcommissionchangerequest`, {requestId , reason})
+        if(response.statusText === 'OK'){
+            toast.success("Commission Change Request Rejected Successfully !!!")
+        }
+        return true
+    }catch(error){
+        const message = (
+            error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            toast.error(message)
+    }
+}

@@ -193,7 +193,7 @@ const downloadImageFromURL = asyncHandler(async (req, res) => {
 const editListing = asyncHandler(async (req, res) => {
     const { ListingID } = req.body;
 
-    
+
 
     //Manage Image Upload
     let fileData = [];
@@ -221,7 +221,7 @@ const editListing = asyncHandler(async (req, res) => {
     const grams = (req.body.weight * 11.66).toString();
 
     const listing = await Listing.findById(ListingID);
-    if(listing){
+    if (listing) {
         const { title, price, description, category, karats, weight, stones, address } = listing;
         listing.title = req.body.title || title;
         listing.price = req.body.price || price;
@@ -261,6 +261,28 @@ const SetListingSold = asyncHandler(async (req, res) => {
     }
 });
 
+const getListings = asyncHandler(async (req, res) => {
+
+    try {
+        let query = { status: 'live' }; // Start with status: 'live' in the query
+
+        const { search } = req.query;
+        if (search) {
+            query.$or = [
+                { title: { $regex: search, $options: 'i' } },
+                { description: { $regex: search, $options: 'i' } },
+            ];
+        }
+
+        const listings = await Listing.find(query).sort({ createdAt: -1 });
+        res.status(200).json(listings);
+    } catch (error) {
+        console.error('Error fetching listings:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+
+});
+
 module.exports = {
     createListing,
     getLiveListings,
@@ -274,5 +296,6 @@ module.exports = {
     deleteListing,
     downloadImageFromURL,
     editListing,
-    SetListingSold
+    SetListingSold,
+    getListings
 }

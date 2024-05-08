@@ -104,7 +104,7 @@ const AdminDashboard = () => {
                 </button>
             </div>
 
-            <div className="flex flex-wrap">
+            
                 <div className="flex-grow m-10 border-4 border-yellow-600 rounded-lg h-max bg-zinc-800">
                     <table className="border-collapse w-full">
                         <thead>
@@ -129,13 +129,16 @@ const AdminDashboard = () => {
                                 <td colSpan={2} className="flex flex-wrap justify-left m-5">
                                     <Link to='/jewelerrequests' className="m-3 text-base font-semibold bg-transparent border border border-danger-600 rounded-lg px-8 py-2 hover:bg-danger-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-danger-500">Inspect Jeweler Requests</Link>
                                     <Link className="m-3 text-base font-semibold bg-transparent border border border-danger-600 rounded-lg px-8 py-2 hover:bg-danger-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-danger-500">Inspect User Profiles</Link>
+                                    <Link to='/commissionrequests' className="m-3 text-base font-semibold bg-transparent border border border-danger-600 rounded-lg px-8 py-2 hover:bg-danger-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-danger-500">Inspect Commission Requests</Link>
+                                    
                                 </td>
                             </tr>
                         </tbody>
                     </table>
 
-
                 </div>
+
+                <div className="flex flex-wrap">
                 <div className="flex-grow m-10 border-4 border-yellow-600 rounded-lg h-max bg-zinc-800">
                     <table className="border-collapse w-full">
                         <thead>

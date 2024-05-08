@@ -208,23 +208,28 @@ const commissionChangeRequest = asyncHandler(async (req, res) => {
 
     if (request) {
         res.status(400);
-        throw new Error('Request already pending');
+        throw new Error('Request already pending approval !');
     }
 
     const request2 = await CommissionRequest.findOne({ jeweler: jeweler._id, status: 'approved' });
 
-    if (request2) {
+    if (request2 && (Date.now() - request2.createdAt.getTime()) > 30 * 24 * 60 * 60 * 1000) {
+
+        await CommissionRequest.findByIdAndDelete(request2._id);
+        
+    }else if (request2){
         res.status(400);
-        throw new Error('Your Request has already approved');
+        throw new Error('Your Request has already been approved. Wait for a month to request again !');
     }
 
     const request3 = await CommissionRequest.findOne({ jeweler: jeweler._id, status: 'rejected' });
 
-    if (request3) {
+    if (request3 && (Date.now() - request3.createdAt.getTime()) > 30 * 24 * 60 * 60 * 1000) {
+        await CommissionRequest.findByIdAndDelete(request3._id);
+    }else if (request3){
         res.status(400);
-        throw new Error('Your Request was rejected, you can not request again !');
+        throw new Error('Your Request has been rejected .Wait for a month to request again !');
     }
-
 
     const commissionrequest = await CommissionRequest.create({
         jeweler: jeweler._id,
@@ -232,7 +237,6 @@ const commissionChangeRequest = asyncHandler(async (req, res) => {
         newcommission,
         status
     });
-
         res.status(200).json(commissionrequest);
 
 });
@@ -251,7 +255,7 @@ const commissionRequestStatus = asyncHandler(async (req, res) => {
     }
 
     if(request.status === 'pending'){
-        res.status(200).json({message : 'Your request is pending for approval'});
+        res.status(200).json({message : 'Your request is pending approval'});
     }
     else if(request.status === 'approved'){
         res.status(200).json({message : 'Your request has been approved'});

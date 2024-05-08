@@ -39,6 +39,8 @@ import ProductRequests from './components/admindashboard/productrequests';
 import ProductDetails from './components/productcontainers/productdetails';
 import PublicStorePage from './components/manageJeweler/publicstorepage';
 import Chatpage from './components/chat/Chatpage';
+import CommissionRequests from './components/admindashboard/commissionrequests';
+import Listings from './components/pages/listings';
 
 
 
@@ -73,6 +75,7 @@ function App() {
           <Route path="/jewelerrequests" element={<JewelerRequests/>} />
           <Route path="/listingrequests" element={<ListingRequests/>} />
           <Route path="/productrequests" element={<ProductRequests/>} />
+          <Route path="/commissionrequests" element={<CommissionRequests />} />
         </Routes>
         </div>
       );
@@ -98,6 +101,8 @@ function App() {
               <Route path="/createlisting" element={<CreateListing/>} />
               <Route path="/listingdetails/:id" element={<ListingDetails/>} />
               <Route path="/mylistingdetails/:id" element={<MyListingDetails/>} />
+              <Route path="/listings" element={<Listings/>} />
+              
 
 
               <Route path="/jewelerrequest" element={<JewelerRequest/>} />
