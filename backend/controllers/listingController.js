@@ -261,20 +261,82 @@ const SetListingSold = asyncHandler(async (req, res) => {
     }
 });
 
+const geocoder = require('../utils/geocoder')
+
+function calculateDistance(coord1, coord2) {
+    const R = 6371; // Radius of the Earth in kilometers
+    const dLat = deg2rad(coord2.latitude - coord1.latitude);
+    const dLon = deg2rad(coord2.longitude - coord1.longitude);
+    const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(deg2rad(coord1.latitude)) * Math.cos(deg2rad(coord2.latitude)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // Distance in kilometers
+    return distance;
+}
+
+// Function to convert degrees to radians
+function deg2rad(deg) {
+    return deg * (Math.PI / 180);
+}
+
 const getListings = asyncHandler(async (req, res) => {
 
     try {
         let query = { status: 'live' }; // Start with status: 'live' in the query
 
-        const { search } = req.query;
+        const { search , category, location } = req.query;
         if (search) {
-            query.$or = [
-                { title: { $regex: search, $options: 'i' } },
-                { description: { $regex: search, $options: 'i' } },
-            ];
+            // Trim the search query to remove any leading or trailing spaces
+            const trimmedSearch = search.trim();
+        
+            // Split the trimmed search query into individual words
+            const searchWords = trimmedSearch.split(/\s+/);
+        
+            // Construct an array of regex conditions for each word
+            const orConditions = searchWords.map(word => ({
+                $or: [
+                    { title: { $regex: word, $options: 'i' } },
+                    { description: { $regex: word, $options: 'i' } }
+                ]
+            }));
+        
+            // Combine the conditions using logical OR
+            query.$or = orConditions;
+        }
+
+        if (category) {
+            query.category = category;
         }
 
         const listings = await Listing.find(query).sort({ createdAt: -1 });
+
+        if (location) {
+            const coord = await geocoder.geocode({ address: location });
+            const userCoordinates = { latitude: coord[0].latitude, longitude: coord[0].longitude };
+
+            // Calculate distances for each listing
+            listings.forEach(listing => {
+                const listingCoordinates = {
+                    latitude: listing.location.coordinates[1], // Assuming latitude comes first
+                    longitude: listing.location.coordinates[0]
+                };
+                // Calculate distance between user's location and listing's location
+                listing.distance = calculateDistance(userCoordinates, listingCoordinates);
+            });
+
+            // Filter listings within a certain radius (e.g., 50 km)
+            const maxDistance = 100; // in kilometers
+            const filteredListings = listings.filter(listing => listing.distance <= maxDistance);
+
+            // Sort filtered listings by distance
+            filteredListings.sort((a, b) => a.distance - b.distance);
+
+            // Return the filtered and sorted listings to the client
+            res.status(200).json(filteredListings);
+        }
+
         res.status(200).json(listings);
     } catch (error) {
         console.error('Error fetching listings:', error);
