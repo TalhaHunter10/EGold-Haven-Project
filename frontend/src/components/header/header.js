@@ -58,7 +58,7 @@ function NavList() {
                 color="blue-gray"
                 className="p-1 font-medium"
             >
-                <Link to={"/searchlistings"} className="flex items-center hover:text-yellow-600 transition-colors">
+                <Link to={"/listings"} className="flex items-center hover:text-yellow-600 transition-colors">
                     Listings
                 </Link>
             </Typography>
@@ -78,8 +78,8 @@ function NavList() {
                 color="blue-gray"
                 className="p-1 font-medium"
             >
-                <Link to="/forum" className="flex items-center hover:text-yellow-600 transition-colors">
-                    Forum
+                <Link to="/jewelers" className="flex items-center hover:text-yellow-600 transition-colors">
+                    Jewelers
                 </Link>
             </Typography>
             <Typography
@@ -89,7 +89,7 @@ function NavList() {
                 className="p-1 font-medium"
             >
                 <Link to="/forum" className="flex items-center hover:text-yellow-600 transition-colors">
-                    FAQ's
+                    Forum
                 </Link>
             </Typography>
         </ul>
@@ -220,14 +220,14 @@ const {setChatType} = ChatState();
                         Products
                     </button>
                 </Link>
+                <Link to='/jewelers'>
+                    <button className="nav-button text-lg ml-5 hidden lg:block">
+                        Jewelers
+                    </button>
+                </Link>
                 <Link to='/forum'>
                     <button className="nav-button text-lg ml-5 hidden lg:block">
                         Forum
-                    </button>
-                </Link>
-                <Link to='/faq'>
-                    <button className="nav-button text-lg ml-5 hidden lg:block">
-                        FAQ's
                     </button>
                 </Link>
                 {isLoggedIn ? (

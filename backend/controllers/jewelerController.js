@@ -268,6 +268,69 @@ const commissionRequestStatus = asyncHandler(async (req, res) => {
     
 });
 
+const getJewelers = asyncHandler(async (req, res) => {
+
+    const users = await User.find({ status: 'jeweler' });
+
+    if (!users) {
+        res.status(404);
+        throw new Error('No jewelers found');
+    }
+
+    let query = {user: { $in: users.map(user => user._id)} };
+
+    const { search, location } = req.query;
+
+    if (search) {
+        // Trim the search query to remove any leading or trailing spaces
+        const trimmedSearch = search.trim();
+    
+        // Split the trimmed search query into individual words
+        const searchWords = trimmedSearch.split(/\s+/);
+    
+        // Construct an array of regex conditions for each word
+        const orConditions = searchWords.map(word => ({
+            $or: [
+                { storename: { $regex: word, $options: 'i' } },
+                { address: { $regex: word, $options: 'i' } },
+                { shopno: { $regex: word, $options: 'i' } },
+
+            ]
+        }));
+    
+        // Combine the conditions using logical OR
+        query.$or = orConditions;
+    }
+
+    const jewelers = await Jeweler.find(query);
+
+    if (!jewelers) {
+        res.status(404);
+        throw new Error('No jewelers found');
+    }
+
+    // Create a new array to store jewelers with numberOfProducts
+    const jewelersWithProducts = [];
+
+    // Iterate over jewelers and count the number of products for each jeweler
+    for (const jeweler of jewelers) {
+        const numberOfProducts = await Product.countDocuments({ jeweler: jeweler._id });
+        const jewelerWithProducts = {
+            ...jeweler.toObject(),
+            numberOfProducts: numberOfProducts
+        };
+        jewelersWithProducts.push(jewelerWithProducts);
+    }
+
+    if (location) {
+        const jewelers2 =  jewelersWithProducts.filter(jeweler => jeweler.city === location);
+        res.status(200).json(jewelers2);
+    }
+
+    res.status(200).json(jewelersWithProducts);
+
+});
+
 module.exports = {
     registerJeweler,
     getJewelerDetails,
@@ -276,5 +339,6 @@ module.exports = {
     getJewelerInformation,
     getUserJeweler,
     commissionChangeRequest,
-    commissionRequestStatus
+    commissionRequestStatus,
+    getJewelers
 }

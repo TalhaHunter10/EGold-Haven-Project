@@ -286,7 +286,7 @@ const getListings = asyncHandler(async (req, res) => {
     try {
         let query = { status: 'live' }; // Start with status: 'live' in the query
 
-        const { search , category, location } = req.query;
+        const { search , category, location, karats, stones, weight } = req.query;
         if (search) {
             // Trim the search query to remove any leading or trailing spaces
             const trimmedSearch = search.trim();
@@ -308,6 +308,25 @@ const getListings = asyncHandler(async (req, res) => {
 
         if (category) {
             query.category = category;
+        }
+
+        if (karats) {
+            query.karats = karats;
+        }
+
+        if (stones) {
+            query.stones = stones;
+        }
+
+        if (weight) {
+            if (weight === "10+") {
+                // For weight greater than 10 tola
+                query["weights.tola"] = { $gt: 10 };
+            } else {
+                // For other weight ranges
+                const [min, max] = weight.split("-").map(Number);
+                query["weights.tola"] = { $gte: min, $lte: max };
+            }
         }
 
         const listings = await Listing.find(query).sort({ createdAt: -1 });

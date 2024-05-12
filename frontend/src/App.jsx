@@ -41,6 +41,8 @@ import PublicStorePage from './components/manageJeweler/publicstorepage';
 import Chatpage from './components/chat/Chatpage';
 import CommissionRequests from './components/admindashboard/commissionrequests';
 import Listings from './components/pages/listings';
+import Products from './components/pages/products';
+import Jewelers from './components/pages/jewelers';
 
 
 
@@ -104,7 +106,7 @@ function App() {
               <Route path="/listings" element={<Listings/>} />
               
 
-
+              <Route path="/jewelers" element={<Jewelers/>} />
               <Route path="/jewelerrequest" element={<JewelerRequest/>} />
               <Route path="/storepage" element={<StorePage/>} />
               <Route path="/editjewelerprofile" element={<EditJewelerProfile/>} />
@@ -112,6 +114,7 @@ function App() {
               <Route path="/myproductdetails/:id" element={<JewelerProductDetails/>} />
               <Route path="/productdetails/:id" element={<ProductDetails/>} />
               <Route path="/jewelerpage/:id" element={<PublicStorePage/>} />
+              <Route path="/products" element={<Products/>} />
 
 
               <Route path="/chat" element={<Chatpage/>} />

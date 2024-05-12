@@ -108,7 +108,7 @@ const Landing = () => {
 
   const [filters, setFilters] = useState({
     search: '',
-    location: 'Select Location'
+    location: ''
 });
 
   const handleSearch = (e) => {
@@ -118,7 +118,7 @@ const Landing = () => {
       toast.error('Please enter a search term !')
       return;
     }
-    else if (filters.location === 'Select Location') {
+    else if (filters.location === '') {
     navigate(`/listings?search=${filters.search}`)
     }
     else {
@@ -463,12 +463,12 @@ const options = [
 
                 <Select
                         showSearch
-                        value={filters.location} onChange={handleSelectChange} 
+                        value={filters.location || undefined} onChange={handleSelectChange} 
                         optionFilterProp="children"
                         name="location"
                         filterOption={true}
                         style={{ width: '100%', height: '3rem', background: 'transparent'}}
-                        placeholder="Select a City"
+                        placeholder="Select City"
                        >
                         {options.map((option) => (
                             <Option key={option.value} value={option.value}>

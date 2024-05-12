@@ -284,3 +284,15 @@ body {
   scrollbar-width: none;
 }
 
+.ant-table
+  .ant-table-container
+  .ant-table-content
+  table
+  thead.ant-table-thead
+  .ant-table-cell {
+  background-color: #262626;
+  color:#e7e5e4;
+  font-family: Msemibold;
+  text-align: center;
+  font-size:medium;
+}

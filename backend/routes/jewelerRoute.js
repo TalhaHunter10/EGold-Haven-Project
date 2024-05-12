@@ -1,7 +1,7 @@
 const express = require("express");
 const protect = require("../middlewares/authmiddleware");
 const { upload } = require("../utils/fileUpload");
-const { registerJeweler, getJewelerDetails, getCoverImagebyUrl, editJewelerDetails, getJewelerInformation, getUserJeweler, commissionChangeRequest, commissionRequestStatus } = require("../controllers/jewelerController");
+const { registerJeweler, getJewelerDetails, getCoverImagebyUrl, editJewelerDetails, getJewelerInformation, getUserJeweler, commissionChangeRequest, commissionRequestStatus, getJewelers } = require("../controllers/jewelerController");
 
 const router =  express.Router();
 
@@ -15,5 +15,6 @@ router.get('/getjewelerinfo/:id', getJewelerInformation)
 router.get('/getuserjeweler/:id', getUserJeweler)
 router.post('/commissionchangerequest',protect, commissionChangeRequest)
 router.get('/commissionchangerequeststatus',protect, commissionRequestStatus)
+router.get('/getjewelers', getJewelers)
 
 module.exports = router

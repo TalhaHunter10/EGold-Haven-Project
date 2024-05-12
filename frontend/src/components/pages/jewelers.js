@@ -1,49 +1,129 @@
-
-
-import React, { useEffect, useState } from 'react';
-import { FileAnimationsmall } from '../loader/loader';
-import ContainerAll from '../listingcontainers/containerall';
-import axios from 'axios';
+import { Select } from "antd";
+import { Input } from "antd";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Select } from 'antd';
+import { FileAnimationsmall } from "../loader/loader";
+import { Table, Button, Image } from 'antd';
+
 const { Option } = Select;
 
-const Listings = () => {
+const backend = process.env.REACT_APP_BACKEND_URL;
 
-    const [isFetched, setIsFetched] = React.useState(false);
-    const [listings, setListings] = useState([]);
-    const [limit, setLimit] = useState([]);
+const JewelerTable = ({ jewelers }) => {
+
+    const navigate = useNavigate();
+
+    const rowProps = (record) => {
+        return {
+            onClick: () => navigate(`/jewelerpage/${record._id}`),
+        };
+    };
+
+    const columns = [
+        {
+            title: 'Store Image',
+            dataIndex: 'coverimage',
+            key: 'coverimage',
+            render: coverimage => <div onClick={(e) => e.stopPropagation()} className="w-20 h-20"><Image className="w-20 h-20" src={`${backend}/${coverimage[0].filePath}`} /></div>,
+        },
+        {
+            title: 'Store Name',
+            dataIndex: 'storename',
+            key: 'storename',
+        },
+        {
+            title: 'Address',
+            dataIndex: 'address',
+            key: 'address',
+        },
+        {
+            title: 'Phone No',
+            dataIndex: 'phoneno',
+            key: 'phoneno',
+            responsive: ['md'],
+            render: (phoneno) => {
+                return phoneno.slice(0, 4) + '-' + phoneno.slice(4); // Apply transformation to phone number
+            },
+        },
+        {
+            title: 'Commission Rate',
+            dataIndex: 'commissionrate',
+            key: 'commissionrate',
+            responsive: ['md']
+        },
+        {
+            title: 'Date Registered',
+            dataIndex: 'createdAt',
+            key: 'createdAt',
+            responsive: ['md'],
+            render: (createdAt) => {
+                return new Date(createdAt).toLocaleDateString()
+            },
+        },
+        {
+            title: 'No of Products',
+            dataIndex: 'numberOfProducts',
+            key: 'numberOfProducts',
+            responsive: ['md']
+        },
+    ];
+
+
+    return <Table dataSource={jewelers} columns={columns} rowKey="_id" className="bg-neutral-800 rounded-xl" rowClassName="cursor-pointer bg-neutral-900 allusebody tracking-wider font-bold text-center text-base text-stone-200 hover:text-neutral-800" onRow={rowProps} />;
+};
+
+const Jewelers = () => {
+
 
     const navigate = useNavigate();
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
 
+    const [jewelers, setJewelers] = useState([]);
+
+    const [isFetched, setIsFetched] = useState(false);
+
     const [filters, setFilters] = useState({
-        stones: searchParams.get('stones') || '',
-        karats: searchParams.get('karats') || '',
         search: searchParams.get('search') || '',
         location: searchParams.get('location') || '',
-        category: searchParams.get('category') || '',
-        weight: searchParams.get('weight') || '',
-
     });
 
-
     const backend = process.env.REACT_APP_BACKEND_URL;
+
+    const handleFilterChange = (e) => {
+        const { name, value } = e.target;
+        setFilters((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleSelectChange = (value) => {
+        setFilters((prev) => ({ ...prev, location: value }));
+    }
+
+    const handleSearch = () => {
+
+        let url = `/jewelers?`;
+
+        if (filters.search.trim() !== "") {
+            url += "search=" + encodeURIComponent(filters.search.trim()) + "&";
+        }
+        
+        // Append location parameter if not empty
+        if (filters.location.trim() !== "") {
+            url += "location=" + encodeURIComponent(filters.location.trim()) + "&";
+        }
+        
+        window.location.href = url;
+    };
+
+    console.log(filters)
+
 
     const fetchdata = async () => {
         setIsFetched(false);
         try {
-            const res = await axios.get(`${backend}/api/listings/getlistings`, { params: filters });
-            setListings(res.data)
-            if(res && res.data.length >= 8)
-            {
-            setLimit(res.data.splice(0, 8))
-            }
-            else
-            {
-                setLimit(res.data);
-            }
+            const res = await axios.get(`${backend}/api/jeweler/getjewelers`, { params: filters });
+            setJewelers(res.data)
             setIsFetched(true);
         } catch (error) {
             console.log(error);
@@ -54,48 +134,8 @@ const Listings = () => {
         fetchdata();
     }, []);
 
-    const handleFilterChange = (e) => {
-        const { name, value } = e.target;
-        setFilters({ ...filters, [name]: value });
-    };
 
-    const handleSearch = async (e) => {
-        e.preventDefault();
-        let url = "/listings?";
-    
-    // Append search parameter if not empty
-    if (filters.search.trim() !== "") {
-        url += "search=" + encodeURIComponent(filters.search.trim()) + "&";
-    }
-    
-    // Append location parameter if not empty
-    if (filters.location.trim() !== "") {
-        url += "location=" + encodeURIComponent(filters.location.trim()) + "&";
-    }
-    
-    // Append category parameter if not empty
-    if (filters.category.trim() !== "") {
-        url += "category=" + encodeURIComponent(filters.category.trim()) + "&";
-    }
-    
-    // Append karats parameter if not empty
-    if (filters.karats.trim() !== "") {
-        url += "karats=" + encodeURIComponent(filters.karats.trim()) + "&";
-    }
-    
-    // Append stones parameter if not empty
-    if (filters.stones.trim() !== "") {
-        url += "stones=" + encodeURIComponent(filters.stones.trim()) + "&";
-    }
-    
-    // Append weight parameter if not empty
-    if (filters.weight.trim() !== "") {
-        url += "weight=" + encodeURIComponent(filters.weight.trim());
-    }
-    
-    // Navigate to the constructed URL
-    window.location.href = url;
-    };
+
 
 
     const options = [
@@ -346,229 +386,85 @@ const Listings = () => {
         { value: 'Nagar, Pakistan', label: 'Nagar' },
         { value: 'Skardu, Pakistan', label: 'Skardu' }
     ]
-
-    const weightOptions = [
-        { value: "0-1", label: "0 - 1 tola" },
-        { value: "1-2", label: "1 - 2 tola" },
-        { value: "2-3", label: "2 - 3 tola" },
-        { value: "3-5", label: "3 - 5 tola" },
-        { value: "5-10", label: "5 - 10 tola" },
-        { value: "10+", label: "Greater than 10 tola" }
-      ];
-
-    const removeFilters = () => {
-        setFilters({
-            stones: '',
-            karats: '',
-            search: '',
-            location: '',
-            category: '',
-            weight: ''
-        });
-        let url = "/listings";
-        window.location.href = url;
-    
-    };
-
-    const loadMore = () => {
-        
-        if(listings.length - limit.length > 8)
-        {
-        const newlimit = limit.length + 8;
-        setLimit(listings.splice(0, newlimit));
-        }
-        else
-        {
-            setLimit(listings);
-        }
-        
-    };
-
-
     return (
-        <div className='pb-20'>
+        <div className="pb-20">
+            <div className=' text-stone-200 min-[150px]:text-3xl text-center md:text-5xl alluse mb-8 mt-10 '>Authorized <span className="text-yellow-600">Jewelers </span></div>
 
-            <form onSubmit={(e) => { e.preventDefault(); handleSearch(e); }}>
+            <div className='text-center mt-5 md:pl-32 md:pr-32'>
+                <div className='Searchbarsarea flex h-full flex-wrap items-center justify-center lg:justify-between '>
 
-                <div className='md:flex md:flex-wrap md:justify-between min-[150px]:text-center mt-10'>
+                    <div className='sb1 w-32 md:w-96 md:shrink-0 basis-1/3'>
+                        <div className="relative flex w-full flex-wrap items-stretch">
 
-                    <div className=' text-stone-200 min-[150px]:text-4xl min-[150px]:text-center md:text-5xl alluse md:pl-8 mb-5 md:mr-16'>User <span className="text-yellow-600">Listings</span></div>
-
-                    <div className='justify-center text-center min-[150px]:w-80  md:w-1/3 md:mt-3 mb-5 min-[150px]:mx-auto md:mx-0'>
-                        <input className="m-auto min-[150px]:w-80 w-full h-10 block  rounded-l border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-stone-200 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-yellow-600 focus:text-stone-200 focus:shadow-[inset_0_0_0_1px_rgb(202,138,4)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
-                            type="text" name="search" value={filters.search} onChange={handleFilterChange} placeholder="Search..." />
-                    </div>
-                </div>
-
-                <div className='p-4 rounded-lg bg-neutral-900 '>
-
-                    <h1 className='allusebody text-3xl text-stone-300 pb-5 text-center'>Set Filters</h1>
-
-                    <div className='flex flex-wrap justify-center'>
-
-                        <Select
-                        className='mr-3'
-                            showSearch
-                            optionFilterProp="children"
-                            filterOption={true}
-                            style={{ width: 200, height: 40, marginBottom: 20 }}
-                            onChange={(value) => setFilters({ ...filters, location: value })}
-                            placeholder="Select City"
-                            value={filters.location || undefined}
-                        >
-                            {options.map((option) => (
-                                <Option key={option.value} value={option.value}>
-                                    {option.label}
-                                </Option>
-                            ))}
-                        </Select>
-
-                        <Select value={filters.category || undefined} className="mr-3" style={{ width: 200, height: 40, marginBottom: 20 }} onChange={(value) => setFilters({ ...filters, category: value })} placeholder="Select Category"
-                            options={[
-                                {
-                                    value: 'Rings',
-                                    label: 'Rings',
-                                },
-                                {
-                                    value: 'Earrings',
-                                    label: 'Earrings',
-                                },
-                                {
-                                    value: 'Necklaces',
-                                    label: 'Necklaces',
-                                },
-                                {
-                                    value: 'Chains',
-                                    label: 'Chains',
-                                },
-                                {
-                                    value: 'Bracelets',
-                                    label: 'Bracelets',
-                                },
-                                {
-                                    value: 'Bangles',
-                                    label: 'Bangles',
-                                },
-                                {
-                                    value: 'Anklets',
-                                    label: 'Anklets',
-                                },
-                                {
-                                    value: 'Pendants',
-                                    label: 'Pendants',
-                                },
-                                {
-                                    value: 'Bridal Sets',
-                                    label: 'Bridal Sets',
-                                },
-                                {
-                                    value: 'Others',
-                                    label: 'Others',
-                                }
-                            ]} />
-
-                        <Select value={filters.karats || undefined} className='mr-3' style={{ width: 200, height: 40, marginBottom: 20 }} onChange={(value) => setFilters({ ...filters, karats: value })} placeholder="Select Karats"
-                            options={[
-                                {
-                                    value: '10k',
-                                    label: '10k',
-                                },
-                                {
-                                    value: '12k',
-                                    label: '12k',
-                                },
-                                {
-                                    value: '14k',
-                                    label: '14k',
-                                },
-                                {
-                                    value: '18k',
-                                    label: '18k',
-                                },
-                                {
-                                    value: '22k',
-                                    label: '22k',
-                                },
-                                {
-                                    value: '24k',
-                                    label: '24k',
-                                }
-                            ]} />
-
-                        <Select value={filters.stones || undefined} className='mr-3' style={{ width: 200, height: 40, marginBottom: 20 }} onChange={(value) => setFilters({ ...filters, stones: value })} placeholder="Select Stones Type"
-                            options={[
-                                {
-                                    value: 'None',
-                                    label: 'None',
-                                },
-                                {
-                                    value: 'Inclusive - Artificial',
-                                    label: 'Inclusive - Artificial',
-                                },
-                                {
-                                    value: 'Inclusive - Diamonds',
-                                    label: 'Inclusive - Diamonds',
-                                },
-                                {
-                                    value: 'Exclusive - Artificial',
-                                    label: 'Exclusive - Artificial',
-                                },
-                                {
-                                    value: 'Exclusive - Diamonds',
-                                    label: 'Exclusive - Diamonds',
-                                },
-                            ]} />
-
-                        <Select value={filters.weight || undefined} className='mr-3' style={{ width: 200, height: 40, marginBottom: 20 }} onChange={(value) => setFilters({ ...filters, weight: value })} placeholder="Select Weight Range"
-                           >
-                            {weightOptions.map((option) => (
-                                <Option key={option.value} value={option.value}>
-                                    {option.label}
-                                </Option>
-                            ))}
-                        </Select>
+                            <Select
+                                showSearch
+                                value={filters.location || undefined} onChange={handleSelectChange}
+                                optionFilterProp="children"
+                                name="location"
+                                filterOption={true}
+                                style={{ width: '100%', height: '3rem', background: 'transparent' }}
+                                placeholder="Select City"
+                            >
+                                {options.map((option) => (
+                                    <Option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </Option>
+                                ))}
+                            </Select>
+                        </div>
                     </div>
 
-                    <p className='text-center mt-4 space-y-3'> 
+                    <div className="sb2 w-32 md:w-96 md:shrink-0 basis-2/3">
+                        <div className="relative flex w-full flex-wrap items-stretch">
+                            <Input
+                                className="relative m-0 -mr-0.5 h-12 block w-[1px] min-w-0 flex-auto rounded-l border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-stone-200 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-yellow-600 focus:text-stone-200 focus:shadow-[inset_0_0_0_1px_rgb(202,138,4)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
+                                placeholder="Search Jewelers"
+                                type="text" name="search" value={filters.search} onChange={handleFilterChange} />
 
-                    <button type='button' className=" mr-3 inline-block rounded bg-danger-600 text-semibold px-12 py-2 text-sm font-medium uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out focus:bg-danger-600 active:bg-danger-600"
-                        onClick={removeFilters}  >Remove Filters</button>
+                            <button
+                                onClick={handleSearch}
+                                className="relative z-[2] flex items-center rounded-r bg-warning-600 px-6 py-2.5 text-xs font-medium uppercase leading-tight text-black hover:text-white shadow-md transition duration-150 ease-in-out hover:bg-warning-600 hover:shadow-lg focus:bg-warning-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-warning-700 active:shadow-lg hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)]"
+                                type="submit"
+                                id="button-addon1">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 20 20"
+                                    fill="currentColor"
+                                    className="h-5 w-5">
+                                    <path
+                                        fillRule="evenodd"
+                                        d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+                                        clipRule="evenodd" />
+                                </svg>
+                            </button>
 
-                     <button type='submit' className="mr-3 inline-block rounded bg-warning-600 text-semibold px-20 py-2 text-sm font-medium uppercase leading-normal text-stone-900 hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600"
-                        onClick={handleSearch}>Search</button></p>
-                </div>
-
-                </form>
-
-                <div className='flex flex-wrap justify-between min-[150px]:pt-4 md:pt-10 pl-5 pr-5 pb-0 space-y-3'>
-
-                    <div className='text-stone-200 md:text-2xl allusebody min-[150px]:text-lg'>Search for "{filters.search !== '' ? `${filters.search} |` : ''} {filters.location  !== '' ? `${filters.location} |` : ''} {filters.category !== '' ? `${filters.category} |` : ''} {filters.karats !== '' ? `${filters.karats} |` : ''} {filters.stones !== '' ? `${filters.stones} |` : ''} {filters.weight !== '' ? `${filters.weight} |` : ''}  {filters.search === '' && filters.location === '' && filters.category === '' && filters.karats === '' && filters.stones === '' && filters.weight === '' ? 'All' : ''}"</div>
-                    {listings.length>0 && isFetched ? <div className='allusebody text-lg font-bold text-stone-300'>{listings.length} Results Found</div> : <div></div>}
-
-                </div>
-
-                <div className='border-b-2 border-yellow-600 mt-1 -mb-3'></div>
-
-
-                <div className='categoriesarea text-stone-200 mb-5'>
-                    <div className='categories flex flex-wrap pt-5 pb-5 '>
-                        {!isFetched ? (
-                            <FileAnimationsmall />
-                        ) : (
-                            listings && listings.length === 0 && isFetched ? (
-                                <p className='w-full allusebody min-[150px]:text-2xl md:text-4xl text-center text-stone-200 min-[150px]:mt-4  md:mt-10'>No Listings Found !!</p>
-                            ) : (
-                                <div className="">
-                                    {<ContainerAll listing={limit} />}
-                                </div>
-                            )
-                        )}
+                        </div>
                     </div>
-                    {listings.length > limit.length ? <div onClick={loadMore} className='allusebody text-stone-200 hover:text-yellow-600 duration-300 hover:scale-110 text-center cursor-pointer -mt-5'>Load More</div> : <div></div>}
                 </div>
+            </div>
            
-        </div>
-    );
-};
 
-export default Listings;
+            <div className='categories flex flex-wrap pt-5 pb-5 '>
+                {!isFetched ? (
+                    <FileAnimationsmall />
+                ) : (
+                    jewelers && jewelers.length === 0 && isFetched ? (
+                        <p className='w-full allusebody min-[150px]:text-2xl md:text-4xl text-center text-stone-200 min-[150px]:mt-4  md:mt-10'>No Jewelers Found !!</p>
+                    ) : (
+                        <div className="overflow-auto text-center m-auto pt-5">
+                            <div className='flex flex-wrap justify-between min-[150px]:pt-4 pl-5 pr-5 pb-5 '>
+
+                                <div className='text-stone-200 md:text-2xl allusebody font-bold min-[150px]:text-lg'>Search for "{filters.search !== '' ? `${filters.search} |` : ''} {filters.location !== '' ? `${filters.location} |` : ''}  {filters.search === '' && filters.location === '' ? 'All' : ''}"</div>
+                                {jewelers.length > 0 && isFetched ? <div className='allusebody text-lg font-bold text-stone-300'>{jewelers.length} Results Found</div> : <div></div>}
+
+                            </div>
+                            <JewelerTable jewelers={jewelers} />
+                        </div>
+                    )
+                )}
+            </div>
+        </div>
+    )
+}
+
+export default Jewelers;

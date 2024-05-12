@@ -216,6 +216,111 @@ const getJewelerProductsInformation = asyncHandler(async (req, res) => {
 
 });
 
+
+const geocoder = require('../utils/geocoder')
+
+function calculateDistance(coord1, coord2) {
+    const R = 6371; // Radius of the Earth in kilometers
+    const dLat = deg2rad(coord2.latitude - coord1.latitude);
+    const dLon = deg2rad(coord2.longitude - coord1.longitude);
+    const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(deg2rad(coord1.latitude)) * Math.cos(deg2rad(coord2.latitude)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // Distance in kilometers
+    return distance;
+}
+
+// Function to convert degrees to radians
+function deg2rad(deg) {
+    return deg * (Math.PI / 180);
+}
+
+const getProducts = asyncHandler(async (req, res) => {
+
+    try {
+        let query = { status: 'live' }; // Start with status: 'live' in the query
+
+        const { search , category, location, karats, weight } = req.query;
+        if (search) {
+            // Trim the search query to remove any leading or trailing spaces
+            const trimmedSearch = search.trim();
+        
+            // Split the trimmed search query into individual words
+            const searchWords = trimmedSearch.split(/\s+/);
+        
+            // Construct an array of regex conditions for each word
+            const orConditions = searchWords.map(word => ({
+                $or: [
+                    { title: { $regex: word, $options: 'i' } },
+                    { description: { $regex: word, $options: 'i' } }
+                ]
+            }));
+        
+            // Combine the conditions using logical OR
+            query.$or = orConditions;
+        }
+
+        if (category) {
+            query.category = category;
+        }
+
+        if (karats) {
+            query.karats = karats;
+        }
+
+        if (weight) {
+            if (weight === "10+") {
+                // For weight greater than 10 tola
+                query["weights.tola"] = { $gt: 10 };
+            } else {
+                // For other weight ranges
+                const [min, max] = weight.split("-").map(Number);
+                query["weights.tola"] = { $gte: min, $lte: max };
+            }
+        }
+
+        const products = await Product.find(query).sort({ createdAt: -1 });
+
+        if (location) {
+            // Geocode user's location
+            const userCoords = await geocoder.geocode(location);
+            const userCoordinates = {
+                latitude: userCoords[0].latitude,
+                longitude: userCoords[0].longitude
+            };
+
+            // Fetch jeweler details for each product
+            for (const product of products) {
+                const jeweler = await Jeweler.findById(product.jeweler);
+                const jewelerCoords = jeweler.location.coordinates;
+                const jewelerCoordinates = {
+                    latitude: jewelerCoords[1],
+                    longitude: jewelerCoords[0]
+                };
+                product.distance = calculateDistance(userCoordinates, jewelerCoordinates);
+            }
+
+            // Filter products within a certain radius (e.g., 100 km)
+            const maxDistance = 100; // in kilometers
+            const filteredProducts = products.filter(product => product.distance <= maxDistance);
+
+            // Sort filtered products by distance
+            filteredProducts.sort((a, b) => a.distance - b.distance);
+
+            // Return the filtered and sorted products to the client
+            res.status(200).json(filteredProducts);
+        }
+
+        res.status(200).json(products);
+    } catch (error) {
+        console.error('Error fetching products:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+
+});
+
 module.exports = { 
     createProduct,
     getLiveProducts,
@@ -225,5 +330,6 @@ module.exports = {
     editProduct,
     getJewelerProducts,
     downloadImageFromURL,
-    getJewelerProductsInformation
+    getJewelerProductsInformation,
+    getProducts
  };

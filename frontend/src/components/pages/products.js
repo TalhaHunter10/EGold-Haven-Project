@@ -2,16 +2,16 @@
 
 import React, { useEffect, useState } from 'react';
 import { FileAnimationsmall } from '../loader/loader';
-import ContainerAll from '../listingcontainers/containerall';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Select } from 'antd';
+import ContainerProductAll from '../productcontainers/containerproductall';
 const { Option } = Select;
 
-const Listings = () => {
+const Products = () => {
 
     const [isFetched, setIsFetched] = React.useState(false);
-    const [listings, setListings] = useState([]);
+    const [products, setProducts] = useState([]);
     const [limit, setLimit] = useState([]);
 
     const navigate = useNavigate();
@@ -19,7 +19,6 @@ const Listings = () => {
     const searchParams = new URLSearchParams(location.search);
 
     const [filters, setFilters] = useState({
-        stones: searchParams.get('stones') || '',
         karats: searchParams.get('karats') || '',
         search: searchParams.get('search') || '',
         location: searchParams.get('location') || '',
@@ -34,8 +33,8 @@ const Listings = () => {
     const fetchdata = async () => {
         setIsFetched(false);
         try {
-            const res = await axios.get(`${backend}/api/listings/getlistings`, { params: filters });
-            setListings(res.data)
+            const res = await axios.get(`${backend}/api/product/getproducts`, { params: filters });
+            setProducts(res.data)
             if(res && res.data.length >= 8)
             {
             setLimit(res.data.splice(0, 8))
@@ -61,7 +60,7 @@ const Listings = () => {
 
     const handleSearch = async (e) => {
         e.preventDefault();
-        let url = "/listings?";
+        let url = "/products?";
     
     // Append search parameter if not empty
     if (filters.search.trim() !== "") {
@@ -81,11 +80,6 @@ const Listings = () => {
     // Append karats parameter if not empty
     if (filters.karats.trim() !== "") {
         url += "karats=" + encodeURIComponent(filters.karats.trim()) + "&";
-    }
-    
-    // Append stones parameter if not empty
-    if (filters.stones.trim() !== "") {
-        url += "stones=" + encodeURIComponent(filters.stones.trim()) + "&";
     }
     
     // Append weight parameter if not empty
@@ -365,21 +359,20 @@ const Listings = () => {
             category: '',
             weight: ''
         });
-        let url = "/listings";
+        let url = "/products";
         window.location.href = url;
-    
     };
 
     const loadMore = () => {
         
-        if(listings.length - limit.length > 8)
+        if(products.length - limit.length > 8)
         {
         const newlimit = limit.length + 8;
-        setLimit(listings.splice(0, newlimit));
+        setLimit(products.splice(0, newlimit));
         }
         else
         {
-            setLimit(listings);
+            setLimit(products);
         }
         
     };
@@ -392,7 +385,7 @@ const Listings = () => {
 
                 <div className='md:flex md:flex-wrap md:justify-between min-[150px]:text-center mt-10'>
 
-                    <div className=' text-stone-200 min-[150px]:text-4xl min-[150px]:text-center md:text-5xl alluse md:pl-8 mb-5 md:mr-16'>User <span className="text-yellow-600">Listings</span></div>
+                    <div className=' text-stone-200 min-[150px]:text-4xl min-[150px]:text-center md:text-5xl alluse md:pl-8 mb-5 md:mr-16'>Jeweler <span className='text-yellow-600'>Products</span></div>
 
                     <div className='justify-center text-center min-[150px]:w-80  md:w-1/3 md:mt-3 mb-5 min-[150px]:mx-auto md:mx-0'>
                         <input className="m-auto min-[150px]:w-80 w-full h-10 block  rounded-l border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-stone-200 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-yellow-600 focus:text-stone-200 focus:shadow-[inset_0_0_0_1px_rgb(202,138,4)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
@@ -411,7 +404,7 @@ const Listings = () => {
                             showSearch
                             optionFilterProp="children"
                             filterOption={true}
-                            style={{ width: 200, height: 40, marginBottom: 20 }}
+                            style={{ width: 220, height: 40, marginBottom: 20 }}
                             onChange={(value) => setFilters({ ...filters, location: value })}
                             placeholder="Select City"
                             value={filters.location || undefined}
@@ -423,7 +416,7 @@ const Listings = () => {
                             ))}
                         </Select>
 
-                        <Select value={filters.category || undefined} className="mr-3" style={{ width: 200, height: 40, marginBottom: 20 }} onChange={(value) => setFilters({ ...filters, category: value })} placeholder="Select Category"
+                        <Select value={filters.category || undefined} className="mr-3" style={{ width: 220, height: 40, marginBottom: 20 }} onChange={(value) => setFilters({ ...filters, category: value })} placeholder="Select Category"
                             options={[
                                 {
                                     value: 'Rings',
@@ -467,7 +460,7 @@ const Listings = () => {
                                 }
                             ]} />
 
-                        <Select value={filters.karats || undefined} className='mr-3' style={{ width: 200, height: 40, marginBottom: 20 }} onChange={(value) => setFilters({ ...filters, karats: value })} placeholder="Select Karats"
+                        <Select value={filters.karats || undefined} className='mr-3' style={{ width: 220, height: 40, marginBottom: 20 }} onChange={(value) => setFilters({ ...filters, karats: value })} placeholder="Select Karats"
                             options={[
                                 {
                                     value: '10k',
@@ -495,31 +488,8 @@ const Listings = () => {
                                 }
                             ]} />
 
-                        <Select value={filters.stones || undefined} className='mr-3' style={{ width: 200, height: 40, marginBottom: 20 }} onChange={(value) => setFilters({ ...filters, stones: value })} placeholder="Select Stones Type"
-                            options={[
-                                {
-                                    value: 'None',
-                                    label: 'None',
-                                },
-                                {
-                                    value: 'Inclusive - Artificial',
-                                    label: 'Inclusive - Artificial',
-                                },
-                                {
-                                    value: 'Inclusive - Diamonds',
-                                    label: 'Inclusive - Diamonds',
-                                },
-                                {
-                                    value: 'Exclusive - Artificial',
-                                    label: 'Exclusive - Artificial',
-                                },
-                                {
-                                    value: 'Exclusive - Diamonds',
-                                    label: 'Exclusive - Diamonds',
-                                },
-                            ]} />
 
-                        <Select value={filters.weight || undefined} className='mr-3' style={{ width: 200, height: 40, marginBottom: 20 }} onChange={(value) => setFilters({ ...filters, weight: value })} placeholder="Select Weight Range"
+                        <Select value={filters.weight || undefined} className='mr-3' style={{ width: 220, height: 40, marginBottom: 20 }} onChange={(value) => setFilters({ ...filters, weight: value })} placeholder="Select Weight Range"
                            >
                             {weightOptions.map((option) => (
                                 <Option key={option.value} value={option.value}>
@@ -542,8 +512,8 @@ const Listings = () => {
 
                 <div className='flex flex-wrap justify-between min-[150px]:pt-4 md:pt-10 pl-5 pr-5 pb-0 space-y-3'>
 
-                    <div className='text-stone-200 md:text-2xl allusebody min-[150px]:text-lg'>Search for "{filters.search !== '' ? `${filters.search} |` : ''} {filters.location  !== '' ? `${filters.location} |` : ''} {filters.category !== '' ? `${filters.category} |` : ''} {filters.karats !== '' ? `${filters.karats} |` : ''} {filters.stones !== '' ? `${filters.stones} |` : ''} {filters.weight !== '' ? `${filters.weight} |` : ''}  {filters.search === '' && filters.location === '' && filters.category === '' && filters.karats === '' && filters.stones === '' && filters.weight === '' ? 'All' : ''}"</div>
-                    {listings.length>0 && isFetched ? <div className='allusebody text-lg font-bold text-stone-300'>{listings.length} Results Found</div> : <div></div>}
+                    <div className='text-stone-200 md:text-2xl allusebody min-[150px]:text-lg'>Search for "{filters.search !== '' ? `${filters.search} |` : ''} {filters.location  !== '' ? `${filters.location} |` : ''} {filters.category !== '' ? `${filters.category} |` : ''} {filters.karats !== '' ? `${filters.karats} |` : ''} {filters.weight !== '' ? `${filters.weight} |` : ''}  {filters.search === '' && filters.location === '' && filters.category === '' && filters.karats === '' && filters.weight === '' ? 'All' : ''}"</div>
+                    {products.length>0 && isFetched ? <div className='allusebody text-lg font-bold text-stone-300'>{products.length} Results Found</div> : <div></div>}
 
                 </div>
 
@@ -555,20 +525,20 @@ const Listings = () => {
                         {!isFetched ? (
                             <FileAnimationsmall />
                         ) : (
-                            listings && listings.length === 0 && isFetched ? (
-                                <p className='w-full allusebody min-[150px]:text-2xl md:text-4xl text-center text-stone-200 min-[150px]:mt-4  md:mt-10'>No Listings Found !!</p>
+                            products && products.length === 0 && isFetched ? (
+                                <p className='w-full allusebody min-[150px]:text-2xl md:text-4xl text-center text-stone-200 min-[150px]:mt-4  md:mt-10'>No Products Found !!</p>
                             ) : (
                                 <div className="">
-                                    {<ContainerAll listing={limit} />}
+                                    {<ContainerProductAll product={limit} />}
                                 </div>
                             )
                         )}
                     </div>
-                    {listings.length > limit.length ? <div onClick={loadMore} className='allusebody text-stone-200 hover:text-yellow-600 duration-300 hover:scale-110 text-center cursor-pointer -mt-5'>Load More</div> : <div></div>}
+                    {products.length > limit.length ? <div onClick={loadMore} className='allusebody text-stone-200 hover:text-yellow-600 duration-300 hover:scale-110 text-center cursor-pointer -mt-5'>Load More</div> : <div></div>}
                 </div>
            
         </div>
     );
 };
 
-export default Listings;
+export default Products;
