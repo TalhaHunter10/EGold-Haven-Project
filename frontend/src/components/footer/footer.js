@@ -39,7 +39,7 @@ const Footer = () => {
                             <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z" />
                         </svg>
                     </a>
-                    <a className="mr-6 text-stone-200 dark:text-stone-200 iconactive" href='#'>
+                    <a className="mr-6 text-stone-200 dark:text-stone-200 iconactive" href='mailto:egoldhaven@gmail.com'>
                         <svg xmlns="http://www.w3.org/2000/svg"
                             className="h-8 w-8"
                             fill="currentColor"
@@ -57,7 +57,7 @@ const Footer = () => {
                     {/* <!-- TW Elements section --> */}
                     <div className="">
                         <div className="logo-container mb-4">
-                            <img src='/images/EGHLogomini.png' alt='logo' className='footerlogo'></img>
+                            <Link to='/home'><img src='/images/EGHLogomini.png' alt='logo' className='footerlogo'></img></Link>
                         </div>
                         <p className='text-justify ftext'>
                             Explore, buy, and sell with confidence at EGold Haven – Your ultimate marketplace for authentic gold jewelry.
@@ -72,44 +72,44 @@ const Footer = () => {
                             All Categories
                         </h6>
                         <p className="mb-2 ftext">
-                            <a className="text-stone-200 dark:text-neutral-200 active"
-                                href='#'>Rings</a>
+                            <Link to="/listings?category=Rings" className="text-stone-200 dark:text-neutral-200 active"
+                                >Rings</Link>
                         </p>
                         <p className="mb-2 ftext">
-                            <a className="text-stone-200 dark:text-neutral-200 active"
-                                href='#'>Earrings</a>
+                            <Link to="/listings?category=Earrings" className="text-stone-200 dark:text-neutral-200 active"
+                                >Earrings</Link>
                         </p>
                         <p className="mb-2 ftext">
-                            <a className="text-stone-200 dark:text-neutral-200 active"
-                                href='#'>Necklaces</a>
+                            <Link to="/listings?category=Necklaces" className="text-stone-200 dark:text-neutral-200 active"
+                                >Necklaces</Link>
                         </p>
                         <p className='mb-2 ftext'>
-                            <a className="text-stone-200 dark:text-neutral-200 active"
-                                href='#'>Chains</a>
+                            <Link to="/listings?category=Chains" className="text-stone-200 dark:text-neutral-200 active"
+                               >Chains</Link>
                         </p>
                         <p className='mb-2 ftext'>
-                            <a className="text-stone-200 dark:text-neutral-200 active"
-                                href='#'>Bracelets</a>
+                            <Link to="/listings?category=Bracelets" className="text-stone-200 dark:text-neutral-200 active"
+                               >Bracelets</Link>
                         </p>
                         <p className='mb-2 ftext'>
-                            <a className="text-stone-200 dark:text-neutral-200 active"
-                                href='#'>Bangles</a>
+                            <Link to="/listings?category=Bangles" className="text-stone-200 dark:text-neutral-200 active"
+                               >Bangles</Link>
                         </p>
                         <p className='mb-2 ftext'>
-                            <a className="text-stone-200 dark:text-neutral-200 active"
-                                href='#'>Anklets</a>
+                            <Link to="/listings?category=Anklets" className="text-stone-200 dark:text-neutral-200 active"
+                               >Anklets</Link>
                         </p>
                         <p className='mb-2 ftext'>
-                            <a className="text-stone-200 dark:text-neutral-200 active"
-                                href='#'>Pendants</a>
+                            <Link to="/listings?category=Pendants" className="text-stone-200 dark:text-neutral-200 active"
+                                >Pendants</Link>
                         </p>
                         <p className='mb-2 ftext'>
-                            <a className="text-stone-200 dark:text-neutral-200 active"
-                                href='#'>Bridal Sets</a>
+                            <Link to="/listings?category=Bridal Sets" className="text-stone-200 dark:text-neutral-200 active"
+                               >Bridal Sets</Link>
                         </p>
                         <p className='mb-2 ftext'>
-                            <a className="text-stone-200 dark:text-neutral-200 active"
-                                href='#'>Coins & Bars</a>
+                            <Link to="/listings?category=Others" className="text-stone-200 dark:text-neutral-200 active"
+                                >Others</Link>
                         </p>
                     </div>
                     {/* <!-- Useful links section --> */}
@@ -135,11 +135,11 @@ const Footer = () => {
                         </p>
                         <p className="mb-5 ftext">
                             <Link className="text-stone-200 dark:text-neutral-200 active"
-                                to='/forum'>Forum</Link>
+                                to='/jewelers'>Jewelers</Link>
                         </p>
                         <p className="mb-5 ftext">
                             <Link className="text-stone-200 dark:text-neutral-200 active"
-                                to='/faq'>FAQ's</Link>
+                                to='/forum'>Forum</Link>
                         </p>
                         <p className='mb-5 ftext'>
                             <Link className="text-stone-200 dark:text-neutral-200 active"

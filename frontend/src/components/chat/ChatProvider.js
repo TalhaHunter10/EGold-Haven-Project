@@ -20,7 +20,7 @@ const ChatProvider = ({ children }) => {
         try {
             const status = await getloginStatus();
             if (!status.verified) {
-                navigate('/login');
+               // navigate('/login');
             }
             else if (status.verified) {
                 setUser(status.user);
