@@ -49,6 +49,9 @@ app.use('/api/chat' , chatRoutes);
 const messageRoutes = require("./routes/messageRoutes");
 app.use('/api/message' , messageRoutes);
 
+const forumRoutes = require("./routes/forumRoutes");
+app.use('/api/forum' , forumRoutes);
+
 
 //ports
 const port = process.env.PORT || 8080;
