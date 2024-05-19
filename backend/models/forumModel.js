@@ -1,24 +1,34 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const forumPostSchema = new Schema({
+const forumPostSchema = new Schema(
+  {
     title: { type: String, required: true },
     content: { type: String, required: true },
-    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
     userstatus: { type: String, required: true },
-    replies: [{ type: Schema.Types.ObjectId, ref: 'ForumReply' }]
-});
+    replies: [{ type: Schema.Types.ObjectId, ref: "ForumReply" }],
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const ForumPost = mongoose.model('ForumPost', forumPostSchema);
+const ForumPost = mongoose.model("ForumPost", forumPostSchema);
 
 // ForumReply Schema
-const forumReplySchema = new Schema({
+const forumReplySchema = new Schema(
+  {
     content: { type: String, required: true },
-    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
     userstatus: { type: String, required: true },
-    post: { type: Schema.Types.ObjectId, ref: 'ForumPost', required: true }
-});
+    post: { type: Schema.Types.ObjectId, ref: "ForumPost", required: true },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const ForumReply = mongoose.model('ForumReply', forumReplySchema);
+const ForumReply = mongoose.model("ForumReply", forumReplySchema);
 
 module.exports = { ForumPost, ForumReply };
