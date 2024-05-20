@@ -7,7 +7,7 @@ const notificationSchema = new Schema(
     status: { type: String, required: true },
     receivertype: { type: String, required: true },
     notificationtype: { type: String, required: true },
-    receiver: [{ type: Schema.Types.ObjectId, required: true }],
+    receiver: { type: Schema.Types.ObjectId, required: true },
   },
   {
     timestamps: true,

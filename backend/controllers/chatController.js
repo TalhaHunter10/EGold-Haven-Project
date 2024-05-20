@@ -1,10 +1,9 @@
 const asyncHandler = require("express-async-handler");
 const Chat = require("../models/chatModel");
 const User = require("../models/userModel");
+const sendEmail = require("../utils/sendEmail");
+const Notification = require("../models/notificationModel");
 
-//@description     Create or fetch One to One Chat
-//@route           POST /api/chat/
-//@access          Protected
 const accessChat = asyncHandler(async (req, res) => {
   const { userId, chattype } = req.body;
 
@@ -47,6 +46,29 @@ const accessChat = asyncHandler(async (req, res) => {
 
       await Notification.create(notificationData);
 
+      const user = await User.findById(userId);
+
+      const message = `
+      <h2>Hello ${user.name}</h2>
+      <p>You have a new chat message.</p>
+      <p>Access chat by Logging into your EGold Haven Account now !!</p>
+
+      <p>Regards...</p>
+      <p>Egold Haven Team</p>
+    `;
+
+      const subject = "New Chat Message on your Egold Haven Account";
+      const send_to = user.email;
+      const sent_from = process.env.EMAIL_USER;
+
+      try {
+        await sendEmail(subject, message, send_to, sent_from);
+        res.status(200).json({ success: true, message: "New Chat Email Sent" });
+      } catch (error) {
+        res.status(500);
+        throw new Error("Email could not be Sent. Please try again !");
+      }
+
       res.status(200).json(FullChat);
     } catch (error) {
       res.status(400);
@@ -55,9 +77,6 @@ const accessChat = asyncHandler(async (req, res) => {
   }
 });
 
-//@description     Fetch all chats for a user
-//@route           GET /api/chat/
-//@access          Protected
 const fetchChats = asyncHandler(async (req, res) => {
   try {
     Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })

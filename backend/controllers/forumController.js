@@ -1,4 +1,5 @@
 const Forum = require("../models/forumModel");
+const Notification = require("../models/notificationModel");
 const User = require("../models/userModel");
 
 const createPost = async (req, res) => {
@@ -17,6 +18,17 @@ const createPost = async (req, res) => {
       userstatus: user.status,
     });
     await post.save();
+
+    const notificationData = {
+      notification: "Your post was successfully posted on the Forum!",
+      status: "unread",
+      receivertype: "user",
+      notificationtype: "null",
+      receiver: [req.user._id],
+    };
+
+    await Notification.create(notificationData);
+
     res.status(200).json({
       post,
     });
@@ -144,6 +156,16 @@ const createReply = async (req, res) => {
       userstatus: user.status,
       post: postId,
     });
+
+    const notificationData = {
+      notification: "You have a new reply on your forum post!",
+      status: "unread",
+      receivertype: "user",
+      notificationtype: "forum",
+      receiver: [post.user],
+    };
+
+    await Notification.create(notificationData);
 
     await reply1.save();
     post.replies.push(reply._id);
