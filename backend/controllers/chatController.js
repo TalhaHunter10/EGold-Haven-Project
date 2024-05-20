@@ -6,7 +6,7 @@ const User = require("../models/userModel");
 //@route           POST /api/chat/
 //@access          Protected
 const accessChat = asyncHandler(async (req, res) => {
-  const { userId , chattype } = req.body;
+  const { userId, chattype } = req.body;
 
   if (!userId) {
     console.log("UserId param not sent with request");
@@ -18,10 +18,8 @@ const accessChat = asyncHandler(async (req, res) => {
       { users: { $elemMatch: { $eq: req.user._id } } },
       { users: { $elemMatch: { $eq: userId } } },
     ],
-    chattype: chattype
-  })
-    .populate("users", "-password")
-    
+    chattype: chattype,
+  }).populate("users", "-password");
 
   if (isChat.length > 0) {
     res.send(isChat[0]);
@@ -29,7 +27,7 @@ const accessChat = asyncHandler(async (req, res) => {
     var chatData = {
       chatName: "One to One Chat",
       users: [req.user._id, userId],
-    chattype: chattype
+      chattype: chattype,
     };
 
     try {
@@ -38,6 +36,17 @@ const accessChat = asyncHandler(async (req, res) => {
         "users",
         "-password"
       );
+
+      const notificationData = {
+        notification: "You have a new chat!",
+        status: "unread",
+        receivertype: chattype,
+        notificationtype: "chat",
+        receiver: [userId],
+      };
+
+      await Notification.create(notificationData);
+
       res.status(200).json(FullChat);
     } catch (error) {
       res.status(400);
