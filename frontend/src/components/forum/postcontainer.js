@@ -30,7 +30,7 @@ const PostContainer = ({ posts }) => {
       {posts.map((post) => (
         <div
           key={post.id}
-          className="w-full bg-gray-600 min-[150px]:p-4 sm:p-6 rounded-lg bg-stone-950 border-2 border-yellow-600 hover:scale-105 cursor-pointer duration-500 ease-in-out transition-all"
+          className="w-full  min-[150px]:p-4 sm:p-6 rounded-lg bg-stone-950 border-2 border-yellow-600 hover:scale-105 cursor-pointer duration-500 ease-in-out transition-all"
         >
           <Link to={`/post/${post._id}`} className="w-full">
             <div className="">

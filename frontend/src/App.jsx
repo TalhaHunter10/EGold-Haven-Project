@@ -54,6 +54,7 @@ import Listings from "./components/pages/listings";
 import Products from "./components/pages/products";
 import Jewelers from "./components/pages/jewelers";
 import PostDetails from "./components/forum/postdetails";
+import UserNotifications from "./components/notifications/usernotifications";
 
 axios.defaults.withCredentials = true;
 
@@ -100,6 +101,10 @@ function App() {
               <Routes>
                 <Route path="/" element={<Landing />} />
                 <Route path="/home" element={<Landing />} />
+                <Route
+                  path="/user-notifications"
+                  element={<UserNotifications />}
+                />
                 <Route path="/login" element={<Login />} />
                 <Route path="/terms" element={<TermsConditions />} />
                 <Route path="/privacypolicy" element={<PrivacyPolicy />} />
