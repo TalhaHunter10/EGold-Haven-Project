@@ -5,6 +5,7 @@ const Product = require("../models/productModel");
 const CommissionRequest = require("../models/CommissionRequestModel");
 const fetch = require("node-fetch");
 const Notification = require("../models/notificationModel");
+const Chat = require("../models/chatModel");
 
 const registerJeweler = asyncHandler(async (req, res) => {
   const { cnicno, address, phoneno, storename, commissionrate, shopno, city } =
@@ -371,6 +372,24 @@ const getJewelers = asyncHandler(async (req, res) => {
   res.status(200).json(jewelersWithProducts);
 });
 
+const getJewelerChats = asyncHandler(async (req, res) => {
+  const jeweler = await Jeweler.findOne({ user: req.user.id });
+
+  if (!jeweler) {
+    res.status(404);
+    throw new Error("Jeweler not found");
+  }
+
+  const chats = await Chat.find({
+    users: jeweler.user,
+    chattype: "jeweler",
+    "seen.receiver": jeweler.user,
+    "seen.status": false,
+  });
+
+  res.status(200).json(chats);
+});
+
 module.exports = {
   registerJeweler,
   getJewelerDetails,
@@ -381,4 +400,5 @@ module.exports = {
   commissionChangeRequest,
   commissionRequestStatus,
   getJewelers,
+  getJewelerChats,
 };

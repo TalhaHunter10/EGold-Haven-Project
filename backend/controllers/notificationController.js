@@ -28,4 +28,20 @@ const readNotification = async (req, res) => {
   }
 };
 
-module.exports = { getUserNotifications, readNotification };
+const getJewelerNotifications = async (req, res) => {
+  try {
+    const notifications = await Notification.find({
+      receiver: req.user._id,
+      receivertype: "jeweler",
+    }).sort({ createdAt: -1 });
+    res.json(notifications);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = {
+  getUserNotifications,
+  readNotification,
+  getJewelerNotifications,
+};

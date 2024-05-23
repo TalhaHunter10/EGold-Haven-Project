@@ -55,6 +55,7 @@ import Products from "./components/pages/products";
 import Jewelers from "./components/pages/jewelers";
 import PostDetails from "./components/forum/postdetails";
 import UserNotifications from "./components/notifications/usernotifications";
+import JewelerNotifications from "./components/notifications/jewelernotifications";
 
 axios.defaults.withCredentials = true;
 
@@ -132,6 +133,10 @@ function App() {
                 <Route path="/listings" element={<Listings />} />
 
                 <Route path="/jewelers" element={<Jewelers />} />
+                <Route
+                  path="/jeweler-notifications"
+                  element={<JewelerNotifications />}
+                />
                 <Route path="/jewelerrequest" element={<JewelerRequest />} />
                 <Route path="/storepage" element={<StorePage />} />
                 <Route

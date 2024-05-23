@@ -35,3 +35,19 @@ export const readNotification = async (notificationId) => {
     toast.error(message);
   }
 };
+
+//Get Jeweler Notifications
+export const getJewelerNotifications = async () => {
+  try {
+    const response = await axios.get(
+      `${BACKEND_URL}/api/notification/getjewelernotifications`
+    );
+    return response.data;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
