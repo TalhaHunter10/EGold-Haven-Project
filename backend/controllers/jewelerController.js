@@ -311,12 +311,23 @@ const commissionRequestStatus = asyncHandler(async (req, res) => {
 const getJewelers = asyncHandler(async (req, res) => {
   const users = await User.find({ status: "jeweler" });
 
+  const { id } = req.query;
+
   if (!users) {
     res.status(404);
     throw new Error("No jewelers found");
   }
+  let query;
 
-  let query = { user: { $in: users.map((user) => user._id) } };
+  if (id) {
+    query = {
+      user: { $in: users.map((user) => user._id), $ne: id },
+    };
+  } else {
+    query = {
+      user: { $in: users.map((user) => user._id) },
+    };
+  }
 
   const { search, location } = req.query;
 
@@ -366,6 +377,7 @@ const getJewelers = asyncHandler(async (req, res) => {
     const jewelers2 = jewelersWithProducts.filter(
       (jeweler) => jeweler.city === location
     );
+
     res.status(200).json(jewelers2);
   }
 
