@@ -63,10 +63,8 @@ const accessChat = asyncHandler(async (req, res) => {
 
       try {
         await sendEmail(subject, message, send_to, sent_from);
-        res.status(200).json({ success: true, message: "New Chat Email Sent" });
       } catch (error) {
-        res.status(500);
-        throw new Error("Email could not be Sent. Please try again !");
+        console.error("Error sending email:", error);
       }
 
       res.status(200).json(FullChat);

@@ -17,6 +17,7 @@ import {
   Routes,
   BrowserRouter,
   useNavigate,
+  useLocation,
 } from "react-router-dom";
 import Header from "./components/header/header";
 import Footer from "./components/footer/footer";
@@ -63,6 +64,12 @@ function App() {
   const dispatch = useDispatch();
   const [isAdmin, setIsAdmin] = useState("");
   const userstatus = useSelector(selectStatus);
+  const location = useLocation();
+  useEffect(() => {
+    if (location.pathname !== "/chat") {
+      localStorage.setItem("chatId", null);
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     setIsAdmin(userstatus === "admin");

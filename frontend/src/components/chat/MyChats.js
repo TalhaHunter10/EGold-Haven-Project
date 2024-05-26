@@ -59,6 +59,9 @@ const MyChats = ({ fetchAgain }) => {
         config
       );
       setChats(data);
+      const chatToBeSet = localStorage.getItem("chatId");
+      const chat = data.find((chat) => chat._id === chatToBeSet);
+      setSelectedChat(chat);
     } catch (error) {
       toast({
         title: "Error Occured!",
@@ -85,6 +88,9 @@ const MyChats = ({ fetchAgain }) => {
       );
       const jewelerChats = data.filter((chat) => chat.chattype === "jeweler");
       setChats(jewelerChats);
+      const chatToBeSet = localStorage.getItem("chatId");
+      const chat = jewelerChats.find((chat) => chat._id === chatToBeSet);
+      setSelectedChat(chat);
     } catch (error) {
       toast({
         title: "Error Occured!",
@@ -115,6 +121,9 @@ const MyChats = ({ fetchAgain }) => {
           (chat.chattype === "jeweler" && chat.users[0]._id === user._id)
       );
       setChats(userChats);
+      const chatToBeSet = localStorage.getItem("chatId");
+      const chat = userChats.find((chat) => chat._id === chatToBeSet);
+      setSelectedChat(chat);
     } catch (error) {
       toast({
         title: "Error Occured!",
@@ -138,6 +147,7 @@ const MyChats = ({ fetchAgain }) => {
         fetchUserChats();
       }
     }
+
     // eslint-disable-next-line
   }, [fetchAgain]);
 
