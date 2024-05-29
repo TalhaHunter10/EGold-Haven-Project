@@ -466,9 +466,10 @@ const ListingDetails = () => {
                   authenticity of the gold through your selected jewelers
                   registered on this platform.
                   <br />
-                  Select a number of jewelers and seller can approve one of
-                  them. The seller can then certify gold from that jeweler and
-                  you can pick it up directly from that jeweler.{" "}
+                  Select a Jeweler and a request will be send to the seller for
+                  his approval. The seller can then certify gold from that
+                  jeweler once you pay the service charges (commission) and you
+                  can pick it up directly from that jeweler.{" "}
                 </h3>
                 <button
                   className="ml-3 modal-button-cancel font-semibold border-2 border-primary-600 text-primary-600 text-base transform duration:300 hover:border-yellow-600 hover:text-yellow-600 px-5 py-1 rounded-lg"
