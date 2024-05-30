@@ -155,7 +155,6 @@ const ProductDetails = () => {
             { userId: jeweler.user, chattype: "jeweler" }
           );
           if (data) {
-            console.log(data);
             localStorage.setItem("chatId", data.data._id);
             navigate(`/chat`);
           }

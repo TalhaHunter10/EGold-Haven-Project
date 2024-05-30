@@ -58,6 +58,9 @@ app.use("/api/forum", forumRoutes);
 const notificationRoutes = require("./routes/notificationRoutes");
 app.use("/api/notification", notificationRoutes);
 
+const certificationRoutes = require("./routes/certificationRoute");
+app.use("/api/certification", certificationRoutes);
+
 //ports
 const port = process.env.PORT || 8080;
 

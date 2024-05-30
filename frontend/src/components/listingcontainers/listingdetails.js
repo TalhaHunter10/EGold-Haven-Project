@@ -29,98 +29,11 @@ import { Select } from "antd";
 import { Input } from "antd";
 import { useLocation } from "react-router-dom";
 import { Table, Button, Image } from "antd";
+import { createCertificationRequest } from "../../services/certificationservice";
 
 const { Option } = Select;
 
 const backend = process.env.REACT_APP_BACKEND_URL;
-
-const JewelerTable = ({ jewelers }) => {
-  const navigate = useNavigate();
-
-  const rowProps = (record) => {
-    return {
-      onClick: () => {},
-    };
-  };
-
-  const columns = [
-    {
-      title: "Store Image",
-      dataIndex: "coverimage",
-      key: "coverimage",
-      render: (coverimage) => (
-        <div onClick={(e) => e.stopPropagation()} className="w-20 h-20">
-          <Image
-            className="w-20 h-20"
-            src={`${backend}/${coverimage[0].filePath}`}
-          />
-        </div>
-      ),
-    },
-    {
-      title: "Store Name",
-      dataIndex: "storename",
-      key: "storename",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-    },
-    {
-      title: "Phone No",
-      dataIndex: "phoneno",
-      key: "phoneno",
-      responsive: ["md"],
-      render: (phoneno) => {
-        return phoneno.slice(0, 4) + "-" + phoneno.slice(4); // Apply transformation to phone number
-      },
-    },
-    {
-      title: "Commission Rate",
-      dataIndex: "commissionrate",
-      key: "commissionrate",
-      responsive: ["md"],
-    },
-    {
-      title: "Date Registered",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      responsive: ["md"],
-      render: (createdAt) => {
-        return new Date(createdAt).toLocaleDateString();
-      },
-    },
-    {
-      title: "Visit Store",
-      dataIndex: "_id",
-      key: "_id",
-      render: (_id) => (
-        <div
-          onClick={(e) => {
-            e.stopPropagation();
-            window.open(`/jewelerpage/${_id}`, "_blank");
-          }}
-          className="w-12 h-12 m-auto hover:scale-125 duration-300"
-        >
-          <img src="/images/view.png" />
-        </div>
-      ),
-      responsive: ["md"],
-    },
-  ];
-
-  return (
-    <Table
-      dataSource={jewelers}
-      columns={columns}
-      rowKey="_id"
-      className="bg-neutral-800 rounded-xl"
-      rowClassName="cursor-pointer bg-neutral-900 allusebody tracking-wider font-bold text-center text-base text-stone-200 hover:text-neutral-800"
-      onRow={rowProps}
-    />
-  );
-};
 
 const ListingDetails = () => {
   const options = [
@@ -372,6 +285,98 @@ const ListingDetails = () => {
     { value: "Skardu, Pakistan", label: "Skardu" },
   ];
 
+  const JewelerTable = ({ jewelers }) => {
+    const navigate = useNavigate();
+
+    const rowProps = (record) => {
+      return {
+        onClick: () => {
+          setSelectedJeweler(record);
+          setOpenCertification(false);
+          setOpenConfirmation(true);
+        },
+      };
+    };
+
+    const columns = [
+      {
+        title: "Store Image",
+        dataIndex: "coverimage",
+        key: "coverimage",
+        render: (coverimage) => (
+          <div onClick={(e) => e.stopPropagation()} className="w-20 h-20">
+            <Image
+              className="w-20 h-20"
+              src={`${backend}/${coverimage[0].filePath}`}
+            />
+          </div>
+        ),
+      },
+      {
+        title: "Store Name",
+        dataIndex: "storename",
+        key: "storename",
+      },
+      {
+        title: "Address",
+        dataIndex: "address",
+        key: "address",
+      },
+      {
+        title: "Phone No",
+        dataIndex: "phoneno",
+        key: "phoneno",
+        responsive: ["md"],
+        render: (phoneno) => {
+          return phoneno.slice(0, 4) + "-" + phoneno.slice(4); // Apply transformation to phone number
+        },
+      },
+      {
+        title: "Commission Rate",
+        dataIndex: "commissionrate",
+        key: "commissionrate",
+        responsive: ["md"],
+      },
+      {
+        title: "Date Registered",
+        dataIndex: "createdAt",
+        key: "createdAt",
+        responsive: ["md"],
+        render: (createdAt) => {
+          return new Date(createdAt).toLocaleDateString();
+        },
+      },
+      {
+        title: "Visit Store",
+        dataIndex: "_id",
+        key: "_id",
+        render: (_id) => (
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              window.open(`/jewelerpage/${_id}`, "_blank");
+            }}
+            className="w-12 h-12 m-auto hover:scale-125 duration-300"
+          >
+            <img src="/images/view.png" />
+          </div>
+        ),
+        responsive: ["md"],
+      },
+    ];
+
+    return (
+      <Table
+        dataSource={jewelers}
+        columns={columns}
+        rowKey="_id"
+        className="bg-neutral-800 rounded-xl"
+        rowClassName="cursor-pointer bg-neutral-900 allusebody tracking-wider font-bold text-center text-base text-stone-200 hover:text-neutral-800"
+        onRow={rowProps}
+      />
+    );
+  };
+
   const navigate = useNavigate();
   const userId = useSelector(selectUserID);
   const [button, setButton] = useState(false);
@@ -386,6 +391,9 @@ const ListingDetails = () => {
 
   const [open, setOpen] = useState(false);
   const [opencertification, setOpenCertification] = useState(false);
+  const [openConfirmation, setOpenConfirmation] = useState(false);
+
+  const [selectedJeweler, setSelectedJeweler] = useState({});
 
   const { setChatType } = ChatState();
 
@@ -628,6 +636,30 @@ const ListingDetails = () => {
     }
   };
 
+  const handleCertificationRequest = async () => {
+    try {
+      const status = await getloginStatus();
+      if (!status.verified) {
+        toast.error("Please login to request certification");
+        navigate("/login");
+      } else if (status.verified) {
+        try {
+          const data = await createCertificationRequest(
+            listing._id,
+            status.id,
+            seller._id,
+            selectedJeweler._id
+          );
+          if (data) {
+            navigate("/usercertifications");
+          }
+        } catch (error) {}
+      }
+    } catch (error) {
+      console.error("Error checking login status:", error);
+    }
+  };
+
   return (
     <div className="p-5">
       {isLoading && <FileAnimation />}
@@ -861,7 +893,7 @@ const ListingDetails = () => {
             ) : (
               <div
                 onClick={() => setOpenCertification(true)}
-                className="flex justify-center w-[100%] alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600"
+                className=" cursor-pointer flex justify-center w-[100%] alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600"
               >
                 <img
                   className="w-6 h-6"
@@ -958,23 +990,23 @@ const ListingDetails = () => {
       </div>
       <ModalDynamic isOpen={opencertification} className="">
         <div className="">
-          <div className="flex justify-between">
+          <div className="flex justify-between border-b-4 border-yellow-600 pb-3">
             <div>
-              <h1 className="modal-heading text-neutral-900 text-4xl alluse font-semibold p-2">
+              <h1 className="modal-heading text-neutral-900 text-5xl alluse font-semibold p-2">
                 Gold Certification Request
               </h1>
             </div>
             <div
-              className="cursor-pointer"
+              className="cursor-pointer pt-3"
               onClick={() => setOpenCertification(false)}
             >
               <XMarkIcon
-                className="text-neutral-900 h-12 w-12 cursor-pointer my-auto"
+                className="text-neutral-900 h-12 w-12 cursor-pointer my-auto hover:scale-125 duration-300"
                 strokeWidth={2}
               />
             </div>
           </div>
-          <div className="rounded-lg m-8 p-6 allusebody text-neutral-900 text-xl font-semibold border-2 border-yellow-600">
+          <div className="rounded-lg m-4 p-3 allusebody text-danger-600 text-xl font-semibold ">
             Select a Jeweler and a request will be send to the seller for his
             approval. The seller can then certify gold from that jeweler once
             you pay the service charges (commission) and you can pick it up
@@ -1077,6 +1109,51 @@ const ListingDetails = () => {
                   <JewelerTable jewelers={jewelers} />
                 </div>
               )}
+            </div>
+            <div className="text-center m-auto">
+              <button
+                className="p-3 bg-danger-600 text-neutral-900 rounded-lg hover:text-stone-200 duration-300 hover:scale-105 alluse font-semibold"
+                onClick={() => {
+                  setOpenCertification(false);
+                }}
+              >
+                Cancel Request Process
+              </button>
+            </div>
+          </div>
+        </div>
+      </ModalDynamic>
+      <ModalDynamic isOpen={openConfirmation} className="">
+        <div className="">
+          <div>
+            <h1 className="modal-heading text-neutral-900 text-4xl text-center alluse font-semibold p-2">
+              Confirm Certification Request
+            </h1>
+            <p className="modal-heading text-neutral-900 text-2xl allusebody p-2">
+              Are you sure you want to send a certification request through{" "}
+              <span className="font-semibold text-yellow-600">
+                {selectedJeweler.storename}
+              </span>
+              ?
+            </p>
+
+            <div className="flex justify-center space-x-4 mt-6">
+              <button
+                className="p-3 modal-button-cancel font-semibold border-2 border-danger-600 text-danger-600 text-lg alluse transform duration:300 hover:border-yellow-600 hover:text-yellow-600 px-5 py-1 rounded-lg"
+                onClick={() => setOpenConfirmation(false)}
+              >
+                Cancel
+              </button>
+
+              <button
+                className="p-3 modal-button-confirm font-semibold border-2 border-primary-600 text-primary-600 text-lg transform  alluse duration:300 hover:border-yellow-600 hover:text-yellow-600 px-5 py-1 rounded-lg"
+                onClick={() => {
+                  handleCertificationRequest();
+                  setOpenConfirmation(false);
+                }}
+              >
+                Confirm
+              </button>
             </div>
           </div>
         </div>

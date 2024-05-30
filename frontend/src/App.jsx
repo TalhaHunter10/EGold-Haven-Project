@@ -57,6 +57,8 @@ import Jewelers from "./components/pages/jewelers";
 import PostDetails from "./components/forum/postdetails";
 import UserNotifications from "./components/notifications/usernotifications";
 import JewelerNotifications from "./components/notifications/jewelernotifications";
+import UserCertifications from "./components/certificationrequests/usercertifications";
+import Jewelercertifications from "./components/certificationrequests/jewelercertifications";
 
 axios.defaults.withCredentials = true;
 
@@ -136,6 +138,15 @@ function App() {
                 <Route
                   path="/mylistingdetails/:id"
                   element={<MyListingDetails />}
+                />
+
+                <Route
+                  path="/usercertifications"
+                  element={<UserCertifications />}
+                />
+                <Route
+                  path="/jewelercertifications"
+                  element={<Jewelercertifications />}
                 />
                 <Route path="/listings" element={<Listings />} />
 

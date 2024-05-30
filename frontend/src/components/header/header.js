@@ -400,6 +400,16 @@ const Header = () => {
             <span className="headerbodytext"> Chat </span>
           </MenuItem>
         </span>
+        <Link to="/usercertifications">
+          <MenuItem onClick={handleClose}>
+            <img
+              className="h-5 w-5 mr-3 ml-1"
+              src="/images/requestyellow.png"
+              alt="user"
+            />
+            <span className="headerbodytext">Certification Requests </span>
+          </MenuItem>
+        </Link>
         {userstatus === "jeweler" ? (
           <Link to="/storepage">
             <MenuItem onClick={handleClose}>

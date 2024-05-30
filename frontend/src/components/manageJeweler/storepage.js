@@ -21,6 +21,7 @@ import ModalDynamic from "../modaldynamic";
 import { Input, InputNumber } from "antd";
 import { toast } from "react-toastify";
 import { getJewelerNotifications } from "../../services/notificationservice";
+import { getRequestCount } from "../../services/certificationservice";
 const { TextArea } = Input;
 
 const StorePage = () => {
@@ -102,6 +103,10 @@ const StorePage = () => {
       const chat = await getJewelerChats();
       console.log(chat);
       setChatno(chat.length);
+
+      const certification = await getRequestCount();
+
+      setCertificationno(certification.requestCount);
     } catch (error) {
       console.error("Error getting stats:", error);
     }
@@ -454,28 +459,30 @@ const StorePage = () => {
                 <p className="text-right m-1">{chatno}</p>
               </div>
 
-              <div className="custom-shadow cursor-pointer bg-zinc-800 rounded-lg mt-5 m-3 p-3 hover:bg-yellow-600 hover:scale-105 duration-300">
-                <div className="flex">
-                  <img
-                    className="w-6 h-7"
-                    src="/images/request.png"
-                    alt="certification"
-                  />
-                  <p className="text-left pl-1"> Certification Requests </p>
+              <Link to={"/jewelercertifications"}>
+                <div className="custom-shadow cursor-pointer bg-zinc-800 rounded-lg mt-5 m-3 p-3 hover:bg-yellow-600 hover:scale-105 duration-300">
+                  <div className="flex">
+                    <img
+                      className="w-6 h-7"
+                      src="/images/request.png"
+                      alt="certification"
+                    />
+                    <p className="text-left pl-1"> Certification Requests </p>
+                  </div>
+                  <p className="text-right pt-2">
+                    {certificationno > 0 ? (
+                      <span className="text-stone-200 text-xs border-b">
+                        Pending Requests
+                      </span>
+                    ) : (
+                      <span className="text-stone-200 text-xs border-b allusebody">
+                        No Pending Requests
+                      </span>
+                    )}
+                  </p>
+                  <p className="text-right m-1">{certificationno}</p>
                 </div>
-                <p className="text-right pt-2">
-                  {certificationno > 0 ? (
-                    <span className="text-stone-200 text-xs border-b">
-                      Pending Requests
-                    </span>
-                  ) : (
-                    <span className="text-stone-200 text-xs border-b allusebody">
-                      No Pending Requests
-                    </span>
-                  )}
-                </p>
-                <p className="text-right m-1">{certificationno}</p>
-              </div>
+              </Link>
             </div>
           </div>
 
