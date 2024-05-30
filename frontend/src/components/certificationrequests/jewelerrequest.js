@@ -8,6 +8,10 @@ import {
   receiveSellerJewelry,
   rejectJewelerRequest,
 } from "../../services/certificationservice";
+import { useState } from "react";
+import ModalDynamic from "../modaldynamic";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import TextArea from "antd/es/input/TextArea";
 
 const JewelerRequest = ({ Requests }) => {
   const navigate = useNavigate();
@@ -101,7 +105,7 @@ const JewelerRequest = ({ Requests }) => {
     setOpenModal(true);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const validationErrors = {};
@@ -224,9 +228,9 @@ const JewelerRequest = ({ Requests }) => {
                 <p
                   onClick={() => {
                     {
-                      Request.certificationStatus === "pending"
+                      Request.jewelryReceivedStatus === "pending"
                         ? toast.error(
-                            "Certification report is not yet submitted by jeweler. Please wait for the report."
+                            "You can not add report until seller jewelery recieved is marked !"
                           )
                         : handleViewReport();
                     }
