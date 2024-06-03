@@ -26,6 +26,9 @@ const JewelerRequest = ({ Requests }) => {
       } else {
         try {
           const cr = await receiveBuyerCommission(id);
+          if (cr) {
+            window.location.reload();
+          }
         } catch (error) {
           toast.error(error.message);
         }
@@ -45,6 +48,9 @@ const JewelerRequest = ({ Requests }) => {
       } else {
         try {
           const cr = await receiveSellerJewelry(id);
+          if (cr) {
+            window.location.reload();
+          }
         } catch (error) {
           toast.error(error.message);
         }
@@ -64,6 +70,10 @@ const JewelerRequest = ({ Requests }) => {
       } else {
         try {
           const accept = await acceptJewelerRequest(id);
+
+          if (accept) {
+            window.location.reload();
+          }
         } catch (error) {
           toast.error(error.message);
         }
@@ -83,6 +93,9 @@ const JewelerRequest = ({ Requests }) => {
       } else {
         try {
           const reject = await rejectJewelerRequest(id);
+          if (reject) {
+            window.location.reload();
+          }
         } catch (error) {
           toast.error(error.message);
         }
@@ -105,9 +118,7 @@ const JewelerRequest = ({ Requests }) => {
     setOpenModal(true);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleSubmit = async (RequestId) => {
     const validationErrors = {};
 
     if (report === "") {
@@ -118,8 +129,11 @@ const JewelerRequest = ({ Requests }) => {
 
     if (Object.keys(validationErrors).length === 0) {
       try {
-        const data = await addReport(report, Request._id);
+        const data = await addReport(report, RequestId);
         setOpenModal(false);
+        if (data) {
+          window.location.reload();
+        }
       } catch (error) {
         console.error("Error submitting request:", error);
       }
@@ -170,7 +184,7 @@ const JewelerRequest = ({ Requests }) => {
 
                 <div className="text-center">
                   <div
-                    onClick={handleSubmit}
+                    onClick={() => handleSubmit(Request._id)}
                     className="w-auto cursor-pointer mt-4 text-center px-10 alluse inline-block rounded bg-yellow-600 pb-2.5 pt-3 text-base font-semibold leading-normal text-white hover:text-white  transition duration-150 ease-in-out hover:bg-yellow-600 hover:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:bg-yellow-600 focus:shadow-[0_8px_9px_-4px_rgba(202,138,4,0.3),0_4px_18px_0_rgba(202,138,4,0.2)] focus:outline-none focus:ring-0 active:bg-yellow-600"
                   >
                     <p className="my-auto pl-3">Submit Request</p>
@@ -241,7 +255,7 @@ const JewelerRequest = ({ Requests }) => {
                 </p>
               </div>
 
-              <div className="md:w-1/3 text-center text-stone-200 md:border-r-2 border-gray-700">
+              <div className="md:w-1/3 text-center text-stone-200">
                 <h1 className="alluse text-4xl text-yellow-600 pb-3">Seller</h1>
                 <h1 className="alluse text-3xl">
                   {Request.sellerId.name

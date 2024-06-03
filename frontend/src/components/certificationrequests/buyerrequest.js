@@ -96,6 +96,9 @@ const BuyerRequest = ({ Requests }) => {
       } else {
         try {
           const accept = await acceptRequest(RequestId);
+          if (accept) {
+            window.location.reload();
+          }
         } catch (error) {
           toast.error(error.message);
         }
@@ -115,6 +118,9 @@ const BuyerRequest = ({ Requests }) => {
       } else {
         try {
           const reject = await rejectRequest(RequestId);
+          if (reject) {
+            window.location.reload();
+          }
         } catch (error) {
           toast.error(error.message);
         }
@@ -132,7 +138,7 @@ const BuyerRequest = ({ Requests }) => {
             <div>
               <div className="flex justify-between border-b-4 border-yellow-600 pb-3">
                 <div>
-                  <h1 className="modal-heading text-neutral-900 text-5xl alluse font-semibold p-2">
+                  <h1 className="modal-heading text-neutral-900 text-4xl alluse font-semibold p-4">
                     Gold Certification Request Report
                   </h1>
                 </div>
@@ -147,7 +153,7 @@ const BuyerRequest = ({ Requests }) => {
                 </div>
               </div>
               <div>
-                <h1 className="text-3xl alluse text-neutral-900 font-semibold p-2">
+                <h1 className="text-3xl alluse text-neutral-900 font-semibold p-8">
                   {Request.certificationReport}
                 </h1>
                 <p className="text-right text-xl font-semibold allusebody">
@@ -279,7 +285,7 @@ const BuyerRequest = ({ Requests }) => {
                   Status : {Request.jewelerStatus}
                 </div>
               ) : Request.jewelerStatus === "accepted" ? (
-                <div className="text-xl text-center m-6 border-2 border-yellow-600 rounded-lg p-2">
+                <div className="text-xl text-center m-6 border-2 border-green-600 rounded-lg p-2">
                   {" "}
                   Status : {Request.jewelerStatus}
                 </div>
@@ -328,7 +334,7 @@ const BuyerRequest = ({ Requests }) => {
 
           {Request.requestStatus === "inprogress" &&
           Request.buyerPaymentStatus === "paid" &&
-          Request.jewelryReceivedStatus === "recieved" &&
+          Request.jewelryReceivedStatus === "received" &&
           Request.certificationStatus === "pending" ? (
             <div className="text-xl text-center m-6 text-danger-600 font-semibold rounded-lg p-2">
               Waiting for Jeweler to certify the jewelry. Please wait for the

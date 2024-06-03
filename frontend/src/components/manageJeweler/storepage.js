@@ -675,7 +675,7 @@ const StorePage = () => {
         transformOrigin={{ vertical: "top", horizontal: "right" }}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       >
-        <Link to="">
+        <Link to="/jeweler-notifications">
           <MenuItem onClick={handleClose}>
             <img
               className="h-6 w-8 pr-2"
@@ -691,7 +691,7 @@ const StorePage = () => {
             <span className="headerbodytext">Chats</span>
           </MenuItem>
         </span>
-        <Link to="">
+        <Link to="/jewelercertifications">
           <MenuItem onClick={handleClose}>
             <img
               className="h-6 w-8 pr-2"

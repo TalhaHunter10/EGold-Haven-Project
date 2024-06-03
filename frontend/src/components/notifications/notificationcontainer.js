@@ -58,6 +58,12 @@ const NotificationContainer = ({ notifications }) => {
           window.location.href = `/forum`;
         } else if (notification.notificationtype === "jewelerstore") {
           window.location.href = `/storepage`;
+        } else if (notification.notificationtype === "certification") {
+          if (notification.receivertype === "user") {
+            window.location.href = `/usercertifications`;
+          } else if (notification.receivertype === "jeweler") {
+            window.location.href = `/jewelercertifications`;
+          }
         } else {
           console.log("Notification type not recognized");
         }
@@ -100,6 +106,10 @@ const NotificationContainer = ({ notifications }) => {
                 ) : notification.notificationtype === "jewelerstore" ? (
                   <p className="allusebody text-xl pt-2 pb-5 text-justify text-yellow-600">
                     Click to view your store
+                  </p>
+                ) : notification.notificationtype === "certification" ? (
+                  <p className="allusebody text-xl pt-2 pb-5 text-justify text-yellow-600">
+                    Click to view certification requests
                   </p>
                 ) : (
                   <></>

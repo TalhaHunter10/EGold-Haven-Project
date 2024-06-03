@@ -40,6 +40,9 @@ const Jewelercertifications = () => {
       <div className="text-stone-200 min-[150px]:text-4xl md:text-5xl min-[150px]:text-center md:text-left md:pl-8 alluse mb-8 ">
         Jeweler Certification Requests
       </div>
+      <h1 className="text-stone-300 allusebody sm:text-right text-xl sm:pr-8">
+        Requests Found {jewelerRequests.length}
+      </h1>
       <div>
         {isloading ? (
           <div>

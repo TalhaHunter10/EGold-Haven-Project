@@ -116,6 +116,18 @@ const acceptRequest = async (req, res) => {
 
     await Notification.create(notificationData);
 
+    const jeweler = await Jeweler.findOne({ _id: request.jewelerId });
+
+    const notificationData2 = {
+      notification: "You have a new certification request!",
+      status: "unread",
+      receivertype: "jeweler",
+      notificationtype: "certification",
+      receiver: [jeweler.user],
+    };
+
+    await Notification.create(notificationData2);
+
     res.status(200).json({
       message: "Request accepted successfully",
     });
@@ -206,6 +218,7 @@ const getJewelerRequests = async (req, res) => {
 
     const jewelerRequests = await CertificationRequest.find({
       jewelerId: jeweler._id,
+      sellerStatus: "accepted",
     })
       .populate("listingId")
       .populate("sellerId")
@@ -396,7 +409,9 @@ const addReport = async (req, res) => {
   try {
     const { requestId, report } = req.body;
 
-    const request = await Certification.findById(requestId);
+    console.log(requestId, report);
+
+    const request = await CertificationRequest.findById(requestId);
 
     if (!request) {
       return res.status(404).json({
@@ -407,8 +422,11 @@ const addReport = async (req, res) => {
     request.certificationReport = report;
     request.reportSubmissionTime = Date.now();
     request.requestStatus = "completed";
+    request.certificationStatus = "valid";
 
     await request.save();
+
+    console.log("here");
 
     const notificationData = {
       notification: "Your certification report has been submitted",
@@ -420,6 +438,8 @@ const addReport = async (req, res) => {
 
     await Notification.create(notificationData);
 
+    console.log("here 2");
+
     const notificationData2 = {
       notification: "Your certification report has been submitted",
       status: "unread",
@@ -429,6 +449,8 @@ const addReport = async (req, res) => {
     };
 
     await Notification.create(notificationData2);
+
+    console.log("here 3");
 
     res.status(200).json({
       message: "Report added successfully",
