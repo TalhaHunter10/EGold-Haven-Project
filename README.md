@@ -164,7 +164,7 @@ All the relevant documentation including report, presentation, diagrams etc. are
 
 ## Sample Views
 
-![alt text](https://github.com/[talhahunter10]/[EGold-Haven-Project]/blob/[main]/Sample%20Views/landing%20page.png?raw=true)
+![alt text](https://github.com/talhahunter10/EGold-Haven-Project/blob/main/Sample%20Views/landing%20page.png?raw=true)
 
 
 ## FAQ
