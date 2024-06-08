@@ -184,7 +184,7 @@ All the relevant documentation including report, presentation, diagrams etc. are
 ![alt text](https://github.com/talhahunter10/EGold-Haven-Project/blob/main/Sample%20Views/chat2.png?raw=true)
 
 ### Jeweler Store Page
-![alt text](https://github.com/talhahunter10/EGold-Haven-Project/blob/main/Sample%20Views/jeweler%20store.png?raw=true)
+![alt text](https://github.com/talhahunter10/EGold-Haven-Project/blob/main/Sample%20Views/store%20page.png?raw=true)
 
 
 ## FAQ
