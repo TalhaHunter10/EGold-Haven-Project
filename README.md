@@ -164,7 +164,27 @@ All the relevant documentation including report, presentation, diagrams etc. are
 
 ## Sample Views
 
+### Landing Page
 ![alt text](https://github.com/talhahunter10/EGold-Haven-Project/blob/main/Sample%20Views/landing%20page.png?raw=true)
+
+### Login Page
+![alt text](https://github.com/talhahunter10/EGold-Haven-Project/blob/main/Sample%20Views/login%20page.png?raw=true)
+
+### Register Page
+![alt text](https://github.com/talhahunter10/EGold-Haven-Project/blob/main/Sample%20Views/register%20page.png?raw=true)
+
+### Browse Listings
+![alt text](https://github.com/talhahunter10/EGold-Haven-Project/blob/main/Sample%20Views/browse%20listings.png?raw=true)
+
+### Browse Jewelers
+![alt text](https://github.com/talhahunter10/EGold-Haven-Project/blob/main/Sample%20Views/browse%20jewelers.png?raw=true)
+
+### Chat
+![alt text](https://github.com/talhahunter10/EGold-Haven-Project/blob/main/Sample%20Views/chat1.png?raw=true)
+![alt text](https://github.com/talhahunter10/EGold-Haven-Project/blob/main/Sample%20Views/chat2.png?raw=true)
+
+### Jeweler Store Page
+![alt text](https://github.com/talhahunter10/EGold-Haven-Project/blob/main/Sample%20Views/jeweler%20store.png?raw=true)
 
 
 ## FAQ
