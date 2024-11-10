@@ -45,7 +45,7 @@ To run this project, you will need to add the following environment variables to
 
 `EMAIL_PASS = `
 
-`FRONTEND_URL = <url:port`
+`FRONTEND_URL = <url:port>`
 
 For Google SSO:
 
@@ -100,8 +100,6 @@ If any issue arises, install or update the relevant package.
 
 To create the admin account use postman to target the following api with the specific data below.
 
-#### Get all items
-
 Replace <url:port> below with your url and backend server port e.g localhost:8080 
 
 ```http
@@ -117,7 +115,7 @@ x-www-form-urlencoded :
 | `password` | `string` |
 | `status` | **admin** |
 
-status is only required for admin, rest user and jeweler statuses and set automatically on registration.
+status is only required for admin, rest user and jeweler statuses are set automatically on registration.
 
 
 
